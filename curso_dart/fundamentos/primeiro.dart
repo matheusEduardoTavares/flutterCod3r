@@ -80,6 +80,24 @@ main(){
 }
 */
 
+//Em Dart além de criar blocos de código sem propósito,
+//é possível criar setenças de códigos sem propósito também
+//e a execução não irá gerar erro:
+/*
+main(){
+  print('Olá Dart!');
+  print("Até o próximo exercício!!!");
+
+  {
+    ;
+    ;
+    ;
+  }
+
+  print('Fim!');
+}
+*/
+
 //O método main pode receber uma lista como parâmetro. Isso
 //é usado quando vamos executar o programa a partir da 
 //linha de comando, por exemplo, se executarmos esse arquivo
