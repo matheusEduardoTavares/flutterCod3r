@@ -16,6 +16,17 @@ main(){
 
   print('----------------');
 
+  //Os 3 principais métodos de estruturas iteráveis
+  // são o map, reduce e filter. A API do dart não
+  //disponibiliza a possibilidade de passar um 
+  //valor inicial para o método reduce, passando
+  //apenas a callback como parâmetro. Porém, 
+  //tem-se o método fold, que é igualzinho ao
+  //reduce mas sendo obrigatório passar um 
+  //valor inicial como parâmetro. Tanto a 
+  //lista quando o set possuem os 3 métodos e
+  //também o método fold.
+
   var nomes = ['Ana', 'Bia', 'Carlos'];
   print(nomes.length); // 3
   nomes.add('Daniel');
@@ -25,17 +36,12 @@ main(){
   print(nomes.elementAt(0)); // Ana
   print(nomes[5]); // Daniel
 
-  //A lista também tem o método fold.
-
   print('----------------');
 
   Set<int> conjunto = {0, 1, 2, 3, 4, 4, 4};
   print(conjunto.length); // 5
   print(conjunto is Set); // true
 
-  //No caso do set, a função reduce é a função fold,
-  //e essa função recebe 2 parâmetros, o valor inicial
-  //e a callback do reduce.
   print(conjunto.fold<int>(8, (acumulador, atual) => acumulador + atual)); // 18
 
   print('----------------');
