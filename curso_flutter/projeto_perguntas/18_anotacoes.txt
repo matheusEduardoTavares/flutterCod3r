@@ -1,0 +1,78 @@
+A pasta .dart_tool é criada a partir de um pacote
+chamado build runner. Ele cria para colocar os 
+arquivos compilados, sempre que vai compilando os
+arquivos vai incrementando esses arquivos baseados
+em alguma ferramenta. Basicamente é para termos o 
+build do nosso código feito em dart dentro desta pasta.
+Não mexeremos nessa pasta, até porque ela é 
+reconstruída sempre que buildamos o projeto.
+Essa pasta não deve ir para o github / gitlab
+por exemplo.
+
+A pasta .idea também não iremos mexer nela, ela tem 
+haver com configurações do intelliJ. O android studio
+é baseado no intelliJ, tanto essa pasta e seus arquivos 
+internos quanto o arquivo projeto_perguntas.iml, 
+também são configurações do intelliJ. Isso até está 
+descrito no .gitignore criado por default quando 
+rodamos o flutter create projeto_perguntas .
+
+A pasta android é extremamente importante para a 
+saúde do projeto, pois é essa pasta que guarda o 
+projeto do android. Estamos trabalhando com um 
+framework nativo, então ele precisa criar os 
+projetos nativos, precisa converter o código escrito 
+para código compilado, então dentro desta pasta é 
+colocado todos os arquivos relacionados ao projeto 
+android. Conseguimos abrir esse projeto dessa pasta 
+pelo android studio, mas iremos fazer isso muito 
+esporadicamente.
+
+A pasta build é onde fica o build da aplicação, ou seja,
+quando fazemos um build ou para android ou para IOs, 
+será construído o build do projeto compilado 
+dentro desta pasta, e é esse projeto que irá subir para
+os simuladores / emuladores.
+
+A pasta ios segue a mesma ideia do que foi anotado para 
+a pasta android, mas para o IOs. Nele temos o projeto para
+XCODE, que é a IDE da APPLE que trabalha com desenvolvimento 
+para IOs. Conseguimos abrir esse projeto em um ambiente
+do XCODE e fazer uma mudança lá.
+
+A pasta lib é a pasta que mais iremos manipular, é onde
+iremos trabalhar com os WIDGETS, trabalhar com nossas 
+pastas, todo o código dart estará dentro desta pasta.
+É onde estará o arquivo main.dart que é o entry point 
+do projeto.
+
+A pasta test serve para testes.
+
+O arquivo .gitignore já vem preenchido por padrão 
+e com algumas anotações do que não é necessário subir 
+para um repositório remoto.
+
+O arquivo .metadata é um arquivo gerenciado interno 
+pelo flutter e não mexemos nele.
+
+O arquivo .packages é gerado sempre que formos 
+colocando novas dependências. Não mexemos nele 
+também.
+
+O arquivo projeto_perguntas.iml tem haver com o 
+intelliJ como já citado. Também não mexemos nele,
+pois usaremos o VSCode.
+
+O arquivo pubspec.lock é gerado a partir do conteúdo 
+presente no arquivo pubspec.yaml. 
+O arquivo pubspec.yaml é bem importante, ele dá o 
+nome do projeto, sua descrição, a versão do projeto, 
+a SDK que queremos ter compatibilidade, estará 
+presente aqui todas as dependências e assets.
+
+Mexeremos de forma primordial na pasta lib e no arquivo 
+pubspec.yaml. Já o pubspec.lock não mexemos nele pois 
+ele é gerado automaticament com base no yaml.
+
+O README.md é um arquivo de markdown que será usado nos
+repositórios remotos caso seja subido para lá.
