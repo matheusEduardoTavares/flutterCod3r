@@ -42,6 +42,10 @@ main(){
     ]
   );
 
+  var pegarApenasONomeDosProdutos = (nome) => nome.produto.nome;
+  var nomesProdutos = venda.itens.map(pegarApenasONomeDosProdutos);
+  print('Nomes dos produtos: ${nomesProdutos.toList()}');
+
   print('O valor total da venda é: R\$${venda.valorTotal}');
   //O valor total da venda é: R$490.0
 
