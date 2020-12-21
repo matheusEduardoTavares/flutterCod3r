@@ -50,16 +50,43 @@ class PerguntaApp extends StatelessWidget{
             Text(perguntas[0]),
             RaisedButton(
               child: Text('Resposta 1'),
+              //Se deixássemos assim:
+              // onPressed: responder , nesse caso não
+              //estamos passando o método responder 
+              //como parâmetro, e sim passando o retorno
+              //deste método, já que o estamos executando
+              //devido ao ();
               onPressed: responder
             ),
             RaisedButton(
               child: Text('Resposta 2'),
-              onPressed: responder
+              //Caso criássemos a seguinte função:
+              // void Function() funcaoQueRetornaUmaOutraFuncao(){
+              //   return () {
+              //     print('Pergunta respondida #02!');
+              //   };
+              // }
+              //Agora nesse caso que criamos uma função
+              //que retorna outra função, aí sim podemos
+              //já chamar essa função executando-a, pois
+              //seu retorno será uma função que não 
+              //retorna nada (void) e não recebe
+              //parâmetros, justamente o que precisamos
+              //passar para o onPressed
+              // onPressed: funcaoQueRetornaUmaOutraFuncao()
+              onPressed: () {
+                print('Resposta 2 foi selecionada!');
+              }
+              //O botão só fica habilitado para clique
+              //caso seu onPressed seja != null
             ),
             RaisedButton(
               child: Text('Resposta 3'),
-              onPressed: responder
+              onPressed: () => print('Resposta 3 foi selecionada!')
             ),
+            //Portanto ou passamos como referência uma
+            //função que criamos ou passamos a função
+            //de forma literal.
           ]
         ),
       )
