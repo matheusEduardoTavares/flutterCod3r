@@ -26,6 +26,12 @@ class PerguntaApp extends StatelessWidget{
 
   @override 
   Widget build(BuildContext context){
+    // final List<String> perguntas = [
+    final perguntas = [
+      'Qual é a sua cor favorita?',
+      'Qual é o seu animal favorito?',
+    ];
+
     //A criação do nosso widget é o MaterialApp
     return MaterialApp(
       title: 'PerguntaApp',
@@ -33,7 +39,25 @@ class PerguntaApp extends StatelessWidget{
         appBar: AppBar(
           title: Text('Perguntas')
         ),
-        body: Text('Olá Flutter!!!'),
+        body: Column(
+          //Não precisa pow <Widget> (generics) para
+          //explicitar o tipo da lista.
+          children: [
+            Text(perguntas[0]),
+            RaisedButton(
+              child: Text('Resposta 1'),
+              onPressed: null
+            ),
+            RaisedButton(
+              child: Text('Resposta 2'),
+              onPressed: null
+            ),
+            RaisedButton(
+              child: Text('Resposta 3'),
+              onPressed: null
+            ),
+          ]
+        ),
       )
     );
   }
