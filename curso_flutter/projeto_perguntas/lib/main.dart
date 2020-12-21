@@ -29,7 +29,12 @@ class PerguntaApp extends StatelessWidget{
     //A criação do nosso widget é o MaterialApp
     return MaterialApp(
       title: 'PerguntaApp',
-      home: Text('Olá Flutter!!!')
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Perguntas')
+        ),
+        body: Text('Olá Flutter!!!'),
+      )
     );
   }
 }
