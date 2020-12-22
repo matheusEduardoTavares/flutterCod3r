@@ -63,6 +63,20 @@ class PerguntaAppState extends State<PerguntaApp> {
       perguntaSelecionada++;
     });
     print(perguntaSelecionada);
+
+    //O Flutter possui mecanismos de otimização, para
+    //mexer exatamente no ponto que precisa ser mexido
+    //e a interface gráfica ser renderizada novamente.
+    //No momento, o único componente que é renderizado
+    //novamente é o Text pois ele é o único que muda 
+    //de fato quanto o perguntaSelecionada é incrementado.
+    //Parece ser ineficiente o flutter renderizar toda 
+    //árvore de widgets novamente, mas esses mecanismos
+    //servem justamente para a questão de performance.
+    //Veremos mais a frente, mas o flutter tem a árvore
+    //de widgets e a árvore de elementos. A árvore de 
+    //widgets permanece lá e a de elementos é renderizada
+    //novamente.
   }
 
   //O @override é um decorator para sobrescrever
