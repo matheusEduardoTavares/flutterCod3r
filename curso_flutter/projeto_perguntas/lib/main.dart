@@ -17,14 +17,24 @@ main() => runApp(PerguntaApp());
 //O componente raíz dessa aplicação, portanto, é o 
 //PerguntaApp, e ele tem como filho o MaterialApp.
 
-class PerguntaApp extends StatelessWidget{
-  //O @override é um decorator para sobrescrever
-  //um método que obrigatoriamente o componente
-  //stateless precisa implementar, que é o 
-  //método build. É o flutter quem chama esse 
-  //método.
+/*
+O Recomendável é sempre usarmos componentes sem estado,
+quantos mais componentes sem estado tivermos, mais fácil
+será para gerenciar nossa aplicação. Passamos via 
+construtor os parâmetros que precisam ser alterados. O
+Stateless não tem estado interno.
+*/
 
-  //Classes que extendem o StatelessWidget deve m
+//Para trocar de stateless para stateful, criamos 
+//outr classe que extende o State da classe stateful,
+//e ela terá todas as variáveis cujo valor pode mudar
+//, os métodos que mudam esse valor, e também o método
+//build. O método build depende do estado da aplicação
+//para ser renderizado, por isso ele não fica direto
+//dentro da classe stateful, e sim da classe state
+//cujo generics denota a classe stateful.
+class PerguntaAppState extends State<PerguntaApp> {
+  //Classes que extendem o StatelessWidget devem
   //ser imutáveis, ou seja, ter atributos apenas final,
   //isso já gera um warning, pois se é preciso haver uma
   //variável cujo valor será alterado, é preciso ter 
@@ -44,10 +54,22 @@ class PerguntaApp extends StatelessWidget{
       alterada dentro de um componente stateless é errado
       , violamos essa ideia desse componente.
     */
-    perguntaSelecionada++;
+
+    //Para UI ser notificada quando houver uma mudança
+    //precisamos usar um setState(() {}); , e passamos
+    //dentro do corpo desse setState para dentro dele
+    //passarmos aquilo que está sendo modificado.
+    setState(() {
+      perguntaSelecionada++;
+    });
     print(perguntaSelecionada);
   }
 
+  //O @override é um decorator para sobrescrever
+  //um método que obrigatoriamente o componente
+  //stateless precisa implementar, que é o 
+  //método build. É o flutter quem chama esse 
+  //método.
   @override 
   Widget build(BuildContext context){
     // final List<String> perguntas = [
@@ -110,4 +132,18 @@ class PerguntaApp extends StatelessWidget{
       )
     );
   }
+}
+
+//Dentro da classe que extende o StatefulWidget, como
+//a classe StatefulWidget é abstrata e possui um método
+//abstrato, este precisa ser sobrescrito. Trata-se do
+//método para criar um estado, o createState. Esse métod
+//não recebe parâmetro, e pode retornar uma das duas 
+//classes:
+// PerguntaAppState > a classe que extende o State<PerguntaApp>
+// State<PerguntaApp> > direto retornar o state
+
+class PerguntaApp extends StatefulWidget{
+  @override 
+  PerguntaAppState createState() => PerguntaAppState();
 }
