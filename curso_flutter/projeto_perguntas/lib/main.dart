@@ -33,16 +33,18 @@ Stateless não tem estado interno.
 //para ser renderizado, por isso ele não fica direto
 //dentro da classe stateful, e sim da classe state
 //cujo generics denota a classe stateful.
-class PerguntaAppState extends State<PerguntaApp> {
+//A classe que representa o estado deixamos privada
+//e colocamo um State no fim, por convenção
+class _PerguntaAppState extends State<PerguntaApp> {
   //Classes que extendem o StatelessWidget devem
   //ser imutáveis, ou seja, ter atributos apenas final,
   //isso já gera um warning, pois se é preciso haver uma
   //variável cujo valor será alterado, é preciso ter 
   //um estado para alterá-la, então a classe deve 
   //extender o StatefulWidget.
-  var perguntaSelecionada = 0;
+  var _perguntaSelecionada = 0;
 
-  void responder() {
+  void _responder() {
     /*
       No flutter temos uma ideia de interface reativa,
       no momento que alteramos o valor de uma variável
@@ -60,16 +62,16 @@ class PerguntaAppState extends State<PerguntaApp> {
     //dentro do corpo desse setState para dentro dele
     //passarmos aquilo que está sendo modificado.
     setState(() {
-      perguntaSelecionada++;
+      _perguntaSelecionada++;
     });
-    print(perguntaSelecionada);
+    print(_perguntaSelecionada);
 
     //O Flutter possui mecanismos de otimização, para
     //mexer exatamente no ponto que precisa ser mexido
     //e a interface gráfica ser renderizada novamente.
     //No momento, o único componente que é renderizado
     //novamente é o Text pois ele é o único que muda 
-    //de fato quanto o perguntaSelecionada é incrementado.
+    //de fato quanto o _perguntaSelecionada é incrementado.
     //Parece ser ineficiente o flutter renderizar toda 
     //árvore de widgets novamente, mas esses mecanismos
     //servem justamente para a questão de performance.
@@ -103,16 +105,16 @@ class PerguntaAppState extends State<PerguntaApp> {
           //Não precisa pow <Widget> (generics) para
           //explicitar o tipo da lista.
           children: [
-            Text(perguntas[perguntaSelecionada]),
+            Text(perguntas[_perguntaSelecionada]),
             RaisedButton(
               child: Text('Resposta 1'),
               //Se deixássemos assim:
-              // onPressed: responder , nesse caso não
-              //estamos passando o método responder 
+              // onPressed: _responder , nesse caso não
+              //estamos passando o método _responder 
               //como parâmetro, e sim passando o retorno
               //deste método, já que o estamos executando
               //devido ao ();
-              onPressed: responder
+              onPressed: _responder
             ),
             RaisedButton(
               child: Text('Resposta 2'),
@@ -130,13 +132,13 @@ class PerguntaAppState extends State<PerguntaApp> {
               //parâmetros, justamente o que precisamos
               //passar para o onPressed
               // onPressed: funcaoQueRetornaUmaOutraFuncao()
-              onPressed: responder
+              onPressed: _responder
               //O botão só fica habilitado para clique
               //caso seu onPressed seja != null
             ),
             RaisedButton(
               child: Text('Resposta 3'),
-              onPressed: responder
+              onPressed: _responder
             ),
             //Portanto ou passamos como referência uma
             //função que criamos ou passamos a função
@@ -154,10 +156,12 @@ class PerguntaAppState extends State<PerguntaApp> {
 //método para criar um estado, o createState. Esse métod
 //não recebe parâmetro, e pode retornar uma das duas 
 //classes:
-// PerguntaAppState > a classe que extende o State<PerguntaApp>
+// _PerguntaAppState > a classe que extende o State<PerguntaApp>
 // State<PerguntaApp> > direto retornar o state
 
-class PerguntaApp extends StatefulWidget{
+//Já a classe que extende o StatefulWidget deixamos 
+//público.
+class PerguntaApp extends StatefulWidget {
   @override 
-  PerguntaAppState createState() => PerguntaAppState();
+  _PerguntaAppState createState() => _PerguntaAppState();
 }
