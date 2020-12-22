@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './questao.dart';
 
 //Esse primeiro componente que passamos para o runApp
 //é o nó raíz da árvore de componentes da aplicação,
@@ -105,7 +106,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
           //Não precisa pow <Widget> (generics) para
           //explicitar o tipo da lista.
           children: [
-            Text(perguntas[_perguntaSelecionada]),
+            Questao(texto: perguntas[_perguntaSelecionada]),
             RaisedButton(
               child: Text('Resposta 1'),
               //Se deixássemos assim:
