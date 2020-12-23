@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './questao.dart';
+import './resposta.dart';
 
 //Esse primeiro componente que passamos para o runApp
 //é o nó raíz da árvore de componentes da aplicação,
@@ -107,18 +108,18 @@ class _PerguntaAppState extends State<PerguntaApp> {
           //explicitar o tipo da lista.
           children: [
             Questao(texto: perguntas[_perguntaSelecionada]),
-            RaisedButton(
-              child: Text('Resposta 1'),
+            Resposta(
+              raisedButtonText: 'Resposta 1',
               //Se deixássemos assim:
               // onPressed: _responder , nesse caso não
               //estamos passando o método _responder 
               //como parâmetro, e sim passando o retorno
               //deste método, já que o estamos executando
               //devido ao ();
-              onPressed: _responder
+              raisedButtonOnPressed: _responder
             ),
-            RaisedButton(
-              child: Text('Resposta 2'),
+            Resposta(
+              raisedButtonText:'Resposta 2',
               //Caso criássemos a seguinte função:
               // void Function() funcaoQueRetornaUmaOutraFuncao(){
               //   return () {
@@ -133,13 +134,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
               //parâmetros, justamente o que precisamos
               //passar para o onPressed
               // onPressed: funcaoQueRetornaUmaOutraFuncao()
-              onPressed: _responder
+              raisedButtonOnPressed: _responder
               //O botão só fica habilitado para clique
               //caso seu onPressed seja != null
             ),
-            RaisedButton(
-              child: Text('Resposta 3'),
-              onPressed: _responder
+            Resposta(
+              raisedButtonText: 'Resposta 3',
+              raisedButtonOnPressed: _responder
             ),
             //Portanto ou passamos como referência uma
             //função que criamos ou passamos a função
