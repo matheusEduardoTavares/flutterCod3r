@@ -248,6 +248,28 @@ import './resultado.dart';
 
 main() => runApp(MaterialApp(home: PerguntaApp()));
 class _PerguntaAppState extends State<PerguntaApp> {
+  // Em relação a comunicação entre componentes temos uma
+  // comunicação direta quando um componente pai passa
+  // parâmetros para um componente filho, e temos a 
+  // comunicação indireta, que é quando o componente pai
+  // passa uma função para um componente filho para que o 
+  // componente filho chame essa função, e de certa forma
+  // o componente pai é notificado.
+  //Na aula passada o componente pai, o PerguntaApp, passou
+  //por parâmetro a pontuação total para o componente 
+  //Resultado, seu filho. É um caso de comunicação direta,
+  //de tal forma que o componente filho, o resultado, 
+  //mostrou um dado valor. O componente questionario é 
+  //outro exemplo de comunicação direta em relação aos 
+  //parâmetros das perguntas, mas nele mesmo tem um caso 
+  //de comunicação indireta também, que é a função 
+  //responder, em que o componente filho pode chamar um 
+  //método passando informação para o componente pai.
+  //No caso do método responder, ele recebe por parâmetro
+  //a pontuação, uma informação que virá do filho, 
+  //e assim executará a função que está aqui, caracterizando
+  //uma comunicação indireta.
+
   final _perguntas = const [
       {
         'texto': 'Qual é a sua cor favorita?',
@@ -298,8 +320,8 @@ class _PerguntaAppState extends State<PerguntaApp> {
     bool choose = await showDialog(
       context: ctx,
       builder: (context) => AlertDialog(
-        title: Text('Reiniciar aplicativo'),
-        content: Text('Realmente deseja reiniciar o aplicativo ?'),
+        title: Text('Reiniciar questionário'),
+        content: Text('Realmente deseja reiniciar o questionário ?'),
         actions: [
           FlatButton(
             child: Text('CANCELAR'),
@@ -312,6 +334,15 @@ class _PerguntaAppState extends State<PerguntaApp> {
         ],
       )
     );
+
+    /*
+    void _reiniciarQuestionario() {
+      setState(() {
+        _perguntaSelecionada = 0;
+        _pontuacaoTotal = 0;
+      });
+    }
+    */
 
     if (choose == null || choose == false) return;
 
@@ -335,6 +366,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
           selectedQuestion: _perguntaSelecionada,
           onPressed: _responder,
         ) : Resultado(pointing: _pontuacaoTotal, onPressedRestartApp: () => _restartApp(context),),
+        // ) : Resultado(_pontuacaoTotal, _reiniciarQuestionario),
       )
     );
   }
