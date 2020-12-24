@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './questao.dart';
 import './resposta.dart';
+import './resultado.dart';
 
 //Esse primeiro componente que passamos para o runApp
 //é o nó raíz da árvore de componentes da aplicação,
@@ -215,12 +216,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
               //de forma literal.
             */
           ]
-        ) : Center(
-          child: Text(
-            'Parabéns!',
-            style: TextStyle(fontSize: 28)
-          ),
-        ),
+        ) : Resultado(),
       )
     );
   }
