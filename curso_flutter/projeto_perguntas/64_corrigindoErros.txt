@@ -1,0 +1,33 @@
+Temos os erros de compilação que serão mostrados na 
+própria IDE, e são erros que a aplicação nem irá enviar 
+para o dispositivo, ou seja, o erro é em tempo de compilação,
+antes de gerar o build da aplicação, e tal erro é detectado 
+e mostrado na IDE (exemplo como erro de sintaxe).
+
+Outros erros a IDE não conseguirá detectar como sendo um 
+erro na aplicação pois às vezes envolvem dados, por exemplo.
+Um erro clássico é tentar acessar um índice que não existe 
+em uma lista. Esse é um erro de runtime, só acontece em 
+tempo de execução. Quando esse erro acontece, no debug 
+console aparece uma stack de erro, pois esse erro acaba 
+ocasionando futuros erros que usam justamente o dado que 
+originou o erro. 
+Temos uma grande pilha de execução, tudo começa no main, 
+o main chama um determinado componente, em que o método 
+build é chamado, que por sua vez chama outros componentes 
+cujos seus métodos builds também são chamados e assim por 
+diante. Tudo isso gera uma pilha de execução, e quando 
+acontece o erro, essa pilha é exibida no console, e temos 
+que ir no ponto certo para tentar matar de forma mais 
+precisa possível o que causou aquilo.
+Sempre que acontecer esses erros de runtime, devemos ir 
+no início do debug console onde a descrição daquele erro 
+começou a ocorrer, ler o que é dito sobre o erro e buscar 
+pelos links do código do projeto que está trabalhando 
+o local com exatidão onde está o erro (sempre quem está 
+no topo da pilha de execução).
+
+Às vezes ocorre de ser gerado um erro de runtime mas que 
+não gera um erro na hora de renderizar os componentes, então
+a aplicação continuará funcionando, mas no debug console 
+irá aparecer tal erro que acabou ocorrendo.
