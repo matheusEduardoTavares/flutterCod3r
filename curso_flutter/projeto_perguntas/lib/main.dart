@@ -121,6 +121,16 @@ class _PerguntaAppState extends State<PerguntaApp> {
       },
     ];
 
+    /*
+      //Solução para iterar na lista e ir adicionando
+      //um novo widget para cada resposta dentro da lista
+      //do map de forma imperativa:
+      List<Widget> respostas = [];
+      for (var textoResp in perguntas[_perguntaSelecionada]['respostas']){
+        respostas.add(Resposta(raisedButtonText: textoResp, raisedButtonOnPressed: _responder,));
+      }
+    */  
+
     //A criação do nosso widget é o MaterialApp
     return MaterialApp(
       title: 'PerguntaApp',
@@ -136,7 +146,9 @@ class _PerguntaAppState extends State<PerguntaApp> {
             ...(perguntas[_perguntaSelecionada]['respostas'] as List<String>).map((resposta) => Resposta(
               raisedButtonText: resposta,
               raisedButtonOnPressed: _responder,
-            ))
+            )),
+            //Operador Spread:
+            // ...respostas
             /*
               Resposta(
                 raisedButtonText: 'Resposta 1',
