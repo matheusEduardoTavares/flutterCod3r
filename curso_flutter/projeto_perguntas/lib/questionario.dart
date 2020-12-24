@@ -46,3 +46,41 @@ class Questionario extends StatelessWidget {
     );
   }
 }
+
+/*
+Código da aula:
+
+class Questionario extends StatelessWidget {
+  //No caso como a classe é stateless e todos os atributos
+  //são final, ou seja, constantes, não precisamos 
+  //deixá-los privados.
+
+  final List<Map<String, Object>> perguntas;
+  final int perguntaSelecionada;
+  final void Function() quandoResponder;
+
+  Questionario({
+    @required this.perguntas,
+    @required this.perguntaSelecionada,
+    @required this.quandoResponder,
+  });
+
+  bool get temPerguntaSelecionada {
+    return perguntaSelecionada < perguntas.length;
+  }
+
+  @override 
+  Widget build(BuildContext context){
+    List<String> respostas = temPerguntaSelecionada
+      ? perguntas[perguntaSelecionada]['respostas']
+      : null;
+
+    return Column(
+      children: <Widget> [
+        Questao(perguntas[perguntaSelecionada]['texto']),
+        ...respostas.map((t) => Resposta(t, quandoResponder)).toList()
+      ]
+    );
+  }
+}
+*/
