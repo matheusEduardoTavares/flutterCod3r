@@ -44,54 +44,8 @@ class _PerguntaAppState extends State<PerguntaApp> {
   //variável cujo valor será alterado, é preciso ter 
   //um estado para alterá-la, então a classe deve 
   //extender o StatefulWidget.
-  var _perguntaSelecionada = 0;
 
-  void _responder() {
-    /*
-      No flutter temos uma ideia de interface reativa,
-      no momento que alteramos o valor de uma variável
-      de forma reativa será gerado uma atualização na UI
-      de forma que conseguimos ver o último estado sendo
-      renderizado na tela. Não está acontecendo nada pois
-      estamos dentro de um componente stateless, dito
-      sem estado. O fato de termos uma variável sendo 
-      alterada dentro de um componente stateless é errado
-      , violamos essa ideia desse componente.
-    */
-
-    //Para UI ser notificada quando houver uma mudança
-    //precisamos usar um setState(() {}); , e passamos
-    //dentro do corpo desse setState para dentro dele
-    //passarmos aquilo que está sendo modificado.
-    setState(() {
-      _perguntaSelecionada++;
-    });
-
-    //O Flutter possui mecanismos de otimização, para
-    //mexer exatamente no ponto que precisa ser mexido
-    //e a interface gráfica ser renderizada novamente.
-    //No momento, o único componente que é renderizado
-    //novamente é o Text pois ele é o único que muda 
-    //de fato quanto o _perguntaSelecionada é incrementado.
-    //Parece ser ineficiente o flutter renderizar toda 
-    //árvore de widgets novamente, mas esses mecanismos
-    //servem justamente para a questão de performance.
-    //Veremos mais a frente, mas o flutter tem a árvore
-    //de widgets e a árvore de elementos. A árvore de 
-    //widgets permanece lá e a de elementos é renderizada
-    //novamente.
-  }
-
-  //O @override é um decorator para sobrescrever
-  //um método que obrigatoriamente o componente
-  //stateless precisa implementar, que é o 
-  //método build. É o flutter quem chama esse 
-  //método.
-  @override 
-  Widget build(BuildContext context){
-    // final List<String> perguntas = [
-    // final List<Map<String, Object>> perguntas = [
-    final perguntas = [
+  final _perguntas = const [
       {
         'texto': 'Qual é a sua cor favorita?',
         'respostas': [
@@ -120,6 +74,59 @@ class _PerguntaAppState extends State<PerguntaApp> {
         ]
       },
     ];
+
+  var _perguntaSelecionada = 0;
+
+  void _responder() {
+    /*
+      No flutter temos uma ideia de interface reativa,
+      no momento que alteramos o valor de uma variável
+      de forma reativa será gerado uma atualização na UI
+      de forma que conseguimos ver o último estado sendo
+      renderizado na tela. Não está acontecendo nada pois
+      estamos dentro de um componente stateless, dito
+      sem estado. O fato de termos uma variável sendo 
+      alterada dentro de um componente stateless é errado
+      , violamos essa ideia desse componente.
+    */
+
+    //Para UI ser notificada quando houver uma mudança
+    //precisamos usar um setState(() {}); , e passamos
+    //dentro do corpo desse setState para dentro dele
+    //passarmos aquilo que está sendo modificado.
+    if (temPerguntaSelecionada){
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
+    //O Flutter possui mecanismos de otimização, para
+    //mexer exatamente no ponto que precisa ser mexido
+    //e a interface gráfica ser renderizada novamente.
+    //No momento, o único componente que é renderizado
+    //novamente é o Text pois ele é o único que muda 
+    //de fato quanto o _perguntaSelecionada é incrementado.
+    //Parece ser ineficiente o flutter renderizar toda 
+    //árvore de widgets novamente, mas esses mecanismos
+    //servem justamente para a questão de performance.
+    //Veremos mais a frente, mas o flutter tem a árvore
+    //de widgets e a árvore de elementos. A árvore de 
+    //widgets permanece lá e a de elementos é renderizada
+    //novamente.
+  }
+
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
+  }
+
+  //O @override é um decorator para sobrescrever
+  //um método que obrigatoriamente o componente
+  //stateless precisa implementar, que é o 
+  //método build. É o flutter quem chama esse 
+  //método.
+  @override 
+  Widget build(BuildContext context){
+    // final List<String> perguntas = [
+    // final List<Map<String, Object>> perguntas = [
 
     /*
       //Solução para iterar na lista e ir adicionando
@@ -156,15 +163,16 @@ class _PerguntaAppState extends State<PerguntaApp> {
         appBar: AppBar(
           title: Text('Perguntas')
         ),
-        body: Column(
+        body: temPerguntaSelecionada ? Column(
           //Não precisa pow <Widget> (generics) para
           //explicitar o tipo da lista.
           children: [
-            Questao(texto: perguntas[_perguntaSelecionada]['texto']),
-            ...(perguntas[_perguntaSelecionada]['respostas'] as List<String>).map((resposta) => Resposta(
-              raisedButtonText: resposta,
-              raisedButtonOnPressed: _responder,
-            )),
+            Questao(texto: _perguntas[_perguntaSelecionada]['texto']),
+            if (temPerguntaSelecionada)
+              ...(_perguntas[_perguntaSelecionada]['respostas'] as List<String>).map((resposta) => Resposta(
+                raisedButtonText: resposta,
+                raisedButtonOnPressed: _responder,
+              )),
             //Operador Spread:
             // ...respostas
             /*
@@ -207,7 +215,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
               //de forma literal.
             */
           ]
-        ),
+        ) : null,
       )
     );
   }
