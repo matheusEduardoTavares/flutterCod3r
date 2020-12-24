@@ -90,9 +90,35 @@ class _PerguntaAppState extends State<PerguntaApp> {
   @override 
   Widget build(BuildContext context){
     // final List<String> perguntas = [
+    // final List<Map<String, Object>> perguntas = [
     final perguntas = [
-      'Qual é a sua cor favorita?',
-      'Qual é o seu animal favorito?',
+      {
+        'texto': 'Qual é a sua cor favorita?',
+        'respostas': [
+          'Preto',
+          'Vermelho',
+          'Verde',
+          'Branco'
+        ]
+      },
+      {
+        'texto': 'Qual é o seu animal favorito?',
+        'respostas': [
+          'Coelho',
+          'Cobra',
+          'Elefante',
+          'Leão',
+        ]
+      },
+      {
+        'texto': 'Qual é o seu instrutor favorito?',
+        'respostas': [
+          'Maria',
+          'João',
+          'Leo',
+          'Pedro',
+        ]
+      },
     ];
 
     //A criação do nosso widget é o MaterialApp
@@ -106,44 +132,50 @@ class _PerguntaAppState extends State<PerguntaApp> {
           //Não precisa pow <Widget> (generics) para
           //explicitar o tipo da lista.
           children: [
-            Questao(texto: perguntas[_perguntaSelecionada]),
-            Resposta(
-              raisedButtonText: 'Resposta 1',
-              //Se deixássemos assim:
-              // onPressed: _responder , nesse caso não
-              //estamos passando o método _responder 
-              //como parâmetro, e sim passando o retorno
-              //deste método, já que o estamos executando
-              //devido ao ();
-              raisedButtonOnPressed: _responder // quandoSelecionado: _responder
-            ),
-            Resposta(
-              raisedButtonText:'Resposta 2',
-              //Caso criássemos a seguinte função:
-              // void Function() funcaoQueRetornaUmaOutraFuncao(){
-              //   return () {
-              //     print('Pergunta respondida #02!');
-              //   };
-              // }
-              //Agora nesse caso que criamos uma função
-              //que retorna outra função, aí sim podemos
-              //já chamar essa função executando-a, pois
-              //seu retorno será uma função que não 
-              //retorna nada (void) e não recebe
-              //parâmetros, justamente o que precisamos
-              //passar para o onPressed
-              // onPressed: funcaoQueRetornaUmaOutraFuncao()
-              raisedButtonOnPressed: _responder
-              //O botão só fica habilitado para clique
-              //caso seu onPressed seja != null
-            ),
-            Resposta(
-              raisedButtonText: 'Resposta 3',
-              raisedButtonOnPressed: _responder
-            ),
-            //Portanto ou passamos como referência uma
-            //função que criamos ou passamos a função
-            //de forma literal.
+            Questao(texto: perguntas[_perguntaSelecionada]['texto']),
+            ...(perguntas[_perguntaSelecionada]['respostas'] as List<String>).map((resposta) => Resposta(
+              raisedButtonText: resposta,
+              raisedButtonOnPressed: _responder,
+            ))
+            /*
+              Resposta(
+                raisedButtonText: 'Resposta 1',
+                //Se deixássemos assim:
+                // onPressed: _responder , nesse caso não
+                //estamos passando o método _responder 
+                //como parâmetro, e sim passando o retorno
+                //deste método, já que o estamos executando
+                //devido ao ();
+                raisedButtonOnPressed: _responder // quandoSelecionado: _responder
+              ),
+              Resposta(
+                raisedButtonText:'Resposta 2',
+                //Caso criássemos a seguinte função:
+                // void Function() funcaoQueRetornaUmaOutraFuncao(){
+                //   return () {
+                //     print('Pergunta respondida #02!');
+                //   };
+                // }
+                //Agora nesse caso que criamos uma função
+                //que retorna outra função, aí sim podemos
+                //já chamar essa função executando-a, pois
+                //seu retorno será uma função que não 
+                //retorna nada (void) e não recebe
+                //parâmetros, justamente o que precisamos
+                //passar para o onPressed
+                // onPressed: funcaoQueRetornaUmaOutraFuncao()
+                raisedButtonOnPressed: _responder
+                //O botão só fica habilitado para clique
+                //caso seu onPressed seja != null
+              ),
+              Resposta(
+                raisedButtonText: 'Resposta 3',
+                raisedButtonOnPressed: _responder
+              ),
+              //Portanto ou passamos como referência uma
+              //função que criamos ou passamos a função
+              //de forma literal.
+            */
           ]
         ),
       )
