@@ -26,13 +26,28 @@ class Resultado extends StatelessWidget {
     this.softWrap
   }) : super(key: key);
 
+  String get fraseResultado {
+    if (pointing < 8) {
+      return 'Parabéns!';
+    }
+    else if (pointing < 12) {
+      return 'Você é bom!';
+    }
+    else if (pointing < 16){
+      return 'Impressionante!';
+    }
+    else {
+      return 'Nível Jedi!';
+    }
+  }
+
   @override 
   Widget build(BuildContext context){
     return Center(
       heightFactor: heightFactor,
       widthFactor: widthFactor,
       child: content ?? Text(
-        text ?? 'Parabéns! Sua pontuação: $pointing',
+        text ?? fraseResultado,
         style: textStyle ?? TextStyle(fontSize: 28),
         maxLines: maxLines,
         overflow: overflow,
@@ -48,11 +63,30 @@ Código da aula:
 
 class Resultado extends StatelessWidget {
 
+  final int pontuacao;
+
+  Resultado(this.pontuacao);
+
+  String get fraseResultado {
+    if (pontuacao < 8) {
+      return 'Parabéns!';
+    }
+    else if (pontuacao < 12) {
+      return 'Você é bom!';
+    }
+    else if (pontuacao < 16){
+      return 'Impressionante!';
+    }
+    else {
+      return 'Nível Jedi!';
+    }
+  }
+
   @override 
   Widget build(BuildContext context){
     return Center(
       child: Text(
-        'Parabéns!',
+        pontuacao,
         style: TextStyle(fontSize: 28),
       )
     );
