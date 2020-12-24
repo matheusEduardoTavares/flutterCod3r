@@ -131,6 +131,24 @@ class _PerguntaAppState extends State<PerguntaApp> {
       }
     */  
 
+    /*
+      //Solução para iterar na lista e ir adicionando
+      //um novo widget para cada resposta dentro da lista
+      //do map de forma funcional:
+      List<String> respostas = perguntas[_perguntaSelecionada]['respostas'];
+      List<Widget> widgets = respostas
+        .map((t) => Resposta(raisedButtonText: t, raisedButtonOnPressed: _responder))
+        .toList();
+
+      //É interessante usar programação funcional sempre que
+      //possível pois hoje em dia é muito necessário trabalhar
+      //com programação concorrente e a programação funcional
+      //ajuda muito nesse quesito, pois é bem mais simples 
+      //trabalhar com programação concorrente usando também
+      //programação funcional que OO, pois existem outros
+      //conceitos acerca disso como dados imutáveis, etc.
+    */  
+
     //A criação do nosso widget é o MaterialApp
     return MaterialApp(
       title: 'PerguntaApp',
