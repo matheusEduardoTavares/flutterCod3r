@@ -279,13 +279,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
     ];
 
   var _perguntaSelecionada = 0;
-  var _pontuacao = 0;
+  var _pontuacaoTotal = 0;
 
   void _responder(int pontuacao) {
     if (temPerguntaSelecionada){
       setState(() {
         _perguntaSelecionada++;
-        _pontuacao += pontuacao;
+        _pontuacaoTotal += pontuacao;
       });
     }
   }
@@ -307,7 +307,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
           questions: _perguntas,
           selectedQuestion: _perguntaSelecionada,
           onPressed: _responder,
-        ) : Resultado(pointing: _pontuacao,),
+        ) : Resultado(pointing: _pontuacaoTotal,),
       )
     );
   }
