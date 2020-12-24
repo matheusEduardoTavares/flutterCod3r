@@ -246,7 +246,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_perguntas/questionario.dart';
 import './resultado.dart';
 
-main() => runApp(PerguntaApp());
+main() => runApp(MaterialApp(home: PerguntaApp()));
 class _PerguntaAppState extends State<PerguntaApp> {
   final _perguntas = const [
       {
@@ -294,6 +294,33 @@ class _PerguntaAppState extends State<PerguntaApp> {
     return _perguntaSelecionada < _perguntas.length;
   }
 
+  void _restartApp(BuildContext ctx) async {
+    bool choose = await showDialog(
+      context: ctx,
+      builder: (context) => AlertDialog(
+        title: Text('Reiniciar aplicativo'),
+        content: Text('Realmente deseja reiniciar o aplicativo ?'),
+        actions: [
+          FlatButton(
+            child: Text('CANCELAR'),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+        ],
+      )
+    );
+
+    if (choose == null || choose == false) return;
+
+    setState(() {
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
+  }
+
   @override 
   Widget build(BuildContext context){
     return MaterialApp(
@@ -307,7 +334,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
           questions: _perguntas,
           selectedQuestion: _perguntaSelecionada,
           onPressed: _responder,
-        ) : Resultado(pointing: _pontuacaoTotal,),
+        ) : Resultado(pointing: _pontuacaoTotal, onPressedRestartApp: () => _restartApp(context),),
       )
     );
   }

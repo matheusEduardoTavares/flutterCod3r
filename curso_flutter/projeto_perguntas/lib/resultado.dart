@@ -11,10 +11,12 @@ class Resultado extends StatelessWidget {
   final TextOverflow overflow;
   final TextAlign textAlign;
   final bool softWrap;
+  final VoidCallback onPressedRestartApp;
 
   const Resultado({
     Key key,
     @required this.pointing,
+    @required this.onPressedRestartApp,
     this.content,
     this.text,
     this.widthFactor,
@@ -23,7 +25,7 @@ class Resultado extends StatelessWidget {
     this.maxLines,
     this.overflow,
     this.textAlign,
-    this.softWrap
+    this.softWrap,
   }) : super(key: key);
 
   String get fraseResultado {
@@ -46,13 +48,23 @@ class Resultado extends StatelessWidget {
     return Center(
       heightFactor: heightFactor,
       widthFactor: widthFactor,
-      child: content ?? Text(
-        text ?? fraseResultado,
-        style: textStyle ?? TextStyle(fontSize: 28),
-        maxLines: maxLines,
-        overflow: overflow,
-        textAlign: textAlign,
-        softWrap: softWrap
+      child: content ?? Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            text ?? fraseResultado,
+            style: textStyle ?? TextStyle(fontSize: 28),
+            maxLines: maxLines,
+            overflow: overflow,
+            textAlign: textAlign,
+            softWrap: softWrap
+          ),
+          SizedBox(height: 20),
+          RaisedButton(
+            child: Text('Reiniciar aplicação'),
+            onPressed: onPressedRestartApp,
+          )
+        ],
       ),
     );
   }
