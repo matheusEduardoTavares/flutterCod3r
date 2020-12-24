@@ -40,3 +40,21 @@ class Resultado extends StatelessWidget {
     );
   }
 }
+
+/*
+Código da aula:
+
+class Resultado extends StatelessWidget {
+
+  @override 
+  Widget build(BuildContext context){
+    return Center(
+      child: Text(
+        'Parabéns!',
+        style: TextStyle(fontSize: 28),
+      )
+    );
+  }
+}
+
+*/
