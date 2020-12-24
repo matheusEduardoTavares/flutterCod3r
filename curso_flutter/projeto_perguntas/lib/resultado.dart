@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Resultado extends StatelessWidget {
+  final int pointing;
   final Widget content;
   final String text;
   final double widthFactor;
@@ -13,6 +14,7 @@ class Resultado extends StatelessWidget {
 
   const Resultado({
     Key key,
+    @required this.pointing,
     this.content,
     this.text,
     this.widthFactor,
@@ -30,7 +32,7 @@ class Resultado extends StatelessWidget {
       heightFactor: heightFactor,
       widthFactor: widthFactor,
       child: content ?? Text(
-        text ?? 'Parabéns!',
+        text ?? 'Parabéns! Sua pontuação: $pointing',
         style: textStyle ?? TextStyle(fontSize: 28),
         maxLines: maxLines,
         overflow: overflow,

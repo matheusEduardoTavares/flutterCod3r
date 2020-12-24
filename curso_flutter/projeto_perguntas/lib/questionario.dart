@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'questao.dart';
 import 'resposta.dart';
 
+typedef Pointing = void Function(int);
+
 class Questionario extends StatelessWidget {
   final List<Widget> columnContent;
   final MainAxisAlignment mainAxisAlignement;
@@ -11,7 +13,7 @@ class Questionario extends StatelessWidget {
   final List<Map<String, Object>> questions;
   final int selectedQuestion;
   final bool hasSelectedQuestion;
-  final VoidCallback onPressed;
+  final Pointing onPressed;
 
   Questionario({
     this.columnContent,
@@ -39,7 +41,7 @@ class Questionario extends StatelessWidget {
           (questions[selectedQuestion]).containsKey('respostas') && questions[selectedQuestion]['respostas'] != null ? 
             (questions[selectedQuestion]['respostas'] as List<Map<String, Object>>).map((resposta) => Resposta(
               raisedButtonText: resposta['texto'],
-              raisedButtonOnPressed: onPressed,
+              raisedButtonOnPressed: () => onPressed(resposta['pontuacao']),
             )
         ) : []),
       ]
