@@ -358,7 +358,12 @@ class _PerguntaAppState extends State<PerguntaApp> {
       title: 'PerguntaApp',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Perguntas')
+          title: Text('Perguntas'),
+          //No IOs o texto da AppBar por padrão já 
+          //fica no centro, porém no Android seu padrão é
+          //ficar na esquerda, setando o centerTitle como
+          //true, ficará no centro para o Android também.
+          centerTitle: true,
         ),
         body: temPerguntaSelecionada ? Questionario(
           hasSelectedQuestion: temPerguntaSelecionada,
