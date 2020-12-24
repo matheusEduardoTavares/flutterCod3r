@@ -66,7 +66,6 @@ class _PerguntaAppState extends State<PerguntaApp> {
     setState(() {
       _perguntaSelecionada++;
     });
-    print(_perguntaSelecionada);
 
     //O Flutter possui mecanismos de otimização, para
     //mexer exatamente no ponto que precisa ser mexido
@@ -116,7 +115,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
               //como parâmetro, e sim passando o retorno
               //deste método, já que o estamos executando
               //devido ao ();
-              raisedButtonOnPressed: _responder
+              raisedButtonOnPressed: _responder // quandoSelecionado: _responder
             ),
             Resposta(
               raisedButtonText:'Resposta 2',
