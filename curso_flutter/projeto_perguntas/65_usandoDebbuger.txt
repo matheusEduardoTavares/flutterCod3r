@@ -1,0 +1,32 @@
+Durante a execução do código em modo debug, 
+na área do debug temos no VS Code a parte de variáveis, 
+watch e call stack. 
+Em variables, o this é sempre a referência ao 
+componente onde o breakpoint que está parado no 
+momento está sendo executado, e dentro do this tem 
+uma série de atributos referentes aquele componente 
+(muitos desses atributos são internos do flutter, mas 
+terão também os atributos que nós mesmos colocamos 
+dentro daquele componente), então no caso da aplicação 
+que fizemos, se colocarmos um breakpoint em alguma 
+parte dentro do main.dart, provavelmente o this será o 
+_PerguntaAppState (provavelmente pois depende de 
+onde foi colocado o breakpoint, já que o this é o 
+componente onde aquele código do breakpoint está dentro).
+
+No Watch podemos adicionar uma expressão 
+seja qual for, e o valor da expressão será mostrado 
+em tempo real durante a execução do app, então 
+podemos travar o app em uma certa parte para verificar 
+as expressões que queremos naquele dado tempo. 
+Sempre que o valor da expressão é atualizado, 
+no watch é atualizado também.
+
+Sobre a barra de ferramentas do debug, 
+o primeiro botão é o continue, para ele continuar 
+caso esteja parado em algum breakpoint ou em pause, 
+depois temos o step over que não entra em um método 
+caso este seja chamado, o step into para entrar dentro 
+do método, etc. 
+Importante ressaltar dessa barra que o último 
+ícone é o dev tools e é muito importante saber utilizá-lo.
