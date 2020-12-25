@@ -60,8 +60,31 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
           Column(
+            mainAxisSize: MainAxisSize.max,
             children: _transactions.map((transaction) => Card(
-              child: Text(transaction.title),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    height: 50,
+                    color: Colors.green,
+                    child: Center(
+                      child: Text(
+                        'R\$${transaction.value.toStringAsFixed(2)}',
+                      ),
+                    )
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text(transaction.title, style: TextStyle(color: Colors.black, fontSize: 16)),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(transaction.date.toString(), style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                      )
+                    ],
+                  )
+                ],
+              ),
             )).toList()
             //Ou:
             // children: <Widget>[
