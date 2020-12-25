@@ -1,0 +1,52 @@
+No canto superior direito do dev tools temos
+o repaint rainbow. Clicando nele, sempre
+que interagirmos com nossa aplicação,
+será colocado uma barra verde ao redor
+dos componentes que foram alterados 
+a partir dessa interação que fizemos
+com o aplicativo. Por exemplo, quando
+deixamos marcados e clicamos em uma
+resposta, será renderizado, marcando
+que toda nossa aplicação foi modificada,
+o app bar, os elementos, a pergunta, a 
+resposta. Mas detectamos por exemplo, não
+tem necessidade de mudar o app bar mas ele
+mudou, mesmo sendo que o texto dele fica
+constante. Ocorre que dentro do nosso 
+componente stateful temos o scaffold lá 
+dentro, então quando damos setState o build
+é executado de novo e assim até mesmo o 
+appbar acaba sendo redesenhado novamente.
+Uma otimização que poderia ser feita
+para evitar isso é tirar o scaffold e criar
+um componente separado para ele, deixando
+em outro componente stateful apenas a parte
+do body do scaffold pois é isso o que realmente
+deve ser alterado, já o app bar não precisa 
+ser redesenhado. No caso toda tela foi 
+repintada pois o componente que detém o 
+estado é o componente que está pintando
+a aplicação inteira. 
+
+Há uma grande diferença entre repintar 
+um componente e recriar um componente.
+Quando um componente é recriado ele é 
+instanciado do 0, quando simplesmente 
+atualizamos um componente que já foi
+criado anteriormente, ele consegue
+pegar o componente em memória que já
+foi criado e só atualizar a parte
+visual.
+
+Com o repaint rainbow vemos o que é 
+atualizado de acordo com determinadas
+atualizações. Assim conseguimos ver 
+se apenas estão sendo atualizados 
+os componentes necessários, e caso
+algum componente não devesse ser 
+atualizado podemos tentar corrigir
+isso, assim podemos deixar a 
+aplicação ainda mais otimizada uma
+vez que sabemos o que foi alterado
+a partir das interações com a 
+nossa aplicação.
