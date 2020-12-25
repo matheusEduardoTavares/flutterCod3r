@@ -21,17 +21,18 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         //A coluna coloca como default o alinhamento do
         //eixo X como centro, então podemos mudar isso caso
         //queremos que comece no início:
-        // crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           //Para fazer o card ocupar todo espaço horizontal
           //da tela, podemos fazer um wrap dele em um 
           //Container e definir o width do container como
-          //double.infinity
+          //double.infinity, ou melhor ainda, é só fazer
+          //a column ter CrossAxisAlignment.stretch .
           Container(
-            width: double.infinity,
             child: Card(
               color: Colors.blue,
               child: Text('Gráfico'),
