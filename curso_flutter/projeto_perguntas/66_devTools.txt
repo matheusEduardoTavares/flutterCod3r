@@ -1,0 +1,69 @@
+Durante o debug, podemos clicar no último ícone da barra 
+de debug que é o ícone do dev tools ou dar CTRL + SHIFT +
+P e digitar dev tools.
+
+Abrindo o dev tools veremos várias informações
+interessantes da aplicação. 
+Será mostrado a árvore de todos os compnentes. 
+No canto superior esquerdo temos um botão para
+selecionar (toggle) chamado select widget mode,
+em que se clicarmos em um elemento da árvore de
+widgets, aquele elemento em específico será
+selecionado dentro da execução do app para 
+podermos vê-lo em destaque, de forma que 
+é possível saber quanto de espaço cada um
+dos elementos está ocupando. Isso é muito
+interessante em caso por exemplo: 
+"Um dado widget deveria ter esticado mas não
+esticou, qual ajuste deve-se fazer então
+para realmente surtir tal efeito ? "
+
+No canto superior direito temos o Debug
+Paint, quando clicamos nele vemos 
+exatamente o que está ocorrendo na aplicação,
+para que ela apareça dessa forma. Por exemplo
+vemos nos raised buttons do nosso app que 
+o texto dentro deles está com alinhamento
+central, e a delimitação de cada um dos 
+componentes.
+
+O Dev tools é muito bom para vermos como
+os componentes visuais estão dispostos
+na tela.
+
+Além disso podemos ver questões de 
+performance no dev tools no 
+botão de Performance Overlay.
+Importante ressaltar que para ver 
+a questão de performance, é preciso
+no VS Code abrir o arquivo launch.json
+que é criado automaticamente para poder
+debugar o código, e adicionar dentro do
+JSON, da chave "configurations", o 
+seguinte conjunto chave x valor:
+"flutterMode": "profile"
+
+Mas sempre que estamos testando localmente,
+é preciso ter em mente que é um código 
+voltado para desenvolvimento e com hot
+restart e hot reload que estamos usando,
+por isso a performance nunca será 100%, 
+o melhor teste será em um dispositivo real
+mesmo, e a performance é ainda pior 
+se for um emulador. É também um código 
+para depuração, que por isso tem mais 
+controles, mais códigos envolvidos, mais
+processamentos que não irão existir em um
+projeto final disponibilizado com build 
+otimizado para produção e com um dispositivo
+real. O flutter tem um desempenho 
+fantástico.
+
+Temos no canto superior direito um
+botão para o Paint Baseline também
+que é saber a baseline dos textos,
+de acordo com cada um dos elementos.
+Ou seja, qualquer texto que será colocado
+naquele dado lugar seguirá a baseline que
+é pintada na tela quando clicamos nesse
+botão.
