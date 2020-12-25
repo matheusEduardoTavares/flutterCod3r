@@ -74,7 +74,7 @@ class MyHomePage extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Colors.black,
+                        color: Colors.purple,
                         width: 2,
                       )
                     ),
@@ -82,15 +82,21 @@ class MyHomePage extends StatelessWidget {
                     child: Center(
                       child: Text(
                         'R\$${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.purple,
+
+                        )
                       ),
                     )
                   ),
                   Column(
                     children: <Widget>[
-                      Text(transaction.title, style: TextStyle(color: Colors.black, fontSize: 16)),
+                      Text(transaction.title, style: TextStyle(color: Colors.black, fontSize: 14)),
                       Padding(
                         padding: EdgeInsets.only(top: 10),
-                        child: Text(transaction.date.toString(), style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                        child: Text(transaction.date.toString(), style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold)),
                       )
                     ],
                   )
