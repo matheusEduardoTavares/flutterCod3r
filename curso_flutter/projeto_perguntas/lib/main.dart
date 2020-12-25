@@ -242,6 +242,7 @@ class PerguntaApp extends StatefulWidget {
 
 */
 
+/*
 import 'package:flutter/material.dart';
 import 'package:projeto_perguntas/questionario.dart';
 import './resultado.dart';
@@ -379,4 +380,25 @@ class _PerguntaAppState extends State<PerguntaApp> {
 class PerguntaApp extends StatefulWidget {
   @override 
   _PerguntaAppState createState() => _PerguntaAppState();
+}
+*/
+
+import 'package:flutter/material.dart';
+import 'package:projeto_perguntas/bodyScaffold.dart';
+
+main() => runApp(MaterialApp(home: PerguntaApp()));
+class PerguntaApp extends StatelessWidget{
+  @override 
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: 'PerguntaApp',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Perguntas'),
+          centerTitle: true,
+        ),
+        body: BodyScaffold(),
+      )
+    );
+  }
 }
