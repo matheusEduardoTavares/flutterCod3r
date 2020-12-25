@@ -66,11 +66,22 @@ class MyHomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    height: 50,
-                    color: Colors.green,
+                    //O symmetric é para ser diferente no eixo vertical
+                    //e no eixo horizontal
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 10
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2,
+                      )
+                    ),
+                    padding: EdgeInsets.all(10),
                     child: Center(
                       child: Text(
-                        'R\$${transaction.value.toStringAsFixed(2)}',
+                        'R\$${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
                       ),
                     )
                   ),
