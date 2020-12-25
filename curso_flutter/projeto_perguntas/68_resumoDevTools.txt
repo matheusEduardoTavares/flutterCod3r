@@ -1,0 +1,57 @@
+Apertando CTRL + SHIFT + P e pesquisando por 
+dev tools podemos abrir o DevTools 
+Timeline Page, e assim quando interagimos 
+com a aplicação é mostrado em milissegundos 
+o tempo que demorou para renderizar 
+determinados componentes na tela. Temos 
+uma parte específica de UI e uma parte 
+específica da GPU. É até dado um warning 
+dizendo que não é um indicativo de como 
+será a performance de quando fizermos a 
+release (versão disponibilizada para os 
+usuários finais). Aqui conseguimos ver
+a partir da navegação o tempo que demorou
+para ser exibido cada uma das telas, em
+milissegundos. É mostrado tanto a parte 
+de UI quanto de GPU. Aqui conseguimos 
+ver uma anomalia, alguma tela que está
+demorando muito para ser executada.
+
+Podemos usar as ferramentas do 
+dev tools sem estar em modo debugging
+também (só ir em run e colocar 
+run without debugging).
+
+Pelo CTRL + SHIFT + P, procurando por
+dev tools temos todas as ferramentas do
+dev tools, e outra muito interessante
+é a de memory, assim conseguimos ver 
+se tem alguma memory leek na aplicação,
+o que está consumindo em termos de memória.
+Uma tela pode ter um consumo de memória 
+bem maior que a outra, é interessante ver
+se uma dada tela está carregando muitas
+informações da memória, por exemplo
+carregamos uma lista muito grande, será
+que não é melhor pagina os dados para
+não consumir tudo de uma vez. 
+Outra ferramenta é a parte de performance,
+para gravar o uso de CPU dentro da aplicação.
+O fato de monitorar já gera uma sobrecarga na
+aplicação de forma a deixá-la mais custosa,
+alterando assim o desempenho da aplicação por
+conta que estamos medindo. Basicamente
+colocamos para gravar e testamos o que queremos,
+quando pararmos será gerado um recording do que
+foi consumido em cada ponto e aqui podemos 
+inclusive achar eventuais anomalias, e assim
+encontrar pontos de melhoria de desempenho. Por fim
+temos a ferramenta de logging, conseguimos ver o 
+logging que foi gerado a partir do flutter, 
+eventuais momentos que o garbage collector executou
+para liberar novos espaços, e assim conseguimos saber
+exatamente o que é gerado em log baseado na 
+interação da aplicação. Sempre que interagimos veremos
+novas entradas de log, e se selecionarmos um log 
+específico temos um detalhamento de cada um desses
+registros de log.
