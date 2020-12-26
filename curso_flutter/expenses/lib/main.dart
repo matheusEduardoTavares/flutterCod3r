@@ -1,6 +1,6 @@
+import 'components/transaction_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import './models/transaction.dart';
 //Pacote de internacionalização que importamos no 
 //pubspec.yaml para poder padronizar a formatação da
 //data:
@@ -50,23 +50,8 @@ class MyHomePage extends StatelessWidget {
   //os estados internos dessa classe vão estar alterando,
   //o ideal ainda assim é colocar dentro de um componente
   //stateful;
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
-
-  final _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ];
+  // final titleController = TextEditingController();
+  // final valueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -97,142 +82,7 @@ class MyHomePage extends StatelessWidget {
               elevation: 5
             ),
           ),
-          Column(
-            children: _transactions.map((transaction) => Card(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    //O symmetric é para ser diferente no eixo vertical
-                    //e no eixo horizontal
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 10
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.purple,
-                        width: 2,
-                      )
-                    ),
-                    padding: EdgeInsets.all(10),
-                    child: Center(
-                      //Agora com o flutter_localizations,
-                      //podemos formatar valor monetário de 
-                      //uma forma mais interessante:
-                      child: Text(
-                        // 'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
-                        NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value),
-                        //nesse caso não foi passado locale: 'pt_BR' pois isso
-                        //já foi definido no Intl.defaultLocale = 'pt_BR';
-                        //então não precisa, mas se não fosse definido como 
-                        //default precisaríamos passar se não a moeda não 
-                        //ficaria no formato brasileiro (ficaria . ao invés da ,
-                        //na hora de definir os centavos)
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.purple,
-
-                        )
-                      ),
-                    )
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        transaction.title, 
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      Text(
-                        //Data no formato:
-                        // 26 Dec 2020
-                        //Agora com o flutter_localizations,
-                        //podemos passar um segundo parâmetro
-                        //para o DateFormat, o 'pt_BR' , e
-                        //assim a data é formatada para pt BR
-                        //ficando:
-                        //26 dez 2020
-                        DateFormat('d MMM y', 'pt_BR').format(
-                          transaction.date
-                        ), 
-                        //Data no formato: 
-                        //December 26, 2020
-                        // DateFormat.yMMMMd().format(transaction.date),
-                        style: TextStyle(
-                          color: Colors.grey
-                        )
-                      )
-                    ],
-                  )
-                ],
-              ),
-            )).toList(),
-            //Ou:
-            // children: <Widget>[
-            //   ..._transactions.map((transaction) => Card(
-            //     child: Text(transaction.title),
-            //   )).toList()
-            // ]
-          ),
-          Card(
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: <Widget> [
-                  TextField(
-                    controller: titleController,
-                    decoration: InputDecoration(
-                      labelText: 'Título'
-                    ),
-                  ),
-                  TextField(
-                    //Usando um controller não precisa de um onChanged
-                    //e ir sobrescrevendo o valor da variável referente 
-                    //ao text field a partir do valor atual do onChanged,
-                    //uma vez que muda automaticamente dentro do controller
-                    //o estado do controller vai sendo alterado a partir
-                    //do momento que vamos digitando as informações
-                    controller: valueController,
-                    decoration: InputDecoration(
-                      labelText: 'Valor (R\$)'
-                    )
-                  ),
-                  //Para deixar esse FlatButton alinhado 
-                  //à esquerda, podemos ou na column que está
-                  //em volta dele colocar o alinhamento do 
-                  //cross axis para start, ou se for só este
-                  //botão e não queremos mudar mais nenhum
-                  //elemento de posição dentro da coluna, basta
-                  //fazer um wrap neste FlatButton com um Align e 
-                  //setar o alinhamento para bottomLeft por 
-                  //exemplo, ou ainda fazer um wrap nele com uma
-                  //Row por exemplo e arrumar seu alinhamento de
-                  //main axis ou com uma Column e mexer no 
-                  //cross axis.
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FlatButton(
-                        child: Text(
-                          'Nova Transação'
-                        ),
-                        textColor: Colors.purple,
-                        onPressed: () {
-                          print(titleController.text);
-                          print(valueController.text);
-                        }
-                      ),
-                    ],
-                  )
-                ]
-              ),
-            )
-          )
+          TransactionUser()
         ]
       )
     );
