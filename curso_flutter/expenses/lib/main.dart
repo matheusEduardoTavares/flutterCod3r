@@ -60,7 +60,6 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
           Column(
-            mainAxisSize: MainAxisSize.max,
             children: _transactions.map((transaction) => Card(
               child: Row(
                 children: <Widget>[
@@ -80,7 +79,7 @@ class MyHomePage extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Center(
                       child: Text(
-                        'R\$${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
+                        'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
