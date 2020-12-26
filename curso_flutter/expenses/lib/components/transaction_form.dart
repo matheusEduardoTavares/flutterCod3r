@@ -12,6 +12,17 @@ class TransactionForm extends StatelessWidget {
   final titleController = TextEditingController();
   final valueController = TextEditingController();
 
+  void _submitForm() {
+    final title = titleController.text;
+    final value = double.tryParse(valueController.text) ?? 0.0;
+
+    if (title.isEmpty || value <= 0){
+      return;
+    }
+
+    onSubmit(title, value);
+  }
+
   @override 
   Widget build(BuildContext context){
     return Card(
@@ -25,6 +36,7 @@ class TransactionForm extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Título'
               ),
+              onSubmitted: (_) => _submitForm(),
             ),
             TextField(
               //Usando um controller não precisa de um onChanged
@@ -36,7 +48,9 @@ class TransactionForm extends StatelessWidget {
               controller: valueController,
               decoration: InputDecoration(
                 labelText: 'Valor (R\$)'
-              )
+              ),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitForm(),
             ),
             //Para deixar esse FlatButton alinhado 
             //à esquerda, podemos ou na column que está
@@ -58,12 +72,7 @@ class TransactionForm extends StatelessWidget {
                     'Nova Transação'
                   ),
                   textColor: Colors.purple,
-                  onPressed: () {
-                    final title = titleController.text;
-                    final value = double.tryParse(valueController.text) ?? 0.0;
-
-                    onSubmit(title, value);
-                  }
+                  onPressed: _submitForm
                 ),
               ],
             )
