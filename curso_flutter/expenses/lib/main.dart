@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import './models/transaction.dart';
+//Pacote de internacionalização que importamos no 
+//pubspec.yaml para poder padronizar a formatação da
+//data:
+import 'package:intl/intl.dart';
 
 void main() => runApp(ExpensesApp());
 
@@ -100,7 +104,14 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        transaction.date.toString(), 
+                        //Data no formato:
+                        // 26 Dec 2020
+                        DateFormat('d MMM y').format(
+                          transaction.date
+                        ), 
+                        //Data no formato: 
+                        //December 26, 2020
+                        // DateFormat.yMMMMd().format(transaction.date),
                         style: TextStyle(
                           color: Colors.grey
                         )
