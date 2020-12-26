@@ -33,86 +33,125 @@ class TransactionList extends StatelessWidget {
     //componente que será o gráfico no futuro e o 
     //componente de adicionar uma nova transação, todos
     //fiquem com scroll habilitado.
-    return Column(
-      children: transactions.map((transaction) => Card(
-        child: Row(
-          children: <Widget>[
-            Container(
-              //O symmetric é para ser diferente no eixo vertical
-              //e no eixo horizontal
-              margin: EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.purple,
-                  width: 2,
-                )
-              ),
-              padding: EdgeInsets.all(10),
-              child: Center(
-                //Agora com o flutter_localizations,
-                //podemos formatar valor monetário de 
-                //uma forma mais interessante:
-                child: Text(
-                  // 'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
-                  NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value),
-                  //nesse caso não foi passado locale: 'pt_BR' pois isso
-                  //já foi definido no Intl.defaultLocale = 'pt_BR';
-                  //então não precisa, mas se não fosse definido como 
-                  //default precisaríamos passar se não a moeda não 
-                  //ficaria no formato brasileiro (ficaria . ao invés da ,
-                  //na hora de definir os centavos)
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.purple,
+    //Nesse caso o ListView é mais indicado usar pois 
+    //ele só carrega o que está sendo mostrado e também
+    //permite scroll de todos os itens na lista, mas o 
+    //SingleChildScrollView carrega todos mesmo se não 
+    //estão aparecendo. O ListView também precisa de um 
+    //pai com tamanho pré-definido, então sem o container
+    //em volta dele com um height definido, dará o seguinte
+    //erro:
+    //Vertical viewport was given unbounded height.
+    //Ou seja, como não limitamos a altura, o scroll view
+    //não sabe qual tamanho deve assumir uma vez que se
+    //tem uma altura ilimitada. Por isso o componente pai
+    //tem que ter uma altura pré-definida.
+    //O ListView na verdade carrega todos os itens de uma
+    //vez, quem tem a característica de carregar em memória
+    //apenas os itens da lista que estão aparecendo é o 
+    //ListView.builder, isso economiza muita memória pois
+    //não será renderizado elementos de forma
+    //desnecessária. Até podemos usar o ListView sem o
+    //.builder, mas só é um bom uso quando temos certeza
+    //do tamanho da lista e que não será muito grande 
+    //esta lista, se não é bem melhor usar o ListView
+    //.builder . Visualmente não muda nada, mas do ponto
+    //de vista de desempenho e otimização fica muito 
+    //melhor.
+    return Container(
+      height: 300,
+      child: ListView.builder(
+        itemCount: transactions.length,
+        //o itemBuilder recebe um outro contexto que será
+        //passado para a função, não é o contexto do 
+        //build, é outro contexto, e o segundo parâmetro 
+        //é o index, qual elemento queremos renderizar na
+        //chamada da função
+        itemBuilder: (ctx, index) {
+          final transaction = transactions[index];
 
-                  )
-                ),
-              )
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          return Card(
+            child: Row(
               children: <Widget>[
-                Text(
-                  transaction.title, 
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
+                Container(
+                  //O symmetric é para ser diferente no eixo vertical
+                  //e no eixo horizontal
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10
                   ),
-                ),
-                Text(
-                  //Data no formato:
-                  // 26 Dec 2020
-                  //Agora com o flutter_localizations,
-                  //podemos passar um segundo parâmetro
-                  //para o DateFormat, o 'pt_BR' , e
-                  //assim a data é formatada para pt BR
-                  //ficando:
-                  //26 dez 2020
-                  DateFormat('d MMM y', 'pt_BR').format(
-                    transaction.date
-                  ), 
-                  //Data no formato: 
-                  //December 26, 2020
-                  // DateFormat.yMMMMd().format(transaction.date),
-                  style: TextStyle(
-                    color: Colors.grey
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.purple,
+                      width: 2,
+                    )
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    //Agora com o flutter_localizations,
+                    //podemos formatar valor monetário de 
+                    //uma forma mais interessante:
+                    child: Text(
+                      // 'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
+                      NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value),
+                      //nesse caso não foi passado locale: 'pt_BR' pois isso
+                      //já foi definido no Intl.defaultLocale = 'pt_BR';
+                      //então não precisa, mas se não fosse definido como 
+                      //default precisaríamos passar se não a moeda não 
+                      //ficaria no formato brasileiro (ficaria . ao invés da ,
+                      //na hora de definir os centavos)
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.purple,
+
+                      )
+                    ),
                   )
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      transaction.title, 
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    Text(
+                      //Data no formato:
+                      // 26 Dec 2020
+                      //Agora com o flutter_localizations,
+                      //podemos passar um segundo parâmetro
+                      //para o DateFormat, o 'pt_BR' , e
+                      //assim a data é formatada para pt BR
+                      //ficando:
+                      //26 dez 2020
+                      DateFormat('d MMM y', 'pt_BR').format(
+                        transaction.date
+                      ), 
+                      //Data no formato: 
+                      //December 26, 2020
+                      // DateFormat.yMMMMd().format(transaction.date),
+                      style: TextStyle(
+                        color: Colors.grey
+                      )
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
-      )).toList(),
-      //Ou:
-      // children: <Widget>[
-      //   ..._transactions.map((transaction) => Card(
-      //     child: Text(transaction.title),
-      //   )).toList()
-      // ]
+            ),
+          );
+        }
+        // children: transactions.map((transaction) => ).toList(),
+        //Ou:
+        // children: <Widget>[
+        //   ..._transactions.map((transaction) => Card(
+        //     child: Text(transaction.title),
+        //   )).toList()
+        // ]
+      ),
     );
   }
 }
