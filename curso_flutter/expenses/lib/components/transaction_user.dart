@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'transaction_form.dart';
 import 'transaction_list.dart';
@@ -16,7 +18,18 @@ class TransactionUser extends StatefulWidget {
 }
 
 class _TransactionUserState extends State<TransactionUser>{
-    final _transactions = [
+  //Em um componente stateless, a única coisa que pode 
+  //fazer com que sua UI seja atualizada é caso tal 
+  //componente stateless esteja recebendo um parâmetro e
+  //o valor desse parâmetro seja alterado (construtor).
+  //É oque ocorrerá nesse caso, no TransactionList quando
+  //atualizamos a lista _transactions .
+  //Já nos componentes statefuls, eles também podem ser
+  //atualizados dessa mesma forma, mas também podem ser
+  //atualizados caso o estado desse componente stateful
+  //seja alterado e assim a UI é renderizada novamente.
+
+  final _transactions = [
     Transaction(
       id: 't1',
       title: 'Novo Tênis de Corrida',
@@ -31,12 +44,27 @@ class _TransactionUserState extends State<TransactionUser>{
     ),
   ];
 
+  void _addTransaction(String title, double value) {
+    final newTransaction = Transaction(
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: DateTime.now()
+    );
+
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+  }
+
   @override 
   Widget build(BuildContext context){
     return Column(
       children: <Widget>[
         TransactionList(_transactions),
-        TransactionForm()
+        //Exemplo de Comunicação indireta entre 
+        //Widgets:
+        TransactionForm(addTransaction: _addTransaction,)
       ],
     );
   }

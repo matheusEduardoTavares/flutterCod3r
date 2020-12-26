@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
+typedef AddTransaction = void Function(String, double);
+
 class TransactionForm extends StatelessWidget {
+  final AddTransaction addTransaction;
+
+  TransactionForm({
+    @required this.addTransaction
+  });
+
   final titleController = TextEditingController();
   final valueController = TextEditingController();
 
@@ -51,8 +59,9 @@ class TransactionForm extends StatelessWidget {
                   ),
                   textColor: Colors.purple,
                   onPressed: () {
-                    print(titleController.text);
-                    print(valueController.text);
+                    if (double.tryParse(valueController.text) != null && titleController.text.isNotEmpty){
+                      addTransaction(titleController.text, double.parse(valueController.text));
+                    }
                   }
                 ),
               ],
