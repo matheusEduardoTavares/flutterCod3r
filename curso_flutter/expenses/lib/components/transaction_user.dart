@@ -29,6 +29,10 @@ class _TransactionUserState extends State<TransactionUser>{
   //atualizados caso o estado desse componente stateful
   //seja alterado e assim a UI é renderizada novamente.
 
+  //Apenas essas duas formas de comunicações não são 
+  //suficientes para APP mais complexos, aí precisaremos
+  //usar gerência de estados.
+
   final _transactions = [
     Transaction(
       id: 't1',
@@ -61,10 +65,12 @@ class _TransactionUserState extends State<TransactionUser>{
   Widget build(BuildContext context){
     return Column(
       children: <Widget>[
+        //Exemplo de Comunicação direta entre 
+        //Widgets:
         TransactionList(_transactions),
         //Exemplo de Comunicação indireta entre 
         //Widgets:
-        TransactionForm(addTransaction: _addTransaction,)
+        TransactionForm(onSubmit: _addTransaction,)
       ],
     );
   }
