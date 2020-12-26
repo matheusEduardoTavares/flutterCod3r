@@ -40,6 +40,19 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  //Não é indicado ter variáveis que não sejam final 
+  //dentro de um componente stateless.
+
+  //Mesmo marcando a variável como final, ainda sim 
+  //iremos precisar alterar o estado interno dessa
+  //variável, e não é bom mesmo que temos um atributo 
+  //final mas que dentro deste atributo, é uma classe que
+  //os estados internos dessa classe vão estar alterando,
+  //o ideal ainda assim é colocar dentro de um componente
+  //stateful;
+  final titleController = TextEditingController();
+  final valueController = TextEditingController();
+
   final _transactions = [
     Transaction(
       id: 't1',
@@ -172,11 +185,19 @@ class MyHomePage extends StatelessWidget {
               child: Column(
                 children: <Widget> [
                   TextField(
+                    controller: titleController,
                     decoration: InputDecoration(
                       labelText: 'Título'
                     ),
                   ),
                   TextField(
+                    //Usando um controller não precisa de um onChanged
+                    //e ir sobrescrevendo o valor da variável referente 
+                    //ao text field a partir do valor atual do onChanged,
+                    //uma vez que muda automaticamente dentro do controller
+                    //o estado do controller vai sendo alterado a partir
+                    //do momento que vamos digitando as informações
+                    controller: valueController,
                     decoration: InputDecoration(
                       labelText: 'Valor (R\$)'
                     )
@@ -201,7 +222,10 @@ class MyHomePage extends StatelessWidget {
                           'Nova Transação'
                         ),
                         textColor: Colors.purple,
-                        onPressed: () {}
+                        onPressed: () {
+                          print(titleController.text);
+                          print(valueController.text);
+                        }
                       ),
                     ],
                   )
