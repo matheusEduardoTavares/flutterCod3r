@@ -63,7 +63,6 @@ class MyHomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: _transactions.map((transaction) => Card(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
                     //O symmetric é para ser diferente no eixo vertical
@@ -92,11 +91,24 @@ class MyHomePage extends StatelessWidget {
                     )
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(transaction.title, style: TextStyle(color: Colors.black, fontSize: 14)),
+                      Text(
+                        transaction.title, 
+                        style: TextStyle(
+                          color: Colors.black, 
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 10),
-                        child: Text(transaction.date.toString(), style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          transaction.date.toString(), 
+                          style: TextStyle(
+                            color: Colors.grey
+                          )
+                        ),
                       )
                     ],
                   )
