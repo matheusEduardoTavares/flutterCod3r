@@ -63,7 +63,6 @@ class MyHomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         //A coluna coloca como default o alinhamento do
         //eixo X como centro, então podemos mudar isso caso
         //queremos que comece no início:
@@ -158,7 +157,7 @@ class MyHomePage extends StatelessWidget {
                   )
                 ],
               ),
-            )).toList()
+            )).toList(),
             //Ou:
             // children: <Widget>[
             //   ..._transactions.map((transaction) => Card(
@@ -166,6 +165,50 @@ class MyHomePage extends StatelessWidget {
             //   )).toList()
             // ]
           ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: <Widget> [
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Título'
+                    ),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Valor (R\$)'
+                    )
+                  ),
+                  //Para deixar esse FlatButton alinhado 
+                  //à esquerda, podemos ou na column que está
+                  //em volta dele colocar o alinhamento do 
+                  //cross axis para start, ou se for só este
+                  //botão e não queremos mudar mais nenhum
+                  //elemento de posição dentro da coluna, basta
+                  //fazer um wrap neste FlatButton com um Align e 
+                  //setar o alinhamento para bottomLeft por 
+                  //exemplo, ou ainda fazer um wrap nele com uma
+                  //Row por exemplo e arrumar seu alinhamento de
+                  //main axis ou com uma Column e mexer no 
+                  //cross axis.
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FlatButton(
+                        child: Text(
+                          'Nova Transação'
+                        ),
+                        textColor: Colors.purple,
+                        onPressed: () {}
+                      ),
+                    ],
+                  )
+                ]
+              ),
+            )
+          )
         ]
       )
     );
