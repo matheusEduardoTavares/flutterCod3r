@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import './models/transaction.dart';
 //Pacote de internacionalização que importamos no 
 //pubspec.yaml para poder padronizar a formatação da
@@ -10,8 +11,29 @@ void main() => runApp(ExpensesApp());
 class ExpensesApp extends StatelessWidget {
   @override 
   Widget build(BuildContext context){
+    //Definindo o locale default antes de inserir os 
+    //localizationsDelegates. Com esse locale default
+    //não é preciso passar pt_BR na hora de fazer a 
+    //formatação pois esse já será o default.
+
+    Intl.defaultLocale = 'pt_BR';
+    
     return MaterialApp(
       title: 'ExpensesApp',
+      //Importamos no pubspec.yaml o flutter_localizations
+      //assim:
+      //   flutter_localizations:
+      //      sdk: flutter
+      //importamos aqui esse pacote para termos acesso ao
+      //GlobalMaterialLocalizations e ao 
+      //GlobalWidgetsLocalizations
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('pt', 'BR')
+      ],
       home: MyHomePage()
     );
   }
@@ -82,8 +104,18 @@ class MyHomePage extends StatelessWidget {
                     ),
                     padding: EdgeInsets.all(10),
                     child: Center(
+                      //Agora com o flutter_localizations,
+                      //podemos formatar valor monetário de 
+                      //uma forma mais interessante:
                       child: Text(
-                        'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
+                        // 'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
+                        NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value),
+                        //nesse caso não foi passado locale: 'pt_BR' pois isso
+                        //já foi definido no Intl.defaultLocale = 'pt_BR';
+                        //então não precisa, mas se não fosse definido como 
+                        //default precisaríamos passar se não a moeda não 
+                        //ficaria no formato brasileiro (ficaria . ao invés da ,
+                        //na hora de definir os centavos)
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -106,7 +138,13 @@ class MyHomePage extends StatelessWidget {
                       Text(
                         //Data no formato:
                         // 26 Dec 2020
-                        DateFormat('d MMM y').format(
+                        //Agora com o flutter_localizations,
+                        //podemos passar um segundo parâmetro
+                        //para o DateFormat, o 'pt_BR' , e
+                        //assim a data é formatada para pt BR
+                        //ficando:
+                        //26 dez 2020
+                        DateFormat('d MMM y', 'pt_BR').format(
                           transaction.date
                         ), 
                         //Data no formato: 
