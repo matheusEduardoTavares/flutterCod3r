@@ -9,6 +9,30 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Se colocarmos o SingleChildScrollView aqui,
+    //fazendo um wrap na Column
+    //não irá funcionar pois o componente pai do 
+    //SingleChildScrollView não tem um tamanho pré-
+    //definido, a não ser que façamos além desse wrap, 
+    //outro wrap em cima desse SingleChildScrollView de
+    //um container por exemplo e definamos um tamanho 
+    //que caiba na tela. Fazendo isso a lista ficará 
+    //com scroll correto, mas como apenas a lista é 
+    //scrollable, quando clicarmos para cadastar uma novo
+    //transação, irá quebrar com o teclado novamente, 
+    //pois o teclado ficou em cima de um componente que 
+    //não aceita um scroll, no caso o componente para 
+    //adicionar novas transações, e por isso irá quebrar.
+    //Portanto não adianta fazermos um wrap nessa column 
+    //com um SingleChildScrollView e depois fazer um 
+    //wrap nesse SingleChildScrollView com um container 
+    //definindo um tamanho fixo pois aí com o teclado 
+    //iria quebrar, nesse caso é melhor colocar o 
+    //SingleChildScrollView como wrap da column lá no 
+    //main.dart , de forma que o componente da lista, o
+    //componente que será o gráfico no futuro e o 
+    //componente de adicionar uma nova transação, todos
+    //fiquem com scroll habilitado.
     return Column(
       children: transactions.map((transaction) => Card(
         child: Row(

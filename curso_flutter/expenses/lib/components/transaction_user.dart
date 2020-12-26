@@ -46,6 +46,30 @@ class _TransactionUserState extends State<TransactionUser>{
       value: 211.30,
       date: DateTime.now(),
     ),
+    Transaction(
+      id: 't3',
+      title: 'Conta #01',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Conta #02',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'Conta #03',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Conta #04',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
   ];
 
   void _addTransaction(String title, double value) {
@@ -65,12 +89,12 @@ class _TransactionUserState extends State<TransactionUser>{
   Widget build(BuildContext context){
     return Column(
       children: <Widget>[
+        //Exemplo de Comunicação indireta entre 
+        //Widgets:
+        TransactionForm(onSubmit: _addTransaction,),
         //Exemplo de Comunicação direta entre 
         //Widgets:
         TransactionList(_transactions),
-        //Exemplo de Comunicação indireta entre 
-        //Widgets:
-        TransactionForm(onSubmit: _addTransaction,)
       ],
     );
   }

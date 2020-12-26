@@ -60,30 +60,38 @@ class MyHomePage extends StatelessWidget {
         title: Text('Despesas Pessoais'),
         centerTitle: true,
       ),
-      body: Column(
-        //A coluna coloca como default o alinhamento do
-        //eixo X como centro, então podemos mudar isso caso
-        //queremos que comece no início:
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          //Para fazer o card ocupar todo espaço horizontal
-          //da tela, podemos fazer um wrap dele em um 
-          //Container e definir o width do container como
-          //double.infinity, ou melhor ainda, é só fazer
-          //a column ter CrossAxisAlignment.stretch .
-          Container(
-            child: Card(
-              color: Colors.blue,
-              child: Text('Gráfico'),
-              //O elevation serve para dar uma noção de 
-              //de 3D para destacar aquele (eixo z)
-              //card, aumentando o sombreamento o quanto
-              //maior for o valor do elevation (double)
-              elevation: 5
+      //Usando o SingleChildScrollView irá funcionar de 
+      //forma a fazer scroll e não quebrar quando o tamanho
+      //da altura é sobreposto. Isso só funciona aqui pois
+      //essa coluna tem um pai com tamanho pré-definido,
+      //no caso o body do Scaffold tem um tamanho pré-
+      //definido e por isso funciona.
+      body: SingleChildScrollView(
+        child: Column(
+          //A coluna coloca como default o alinhamento do
+          //eixo X como centro, então podemos mudar isso caso
+          //queremos que comece no início:
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            //Para fazer o card ocupar todo espaço horizontal
+            //da tela, podemos fazer um wrap dele em um 
+            //Container e definir o width do container como
+            //double.infinity, ou melhor ainda, é só fazer
+            //a column ter CrossAxisAlignment.stretch .
+            Container(
+              child: Card(
+                color: Colors.blue,
+                child: Text('Gráfico'),
+                //O elevation serve para dar uma noção de 
+                //de 3D para destacar aquele (eixo z)
+                //card, aumentando o sombreamento o quanto
+                //maior for o valor do elevation (double)
+                elevation: 5
+              ),
             ),
-          ),
-          TransactionUser()
-        ]
+            TransactionUser()
+          ]
+        ),
       )
     );
   }
