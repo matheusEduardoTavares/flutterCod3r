@@ -4,13 +4,14 @@ typedef AddTransaction = void Function(String, double);
 
 class TransactionForm extends StatelessWidget {
   final AddTransaction onSubmit;
+  final TextEditingController titleController;
+  final TextEditingController valueController;
 
   TransactionForm({
-    @required this.onSubmit
+    @required this.onSubmit,
+    @required this.titleController,
+    @required this.valueController,
   });
-
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
 
   void _submitForm() {
     final title = titleController.text;
@@ -20,6 +21,8 @@ class TransactionForm extends StatelessWidget {
       return;
     }
 
+    titleController.clear();
+    valueController.clear();
     onSubmit(title, value);
   }
 
