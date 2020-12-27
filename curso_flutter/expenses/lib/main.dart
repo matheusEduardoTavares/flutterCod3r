@@ -88,6 +88,32 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _transactions.add(newTransaction);
     });
+
+    //O Navigator é um widget do tipo Stateful e tem um
+    //método estático chamado of e recebe um context como
+    //parâmetro. Esse é um padrão muito comum quando temos
+    //os widgets que são herdados, o InheritedWidget, temos
+    //3 tipos de widgets:
+    //stateless, stateful, inherited
+    //O InheritedWidget é usado quando precisamos passar 
+    //dados de um componente na árvore que está longe de 
+    //outro, eles conseguem se comunicar sem precisar
+    //percorrer cada componente um a um na árvore, ele 
+    //consegue fazer um túnel e acessar direto independente
+    //de como está a hierarquia, diferente do stateless e
+    //do stateful que precisam percorrer componente a 
+    //componente para poder passar informação para outro
+    //componente mais distante da árvore. O Navigator na
+    //verdade é uma exceção pois ele herda de 
+    //StatefulWidget, mas veremos isso mais à frente.
+    //Para fechar a tela então basta executar 
+    //Navigator.of(context).pop(); , de forma que a 
+    //navegação no flutter é baseada em pilha então 
+    //para esconder o modal quando submitar o formulário
+    //basta fechar pois o modal é adicionado na pilha, 
+    //foi o último a entrar nela, então quando damos um 
+    //pop é ele quem sai (pilha = LIFO).
+    Navigator.of(context).pop();
   }
 
   void _openTransactionFormModal(BuildContext context) {
