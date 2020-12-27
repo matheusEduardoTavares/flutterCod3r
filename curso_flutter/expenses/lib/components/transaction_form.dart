@@ -32,6 +32,12 @@ class _TransactionFormState extends State<TransactionForm> {
       return;
     }
 
+    //O atributo widget é recebida por herança e ele aponta
+    //para uma instância da classe que está como
+    //StatefulWidget e ele tem no caso o método onSubmit,
+    //pois todos os atributos / métodos daquela classe 
+    //poderão ser acessados por meio desse atributo 
+    //widget
     widget.onSubmit(title, value);
   }
 
