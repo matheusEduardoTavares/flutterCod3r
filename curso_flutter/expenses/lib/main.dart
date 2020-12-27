@@ -77,8 +77,17 @@ class ExpensesApp extends StatelessWidget {
         //e como o Colors.amber é um MaterialColor, será 
         //pego a cor padrão desse MaterialColor que é 
         //500, então o resultado de Colors.amber é o mesmo
-        //de colocar Colors.amber[500]
+        //de colocar Colors.amber[500] . Porém já foi 
+        //depreciado o uso do accentColor para definir as 
+        //cores do FAB, no caso do FAB precisamos passar o
+        //atributo floatingActionButtonTheme que recebe um 
+        //FloatingActionButtonThemeData e a partir deste 
+        //ThemeData ir preenchendo suas cores específicas.
         accentColor: Colors.amber,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.amber,
+          foregroundColor: Colors.black
+        )
       ),
       home: MyHomePage()
     );
