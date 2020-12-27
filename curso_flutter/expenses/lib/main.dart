@@ -37,6 +37,49 @@ class ExpensesApp extends StatelessWidget {
       supportedLocales: [
         const Locale('pt', 'BR')
       ],
+      theme: ThemeData(
+        //o primaryColor recebe uma cor como parâmetro
+        //e o primarySwatch recebe um MaterialColor como
+        //parâmetro. O MaterialColor é uma lista de 
+        //cores dentro de um mesmo espectro de cores. Temos
+        //um range de colors dentro dele, já no primaryColor
+        //é apenas uma cor, já o primarySwatch recebe um 
+        //conjunto de cores, e dependendo do componente 
+        //quando ele for exibido pode ser que ele pegue a 
+        //cor intermediária desse primarySwatch que seria
+        //o 500, ou alguma outra.
+        primarySwatch: Colors.purple,
+        //O Colors.purple é um MaterialColor, assim passamos
+        //não apenhas o roxo puro como todo o espectro de
+        //cores roxa, desde o 50 até o 900
+        //Só de deixar definido o primarySwatch, a cor da
+        //appBar e do floatingActionButton já mudam 
+        //automaticamente, enquanto as cores dos containers
+        //para cada item das listas de transação continuam 
+        //com outras cores pois atributos específicos são 
+        //mais relevantes que os genéricos, e as cores do 
+        //tema são genéricos, então nesses containers como 
+        //já tem cores definidas lá, é de lá que as cores 
+        //serão pegas. Alguns componentes quando não tem 
+        //cores definidas pode ser que usem a cor padrão ao
+        //invés de pegar alguma cor do tema, e nesse caso 
+        //é só passar a cor como Theme.of(context).[atributo]
+        //sendo o [atributo] qual atributo no tema definimos
+        //que tem a cor que queremos, nesse caso seria:
+        //Theme.of(context).primaryColor , de forma que mesmo
+        //que não setamos a primaryColor será pego a cor 
+        //definida na primarySwatch,
+        //Iremos setar também a cor de realce, o accentColor
+        //, no caso do accentColor não temos um Swatch para
+        //ele. Só de definir o accentColor, antes o FAB estava
+        //com a cor do primarySwatch, e agora passa a usar a 
+        //cor do accentColor. O accentColor recebe uma cor
+        //e como o Colors.amber é um MaterialColor, será 
+        //pego a cor padrão desse MaterialColor que é 
+        //500, então o resultado de Colors.amber é o mesmo
+        //de colocar Colors.amber[500]
+        accentColor: Colors.amber,
+      ),
       home: MyHomePage()
     );
   }
