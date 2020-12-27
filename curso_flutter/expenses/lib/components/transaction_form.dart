@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 
 typedef AddTransaction = void Function(String, double);
 
-class TransactionForm extends StatelessWidget {
+//Convertermos de StatelessWidget para StatefulWidget
+//pois os TextEditingController possuem um estado interno
+//e sempre que o usuário digitava algo em algum textfield
+//e trocada de campo ou clicava para confirmar no teclado,
+//aquele dado era perdido pois o mesmo era atualizado mas
+//não refletia na UI. Então só de alterar para Stateful
+//Widget já volta a funcionar.
+class TransactionForm extends StatefulWidget {
   final AddTransaction onSubmit;
-  final TextEditingController titleController;
-  final TextEditingController valueController;
 
   TransactionForm({
     @required this.onSubmit,
-    @required this.titleController,
-    @required this.valueController,
   });
+
+  @override
+  _TransactionFormState createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
+  final titleController = TextEditingController();
+  final valueController = TextEditingController();
 
   void _submitForm() {
     final title = titleController.text;
@@ -21,9 +32,7 @@ class TransactionForm extends StatelessWidget {
       return;
     }
 
-    titleController.clear();
-    valueController.clear();
-    onSubmit(title, value);
+    widget.onSubmit(title, value);
   }
 
   @override 

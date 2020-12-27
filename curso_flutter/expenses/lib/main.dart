@@ -58,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
   //os estados internos dessa classe vão estar alterando,
   //o ideal ainda assim é colocar dentro de um componente
   //stateful;
+  // final _titleController = TextEditingController();
+  // final _valueController = TextEditingController();
 
-  final _titleController = TextEditingController();
-  final _valueController = TextEditingController();
 
   final _transactions = [
     Transaction(
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //como parâmetro da função, não é o mesmo context
       //que estamos recebendo por parâmetro.
       builder: (_) {
-        return TransactionForm(onSubmit: _addTransaction, valueController: _valueController, titleController: _titleController,);
+        return TransactionForm(onSubmit: _addTransaction);
       }
     );
   }
