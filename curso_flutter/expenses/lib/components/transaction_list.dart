@@ -105,7 +105,6 @@ class TransactionList extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                         color: Theme.of(context).primaryColor,
-
                       )
                     ),
                   )
@@ -115,10 +114,29 @@ class TransactionList extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       transaction.title, 
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                      ),
+                      //Não irá pegar o estilo que aplicamos no 
+                      //tema pois o definimos dentro do 
+                      //AppBarTheme, então será pego o tema 
+                      //de headline6 padrão do flutter já que o 
+                      //que nós definimos no tema é apenas para 
+                      //AppBar. Só passou a funcionar como esperado
+                      //depois que dentro do ThemeData foi colocado
+                      //isso:
+                      /*
+                      textTheme: ThemeData.light().textTheme.copyWith(
+                        headline6: TextStyle(
+                          fontFamily: 'OpenSans',
+                          fontSize: 18,
+                          //Mesmo resultado para os 2 FontWeight :
+                          fontWeight: FontWeight.w700 // FontWeight.bold
+                        )
+                      )
+                      */
+                      style: Theme.of(context).textTheme.headline6
+                      // style: TextStyle(
+                      //   fontSize: 16,
+                      //   fontWeight: FontWeight.bold
+                      // ),
                     ),
                     Text(
                       //Data no formato:

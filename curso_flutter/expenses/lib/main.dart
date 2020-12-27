@@ -87,6 +87,38 @@ class ExpensesApp extends StatelessWidget {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.amber,
           foregroundColor: Colors.black
+        ),
+        //Depois de criar a pasta assets e a pasta fonts
+        //dentro da pasta assets e jogar as fontes dentro
+        //da pasta fonts, fizemos a importação das fontes
+        //no pubspec.yaml, e então a usamos aqui passando
+        //o nome da família da fonte igualzinho como 
+        //colocamos no pubspec, pois se passar uma fonte 
+        //que não for entendida será pego a padrão.
+        fontFamily: 'Quicksand',
+        //Podemos definir as fontes específicas para dados
+        //widgets:
+        appBarTheme: AppBarTheme(
+          //O ThemeData.light() já traz o tema default do
+          //flutter, então pegamos o textTheme dele e para
+          //mudar uma única propriedade, o copiamos com 
+          //copyWith e alteramos a propriedade que queremos.
+          textTheme: ThemeData.light().textTheme.copyWith(
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+              //Mesmo resultado para os 2 FontWeight :
+              fontWeight: FontWeight.w700 // FontWeight.bold
+            )
+          ),
+        ),
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18,
+            //Mesmo resultado para os 2 FontWeight :
+            fontWeight: FontWeight.w700 // FontWeight.bold
+          )
         )
       ),
       home: MyHomePage()
@@ -187,7 +219,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Despesas Pessoais'),
+        title: Text(
+          'Despesas Pessoais',
+          //Podemos definir a fonte de um texto específico:
+          // style: TextStyle(fontFamily: 'OpenSans')
+        ),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
