@@ -59,6 +59,12 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Despesas Pessoais'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          )
+        ],
       ),
       //Usando o SingleChildScrollView irá funcionar de 
       //forma a fazer scroll e não quebrar quando o tamanho
@@ -92,7 +98,13 @@ class MyHomePage extends StatelessWidget {
             TransactionUser()
           ]
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+      //Posição do FAB
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
