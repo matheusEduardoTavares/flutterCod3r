@@ -60,7 +60,31 @@ class TransactionList extends StatelessWidget {
     //melhor.
     return Container(
       height: 300,
-      child: ListView.builder(
+      child: transactions.isEmpty ? Column(
+        children: [
+          SizedBox(height: 20),
+          Text(
+            'Nenhuma Transação Cadastrada',
+            style: Theme.of(context).textTheme.headline6
+          ),
+          SizedBox(height: 20),
+          Container(
+            height: 200,
+            child: Image.asset(
+              'assets/images/waiting.png',
+              //O BoxFit.cover vai fazer a imagem ficar dentro
+              //da área desde que saiba em que área está, tenha
+              //algum elemento com propriedade bem definida.
+              //Para resolver o problema da imagem passar o 
+              //tamanho permitido, deixamos o BoxFit.cover e
+              //fazemos um wrap nesse Image.asset com um 
+              //Container deifnindo um height fixo, assim a 
+              //área estará bem definida.
+              fit: BoxFit.cover
+            ),
+          ),
+        ],
+      ) : ListView.builder(
         itemCount: transactions.length,
         //o itemBuilder recebe um outro contexto que será
         //passado para a função, não é o contexto do 
