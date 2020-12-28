@@ -40,12 +40,8 @@ class Chart extends StatelessWidget {
       //format. O [0] é para pegar a primeira letra do
       //nome do dia da semana.
 
-      print(DateFormat.E().format(weekDay));
-      print(DateFormat.E().format(weekDay)[0]);
-      print(totalSum);
-
       return {
-        'day': DateFormat.E().format(weekDay)[0],
+        'day': DateFormat.E().format(weekDay),
         'value': totalSum
       };
     });
@@ -53,15 +49,15 @@ class Chart extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context){
-    final teste = groupedTransactions;
-
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Row(
-        children: <Widget>[
-          
-        ],
+        children: groupedTransactions.map((tr) {
+          return Text(
+            ' ${tr['day']}:${tr['value']} |'
+          );
+        }).toList(),
       )
     );
   }
