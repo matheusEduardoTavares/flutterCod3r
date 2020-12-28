@@ -65,14 +65,30 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactions.map((tr) {
-          return ChartBar(
-            label: tr['day'],
-            value: tr['value'],
-            percentage: _getPercentage(tr['value']),
-          );
-        }).toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactions.map((tr) {
+            //Usando um Flexible como wrap do ChartBar e 
+            //alterando o parâmetro fit do Flexible 
+            //que por default é FlexFit.loose para 
+            //FlexFit.tight fará com que obrigatoriamente 
+            //todos os elementos dentreo da row ocupem 
+            //exatamente o mesmo tamanho, pois antes se 
+            //o valor tinha um length maior aquela barra 
+            //acaba ocupando mais espaço mesmo com o 
+            //spaceAround.
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: tr['day'],
+                value: tr['value'],
+                percentage: _getPercentage(tr['value']),
+              ),
+            );
+          }).toList(),
+        ),
       )
     );
   }

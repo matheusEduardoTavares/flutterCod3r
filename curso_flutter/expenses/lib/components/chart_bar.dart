@@ -15,11 +15,20 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          ' R\$${value.toStringAsFixed(2)}',
-          style: TextStyle(
-            fontSize: 12
-          )
+        //Mesmo colocando o Flexible com o FlexFit.tight 
+        //como wrap dos ChartBar, caso o valor seja muito
+        //grande ele acaba ocupando mais de uma linha e isso
+        //não é o que queremos. Para resolver fazemos um 
+        //wrap do Text com um FittedBox. Só de fazer isso, 
+        //o tamanho do texto será diminuído para poder caber
+        //no tamanho disponível para ele.
+        FittedBox(
+          child: Text(
+            ' ${value.toStringAsFixed(2)}',
+            style: TextStyle(
+              fontSize: 12
+            )
+          ),
         ),
         SizedBox(height: 5),
         Container(
