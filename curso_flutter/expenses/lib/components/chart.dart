@@ -9,10 +9,11 @@ class Chart extends StatelessWidget {
 
   const Chart(this.recentTransaction);
 
-  double get totalGroupedTransactionsValue {
-    return recentTransaction == null || recentTransaction.isEmpty ?
-      0.0 : recentTransaction.map((transaction) => transaction.value)
-        .reduce((accumulator, value) => accumulator + value);
+  double get _weekTotalValue {
+    return groupedTransactions == null || groupedTransactions.isEmpty ?
+      0.0 : groupedTransactions.fold(0.0, (accumulator, transaction) {
+        return accumulator + transaction['value'];
+      });
   }
 
   List<Map<String, Object>> get groupedTransactions {
@@ -55,8 +56,8 @@ class Chart extends StatelessWidget {
   }
 
   double _getPercentage(double value){
-    return totalGroupedTransactionsValue == null || totalGroupedTransactionsValue == 0 || value == 0 ? 0.0 : 
-      value / totalGroupedTransactionsValue;
+    return _weekTotalValue == null || _weekTotalValue == 0 || value == 0 ? 0.0 : 
+      value / _weekTotalValue;
   }
 
   @override 
