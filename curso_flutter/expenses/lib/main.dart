@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'components/chart.dart';
 import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
@@ -146,19 +147,33 @@ class _MyHomePageState extends State<MyHomePage> {
   // final _valueController = TextEditingController();
 
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Novo Tênis de Corrida',
-    //   value: 310.76,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Conta de Luz',
-    //   value: 211.30,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't0',
+      title: '  Conta Antiga',
+      value: 400.00,
+      date: DateTime.now().subtract(Duration(days: 33)),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Luz',
+      value: 211.30,
+      date: DateTime.now().subtract(Duration(days: 4)),
+    ),
   ];
+
+  List<Transaction> get _recentTransactions{
+    return _transactions.where((transaction) {
+      return transaction.date.isAfter(DateTime.now().subtract(
+        Duration(days: 7)
+      ));
+    }).toList();
+  }
 
   void _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -249,17 +264,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //Container e definir o width do container como
             //double.infinity, ou melhor ainda, é só fazer
             //a column ter CrossAxisAlignment.stretch .
-            Container(
-              child: Card(
-                color: Colors.blue,
-                child: Text('Gráfico'),
-                //O elevation serve para dar uma noção de 
-                //de 3D para destacar aquele (eixo z)
-                //card, aumentando o sombreamento o quanto
-                //maior for o valor do elevation (double)
-                elevation: 5
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_transactions)
             // Column(
               // children: <Widget>[

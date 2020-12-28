@@ -25,11 +25,13 @@ class Chart extends StatelessWidget {
         Duration(days: index)
       );
 
-      double totalSum = recentTransaction
-        .where((currentRecentTransaction) => currentRecentTransaction.date.day == weekDay.day && 
+      List<double> values = recentTransaction
+        ?.where((currentRecentTransaction) => currentRecentTransaction.date.day == weekDay.day && 
           currentRecentTransaction.date.month == weekDay.month && currentRecentTransaction.date.year == weekDay.year)
-        .map((currentRecentTransaction) => currentRecentTransaction.value)
-        .reduce((accumulator, value) => accumulator + value);
+        ?.map((currentRecentTransaction) => currentRecentTransaction.value)?.toList();
+
+      double totalSum = values != null && values.isNotEmpty ? 
+        values.reduce((accumulator, value) => accumulator + value) : 0.0;
 
       //O construtor DateFormat.E() serve para pegar os
       //dados de um datetime que passarmos para o format
@@ -51,6 +53,8 @@ class Chart extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context){
+    final teste = groupedTransactions;
+
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
