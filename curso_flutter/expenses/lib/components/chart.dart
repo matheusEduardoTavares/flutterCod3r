@@ -5,9 +5,15 @@ import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
 
-  final List<Transaction>  recentTransaction;
+  final List<Transaction> recentTransaction;
 
   const Chart(this.recentTransaction);
+
+  double get totalGroupedTransactionsValue {
+    return recentTransaction == null || recentTransaction.isEmpty ?
+      0.0 : recentTransaction.map((transaction) => transaction.value)
+        .reduce((accumulator, value) => accumulator + value);
+  }
 
   List<Map<String, Object>> get groupedTransactions {
     //O List.generate retorna uma lista, e passamos como
@@ -48,6 +54,11 @@ class Chart extends StatelessWidget {
     });
   }
 
+  double _getPercentage(double value){
+    return totalGroupedTransactionsValue == null || totalGroupedTransactionsValue == 0 || value == 0 ? 0.0 : 
+      value / totalGroupedTransactionsValue;
+  }
+
   @override 
   Widget build(BuildContext context){
     return Card(
@@ -58,7 +69,7 @@ class Chart extends StatelessWidget {
           return ChartBar(
             label: tr['day'],
             value: tr['value'],
-            
+            percentage: _getPercentage(tr['value']),
           );
         }).toList(),
       )
