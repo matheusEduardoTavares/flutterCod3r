@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
 
+typedef DeleteTransaction = void Function(String);
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final DeleteTransaction onRemove;
 
-  const TransactionList(this.transactions);
+  const TransactionList(this.transactions, this.onRemove);
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +140,18 @@ class TransactionList extends StatelessWidget {
               ),
               subtitle: Text(
                 DateFormat('d MMM y').format(transaction.date)
+              ),
+              trailing: InkWell(
+                onTap: () => onRemove(transaction.id),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).errorColor,
+                  ),
+                  child: Icon(Icons.delete, color: Colors.white),
+                ),
               ),
             ),
           );

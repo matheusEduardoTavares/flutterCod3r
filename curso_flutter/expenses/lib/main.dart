@@ -199,6 +199,37 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop();
   }
 
+  void _deleteTransaction(String id) async {
+    //Poderíamos usar o removeWhere direto na lista também
+    int deleteTransactionId = _transactions.indexOf(_transactions.where((transaction) => transaction.id == id).first);
+
+    bool deleteTransaction = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Excluir Transação'),
+          content: Text('Realmente deseja excluir a transação \'${_transactions[deleteTransactionId].title}\' ?'),
+          actions: [
+            FlatButton(
+              child: Text('CANCELAR'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            FlatButton(
+              child: Text('EXCLUIR'),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+          ],
+        );
+      }
+    );
+
+    if (deleteTransaction == null || deleteTransaction == false) return ;
+
+    setState(() {
+      _transactions.removeAt(deleteTransactionId);
+    });
+  }
+
   void _openTransactionFormModal(BuildContext context) {
     //A função showModalBottomSheet serve para abrir um
     //modal na parte inferior da tela. É parecido com o 
@@ -250,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //double.infinity, ou melhor ainda, é só fazer
             //a column ter CrossAxisAlignment.stretch .
             Chart(_recentTransactions),
-            TransactionList(_transactions)
+            TransactionList(_transactions, _deleteTransaction)
             // Column(
               // children: <Widget>[
                 //Exemplo de Comunicação indireta entre 
