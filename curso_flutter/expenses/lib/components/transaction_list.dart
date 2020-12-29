@@ -61,7 +61,13 @@ class TransactionList extends StatelessWidget {
     //de vista de desempenho e otimização fica muito 
     //melhor.
     return Container(
-      height: 300,
+      //Para resolver isso temporariamente só aumentaremos
+      //o height testando em qual funcionará e no próximo
+      //capítulo que é de responsivide veremos o jeito certo
+      //de fazer isso responsivo. Obviamente essa forma
+      //de fazer funcionará apenas para o dispositivo 
+      //atual.
+      height: 400,
       child: transactions.isEmpty ? Column(
         children: [
           SizedBox(height: 20),

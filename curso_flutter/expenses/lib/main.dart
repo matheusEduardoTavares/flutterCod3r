@@ -281,7 +281,37 @@ class _MyHomePageState extends State<MyHomePage> {
             //double.infinity, ou melhor ainda, é só fazer
             //a column ter CrossAxisAlignment.stretch .
             Chart(_recentTransactions),
-            TransactionList(_transactions, _deleteTransaction)
+            //Se colocarmos um Expanded em volta do TransactionList
+            //para fazê-lo ocupar todo o espaço que resta na 
+            //coluna irá dar o seguinte erro:
+            //RenderFlex children have non-zero flex but incoming height constraints are unbounded.
+            //Isso ocorre pois a TransactionList retorna um 
+            //container, e quando usamos um flexible com um fit
+            //FlexFit.tight ou um Expanded a altura será ignorada
+            //(altura porque é uma column, seria largura se fosse
+            //dentro de uma row) e irá tentar ocupar todo espaço.
+            //Porém não irá conseguir ocupar todo o espaço pois o 
+            //ListView.builder tem um tamanho infinito, então o 
+            //expanded não funciona porque dentro dele tem um 
+            //componente com tamanho infinito. O height: 300 do
+            //Container que é retornado no TransactionList é 
+            //ignorado devido ao atributo tight, que ignora a 
+            //altura do elemento filho e vai simplesmente crescer
+            //e ocupar todo tamanho, então o problema se dá por 
+            //causa do seu tamanho infinito do ListView.builder.
+            //Ou seja, quando temos um elemento de altura ilimitada,
+            //não é possível usar o tight.
+            //Dá erro então:
+            // Expanded(
+            //   child: TransactionList(
+            //     _transactions, 
+            //     _deleteTransaction,
+            //   )
+            // )
+            TransactionList(
+              _transactions, 
+              _deleteTransaction,
+            )
             // Column(
               // children: <Widget>[
                 //Exemplo de Comunicação indireta entre 
