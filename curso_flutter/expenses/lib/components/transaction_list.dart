@@ -93,97 +93,38 @@ class TransactionList extends StatelessWidget {
         //chamada da função
         itemBuilder: (ctx, index) {
           final transaction = transactions[index];
-
+          //Agora ao invés de retornarmos um card 
+          //contendo toda a estrutura que queremos, 
+          //para melhorar o visual da lista iremos 
+          //retornar um ListTile, que é um Widget do 
+          //flutter. Ele é muito comum de usarmos quando
+          //temos uma lista, temos várias coisas pré-
+          //definidas. Ele tem title, subtitle, 
+          //trailing que é a parte final, leading que é
+          //a parte inicial do tijolo que compõe a 
+          //lista, e podemos definir algo personalizado 
+          //para cada elemento da lista.
           return Card(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  //O symmetric é para ser diferente no eixo vertical
-                  //e no eixo horizontal
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      //mesmo método estático do navigator
-                      color: Theme.of(context).primaryColor,
-                      width: 2,
-                    )
-                  ),
-                  padding: EdgeInsets.all(10),
-                  child: Center(
-                    //Agora com o flutter_localizations,
-                    //podemos formatar valor monetário de 
-                    //uma forma mais interessante:
-                    child: Text(
-                      // 'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')}',
-                      NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value),
-                      //nesse caso não foi passado locale: 'pt_BR' pois isso
-                      //já foi definido no Intl.defaultLocale = 'pt_BR';
-                      //então não precisa, mas se não fosse definido como 
-                      //default precisaríamos passar se não a moeda não 
-                      //ficaria no formato brasileiro (ficaria . ao invés da ,
-                      //na hora de definir os centavos)
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Theme.of(context).primaryColor,
-                      )
-                    ),
-                  )
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      transaction.title, 
-                      //Não irá pegar o estilo que aplicamos no 
-                      //tema pois o definimos dentro do 
-                      //AppBarTheme, então será pego o tema 
-                      //de headline6 padrão do flutter já que o 
-                      //que nós definimos no tema é apenas para 
-                      //AppBar. Só passou a funcionar como esperado
-                      //depois que dentro do ThemeData foi colocado
-                      //isso:
-                      /*
-                      textTheme: ThemeData.light().textTheme.copyWith(
-                        headline6: TextStyle(
-                          fontFamily: 'OpenSans',
-                          fontSize: 18,
-                          //Mesmo resultado para os 2 FontWeight :
-                          fontWeight: FontWeight.w700 // FontWeight.bold
-                        )
-                      )
-                      */
-                      style: Theme.of(context).textTheme.headline6
-                      // style: TextStyle(
-                      //   fontSize: 16,
-                      //   fontWeight: FontWeight.bold
-                      // ),
-                    ),
-                    Text(
-                      //Data no formato:
-                      // 26 Dec 2020
-                      //Agora com o flutter_localizations,
-                      //podemos passar um segundo parâmetro
-                      //para o DateFormat, o 'pt_BR' , e
-                      //assim a data é formatada para pt BR
-                      //ficando:
-                      //26 dez 2020
-                      DateFormat('d MMM y', 'pt_BR').format(
-                        transaction.date
-                      ), 
-                      //Data no formato: 
-                      //December 26, 2020
-                      // DateFormat.yMMMMd().format(transaction.date),
-                      style: TextStyle(
-                        color: Colors.grey
-                      )
-                    )
-                  ],
+            elevation: 5,
+            margin: EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 5
+            ),
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 30,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: FittedBox(child: Text(NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value))),
                 )
-              ],
+              ),
+              title: Text(
+                transaction.title,
+                style: Theme.of(context).textTheme.headline6
+              ),
+              subtitle: Text(
+                DateFormat('d MMM y').format(transaction.date)
+              ),
             ),
           );
         }
