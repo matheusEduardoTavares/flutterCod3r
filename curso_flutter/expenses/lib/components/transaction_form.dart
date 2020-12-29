@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 typedef AddTransaction = void Function(String, double);
 
@@ -21,14 +22,15 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _valueController = TextEditingController();
+  DateTime _selectedDate;
 
   void _submitForm() {
-    final title = titleController.text;
-    final value = double.tryParse(valueController.text) ?? 0.0;
+    final title = _titleController.text;
+    final value = double.tryParse(_valueController.text) ?? 0.0;
 
-    if (title.isEmpty || value <= 0){
+    if (title.isEmpty || value <= 0 || _selectedDate == null){
       return;
     }
 
@@ -41,6 +43,34 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.onSubmit(title, value);
   }
 
+  _showDatePicker() async {
+    DateTime pickedDate = await showDatePicker(
+      //Como estamos dentro de uma classe que extende de
+      //State, temos acesso a alguns atributos que vem 
+      //por heraça, um deles é o widget para referenciar
+      //os atributos e métodos da classe stateful que é 
+      //referente a esta classe state, e o outro é o 
+      //context
+      context: context,
+      initialDate: DateTime.now(),
+      //O firstDate é a data inicial que o usuário consegue
+      //selecionar, que usando o construtor do DateTime 
+      //passando apenas um parâmetro posicional, passamos a
+      //data e a data inicial que será usada é 01/01/[parâmetro],
+      //resumindo, é a data mais antiga que o usuário poderá
+      //selecionar.
+      firstDate: DateTime(2019),
+      //Não permitir selecionar datas no futuro:
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate == null) return ;
+
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+  }
+
   @override 
   Widget build(BuildContext context){
     return Card(
@@ -50,7 +80,7 @@ class _TransactionFormState extends State<TransactionForm> {
         child: Column(
           children: <Widget> [
             TextField(
-              controller: titleController,
+              controller: _titleController,
               decoration: InputDecoration(
                 labelText: 'Título'
               ),
@@ -63,7 +93,7 @@ class _TransactionFormState extends State<TransactionForm> {
               //uma vez que muda automaticamente dentro do controller
               //o estado do controller vai sendo alterado a partir
               //do momento que vamos digitando as informações
-              controller: valueController,
+              controller: _valueController,
               decoration: InputDecoration(
                 labelText: 'Valor (R\$)'
               ),
@@ -86,7 +116,12 @@ class _TransactionFormState extends State<TransactionForm> {
               height: 70,
               child: Row(
                 children: <Widget>[
-                  Text('Nenhuma data selecionada!'),
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null ? 'Nenhuma data selecionada!' :
+                      'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'
+                    ),
+                  ),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
                     child: Text(
@@ -95,7 +130,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         fontWeight: FontWeight.bold
                       )
                     ),
-                    onPressed: () {},
+                    onPressed: _showDatePicker,
                   )
                 ],
               ),
