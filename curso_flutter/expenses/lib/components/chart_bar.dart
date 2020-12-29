@@ -22,12 +22,19 @@ class ChartBar extends StatelessWidget {
         //wrap do Text com um FittedBox. Só de fazer isso, 
         //o tamanho do texto será diminuído para poder caber
         //no tamanho disponível para ele.
-        FittedBox(
-          child: Text(
-            ' ${value.toStringAsFixed(2)}',
-            style: TextStyle(
-              fontSize: 12
-            )
+        //Porém quando o valor for muito grande vai causar
+        //um certo desalinhamento com os demais itens e para
+        //resolver isso basta fazer um wrap do FittedBox
+        //com um container e definir uma altura fixa
+        Container(
+          height: 20,
+          child: FittedBox(
+            child: Text(
+              ' ${value.toStringAsFixed(2)}',
+              style: TextStyle(
+                fontSize: 12
+              )
+            ),
           ),
         ),
         SizedBox(height: 5),

@@ -52,7 +52,10 @@ class Chart extends StatelessWidget {
         'day': DateFormat.E().format(weekDay),
         'value': totalSum
       };
-    });
+      //Para inverter a lista é só usar o atributo 
+      //reversed, mas isso os transforma em iterable,
+      //daí é só usar um toList para voltar a ser uma lista
+    }).reversed.toList();
   }
 
   double _getPercentage(double value){
