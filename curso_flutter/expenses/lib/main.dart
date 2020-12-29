@@ -110,7 +110,7 @@ class ExpensesApp extends StatelessWidget {
               fontSize: 20,
               //Mesmo resultado para os 2 FontWeight :
               fontWeight: FontWeight.w700 // FontWeight.bold
-            )
+            ),
           ),
         ),
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -119,7 +119,11 @@ class ExpensesApp extends StatelessWidget {
             fontSize: 18,
             //Mesmo resultado para os 2 FontWeight :
             fontWeight: FontWeight.w700 // FontWeight.bold
-          )
+          ),
+          button: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold
+          ),
         )
       ),
       home: MyHomePage()
