@@ -111,6 +111,20 @@ class TransactionList extends StatelessWidget {
               horizontal: 5
             ),
             child: ListTile(
+              //Podemos repetir o comportamento do Circle
+              //Avatar desta forma:
+              // leading: Container(
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     color: Theme.of(context).primaryColor
+              //   ),
+              //   height: 60,
+              //   width: 60,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(6.0),
+              //     child: FittedBox(child: Text(NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value))),
+              //   )
+              // ),
               leading: CircleAvatar(
                 radius: 30,
                 child: Padding(
