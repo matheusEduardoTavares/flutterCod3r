@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-typedef AddTransaction = void Function(String, double);
+typedef AddTransaction = void Function(String, double, DateTime);
 
 //Convertermos de StatelessWidget para StatefulWidget
 //pois os TextEditingController possuem um estado interno
@@ -24,7 +24,7 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final _titleController = TextEditingController();
   final _valueController = TextEditingController();
-  DateTime _selectedDate;
+  DateTime _selectedDate = DateTime.now();
 
   void _submitForm() {
     final title = _titleController.text;
@@ -40,7 +40,7 @@ class _TransactionFormState extends State<TransactionForm> {
     //pois todos os atributos / métodos daquela classe 
     //poderão ser acessados por meio desse atributo 
     //widget
-    widget.onSubmit(title, value);
+    widget.onSubmit(title, value, _selectedDate);
   }
 
   _showDatePicker() async {
