@@ -129,24 +129,75 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Despesas Pessoais',
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openTransactionFormModal(context),
-          )
-        ],
+    //Conseguimos pegar medidas relativas ao tamanho
+    //da tela usando o método of, passando o context
+    //como parâmetro, para o MediaQuery. Esse context
+    //serve para passar as informações necessárias para
+    //saber qual a localização do widget na árvore, 
+    //diz então qual é o componente que é renderizado, 
+    //e há uma relação entre o componente pai e um 
+    //componente filho em que um contexto do filho consegue
+    //acessar um componente pai e assim acessar os elementos
+    //da árvore de componentes. A partir disso temos vários
+    //atributos e métodos disponíveis por esse Media
+    //Query.of(context). , como por exemplo o método 
+    //devicePixelRatio que mostra a densidade de pixel de
+    //um dispositivo; desabilitar a animação com o 
+    //disableAnimations; padding, e etc. Mas o que nos 
+    //importa é o size.
+
+    //No caso da altura, temos que considerar  
+    //outros fatores e não só o percentual do 
+    //tamanho da tela, então se colocarmos 30% do
+    //tamanho da tela para o Chart e 70% para o 
+    //TransactionList, não irá pegar 100% da tela
+    //igual imaginamos, irá passar desse tamanho.
+    //Sempre que trabalhar com a altura, caso use
+    //um scaffold devemos considerar o tamanho da
+    //AppBar, e tem também a status bar para ser
+    //considerada.
+
+    //Ou seja, para sabermos o tamanho real que temos 
+    //sobrando, precisamos pegar a altura do AppBar para
+    //subtrair da altura da tela, e para fazer isso 
+    //tiraremos o AppBar direto da estrutura e o colocaremos
+    //em uma constante:
+
+    final appBar = AppBar(
+      title: Text(
+        'Despesas Pessoais',
       ),
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openTransactionFormModal(context),
+        )
+      ],
+    );
+
+    //Para acessar a altura da AppBar pegamos o height do
+    //atributo preferredSize que pegamos por sua vez 
+    //da constante contendo a AppBar.
+    //Conseguimos acessar a altura do statusBar pelo 
+    //MediaQuery.of(context).padding.top;
+    final availableHeight = MediaQuery.of(context).size.height 
+      - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+
+    //Com isso o availableHeight vai conter exatamente 
+    //a altura que restou disponível, já que tiramos o 
+    //tamanho do AppBar e do StatusBar.
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recentTransactions),
+            Container(
+              height: availableHeight * 0.3,
+              child: Chart(_recentTransactions)
+            ),
             //Dá erro:
             // Expanded(
             //   child: TransactionList(
@@ -154,9 +205,12 @@ class _MyHomePageState extends State<MyHomePage> {
             //     _deleteTransaction,
             //   )
             // )
-            TransactionList(
-              _transactions, 
-              _deleteTransaction,
+            Container(
+              height: availableHeight * 0.7,
+              child: TransactionList(
+                _transactions, 
+                _deleteTransaction,
+              ),
             )
           ]
         ),
