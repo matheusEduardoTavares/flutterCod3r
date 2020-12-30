@@ -166,6 +166,13 @@ class _MyHomePageState extends State<MyHomePage> {
     final appBar = AppBar(
       title: Text(
         'Despesas Pessoais',
+        //Por default é 1 o MediaQuery.of(context).textScaleFactor, 
+        //e seu valor pode aumentar de acordo com quanto o 
+        //usuário setou em seu device na área de acessibilidade
+        //os tamanhos das fontes.
+        // style: TextStyle(
+        //   fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+        // ),
       ),
       centerTitle: true,
       actions: <Widget>[
