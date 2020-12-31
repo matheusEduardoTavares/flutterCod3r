@@ -1,4 +1,5 @@
 import 'dart:math';
+// import 'package:flutter/services.dart';
 import 'components/chart.dart';
 import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
@@ -12,6 +13,27 @@ void main() => runApp(ExpensesApp());
 class ExpensesApp extends StatelessWidget {
   @override 
   Widget build(BuildContext context){
+    //Caso nossa aplicação deva funcionar obrigatoriamente
+    //apenas em uma orientação, devemos usar uma classe
+    //chamada SystemChrome, que importamos do pacote 
+    //package:flutter/services.dart , e podemos setar 
+    //as orientações que podem ser usadas passando para 
+    //o método setPreferredOrientations uma lista de 
+    //orientações. O método é da classe SystemChrome.
+    //Com ele setado mesmo que esteja habilitado no 
+    //device para fazer a rotação de tela e o usuário 
+    //gire a tela do device, ele vai mudar e se manter 
+    //apenas em orientações que permitirmos (que estão 
+    //dentro desta lista).
+
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp
+    // ]);
+
+    //Nessa aplicação não usaremos isso, teremos que 
+    //adaptar a aplicação para poder exibir certo em 
+    //qualquer orientação.
+
     Intl.defaultLocale = 'pt_BR';
     
     return MaterialApp(
@@ -201,6 +223,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            //Em modo paisagem não é possível ver bem 
+            //as barras dos gráficos.
             Container(
               height: availableHeight * 0.3,
               child: Chart(_recentTransactions)
