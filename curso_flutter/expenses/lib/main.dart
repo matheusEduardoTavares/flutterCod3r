@@ -202,10 +202,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       centerTitle: true,
       actions: <Widget>[
+        if (isLandscape)
+          IconButton(
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+          ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
-        )
+        ),
       ],
     );
 
@@ -229,6 +238,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             //Só exibiremos o switch (que é um toggle)
             //se ele estiver em modo paisagem
+            /*
+            //Substituído pelo novo ícone usado na AppBar
             if (isLandscape)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -250,6 +261,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+            */
             //Em modo paisagem não é possível ver bem 
             //as barras dos gráficos.
             //Na operação ternária conseguimos apenas 
