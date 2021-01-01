@@ -158,8 +158,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //Uma pequena otimização para não ter que ficar 
+    //criando sempre um novo MediaQuery.
+    final mediaQuery = MediaQuery.of(context);
+
     //Verificando se o device está no modo paisagem:
-    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     //Conseguimos pegar medidas relativas ao tamanho
     //da tela usando o método of, passando o context
@@ -229,8 +233,8 @@ class _MyHomePageState extends State<MyHomePage> {
     //da constante contendo a AppBar.
     //Conseguimos acessar a altura do statusBar pelo 
     //MediaQuery.of(context).padding.top;
-    final availableHeight = MediaQuery.of(context).size.height 
-      - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+    final availableHeight = mediaQuery.size.height 
+      - appBar.preferredSize.height - mediaQuery.padding.top;
 
     //Com isso o availableHeight vai conter exatamente 
     //a altura que restou disponível, já que tiramos o 
