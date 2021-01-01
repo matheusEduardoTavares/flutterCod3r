@@ -152,6 +152,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //Verificando se o device está no modo paisagem:
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     //Conseguimos pegar medidas relativas ao tamanho
     //da tela usando o método of, passando o context
     //como parâmetro, para o MediaQuery. Esse context
@@ -224,26 +227,29 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //Com o Widget Switch, podemos mostrar 
-                //um widget ou outro
-                //dependendo de uma condição, na verdade
-                //ele dá um elemento que arrastamos um 
-                //círculo em um slide para definir o 
-                //true ou o false.
-                Text('Exibir Gráfico'),
-                Switch(
-                  value: _showChart,
-                  onChanged: (value) {
-                    setState(() {
-                      _showChart = value;
-                    });
-                  },
-                ),
-              ],
-            ),
+            //Só exibiremos o switch (que é um toggle)
+            //se ele estiver em modo paisagem
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //Com o Widget Switch, podemos mostrar 
+                  //um widget ou outro
+                  //dependendo de uma condição, na verdade
+                  //ele dá um elemento que arrastamos um 
+                  //círculo em um slide para definir o 
+                  //true ou o false.
+                  Text('Exibir Gráfico'),
+                  Switch(
+                    value: _showChart,
+                    onChanged: (value) {
+                      setState(() {
+                        _showChart = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
             //Em modo paisagem não é possível ver bem 
             //as barras dos gráficos.
             //Na operação ternária conseguimos apenas 
@@ -251,12 +257,22 @@ class _MyHomePageState extends State<MyHomePage> {
             //if conseguimos montar expressões mais 
             //complexas, inclusive diferentes para cada
             //componente
-            if (_showChart)
+            if (_showChart || !isLandscape)
+            //Outro problema no momento é que quando 
+            //estamos no modo paisagem o gráfico fica ruim
+            //de enxergar, isso porque até então o seu 
+            //tamanho era availableHeight * 0.3, e como 
+            //no modo paisagem provavelmente a altura já
+            //será um valor baixo, então usar 30% dessa 
+            //altura ficava ruim para enxergar ainda. Então
+            //teremos que verificar a orientação do 
+            //dispositivo e caso ela seja paisagem definir 
+            //um percentual maior.
               Container(
-                height: availableHeight * 0.3,
+                height: availableHeight * (isLandscape ? 0.7 : 0.3),
                 child: Chart(_recentTransactions)
               ),
-            if (!_showChart)
+            if (!_showChart || !isLandscape)
             Container(
               height: availableHeight * 0.7,
               child: TransactionList(

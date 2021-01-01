@@ -22,17 +22,23 @@ class TransactionList extends StatelessWidget {
     return transactions.isEmpty ? LayoutBuilder(
       builder: (context, constraints) => Column(
         children: [
-          SizedBox(height: constraints.maxHeight * 0.05),
-          Container(
-            height: constraints.maxHeight * 0.3,
-            child: FittedBox(
-              child: Text(
-                'Nenhuma Transação Cadastrada',
-                style: Theme.of(context).textTheme.headline6
-              ),
-            ),
+          // SizedBox(height: constraints.maxHeight * 0.05),
+          // Container(
+          //   height: constraints.maxHeight * 0.3,
+          //   child: FittedBox(
+          //     child: Text(
+          //       'Nenhuma Transação Cadastrada',
+          //       style: Theme.of(context).textTheme.headline6
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: constraints.maxHeight * 0.05),
+          SizedBox(height: 20),
+          Text(
+            'Nenhuma Transação Cadastrada',
+            style: Theme.of(context).textTheme.headline6
           ),
-          SizedBox(height: constraints.maxHeight * 0.05),
+          SizedBox(height: 20),
           Container(
             height: constraints.maxHeight * 0.6,
             child: Image.asset(
