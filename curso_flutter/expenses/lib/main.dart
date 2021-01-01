@@ -86,6 +86,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions{
     return _transactions.where((transaction) {
@@ -223,19 +224,39 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Com o Widget Switch, podemos mostrar 
+                //um widget ou outro
+                //dependendo de uma condição, na verdade
+                //ele dá um elemento que arrastamos um 
+                //círculo em um slide para definir o 
+                //true ou o false.
+                Text('Exibir Gráfico'),
+                Switch(
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
+            ),
             //Em modo paisagem não é possível ver bem 
             //as barras dos gráficos.
-            Container(
-              height: availableHeight * 0.3,
-              child: Chart(_recentTransactions)
-            ),
-            //Dá erro:
-            // Expanded(
-            //   child: TransactionList(
-            //     _transactions, 
-            //     _deleteTransaction,
-            //   )
-            // )
+            //Na operação ternária conseguimos apenas 
+            //mostrar um widget ou outro, já usando o 
+            //if conseguimos montar expressões mais 
+            //complexas, inclusive diferentes para cada
+            //componente
+            if (_showChart)
+              Container(
+                height: availableHeight * 0.3,
+                child: Chart(_recentTransactions)
+              ),
+            if (!_showChart)
             Container(
               height: availableHeight * 0.7,
               child: TransactionList(
