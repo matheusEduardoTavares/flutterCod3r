@@ -73,18 +73,26 @@ class TransactionList extends StatelessWidget {
             subtitle: Text(
               DateFormat('d MMM y').format(transaction.date)
             ),
-            trailing: InkWell(
-              onTap: () => onRemove(transaction.id),
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).errorColor,
+            //Agora de acordo com uma certa largura mostraremos
+            //um elemento ou não
+            trailing: MediaQuery.of(context).size.width > 480 ? 
+              FlatButton.icon(
+                onPressed: () => onRemove(transaction.id), 
+                icon: Icon(Icons.delete), 
+                label: Text('Excluir'),
+                textColor: Theme.of(context).errorColor,
+              ) : InkWell(
+                onTap: () => onRemove(transaction.id),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).errorColor,
+                  ),
+                  child: Icon(Icons.delete, color: Colors.white),
                 ),
-                child: Icon(Icons.delete, color: Colors.white),
               ),
-            ),
           ),
         );
       }
