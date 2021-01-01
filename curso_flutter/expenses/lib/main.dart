@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:io';
 // import 'package:flutter/services.dart';
 import 'components/chart.dart';
 import 'components/transaction_form.dart';
@@ -261,7 +262,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   //círculo em um slide para definir o 
                   //true ou o false.
                   Text('Exibir Gráfico'),
-                  Switch(
+                  //O Switch com seu construtor default 
+                  //terá o visual do android, para fazer 
+                  //um Switch com visual adaptado para o
+                  //IOs, devemos usar seu construtor 
+                  //adaptive. Assim ele irá se adaptar
+                  //de acordo com a plataforma. Usará
+                  //o padrão Material se estiver no 
+                  //android e usará o padrão do Cupertino
+                  //se estiver em um IOs.
+                  Switch.adaptive(
+                    activeColor: Theme.of(context).accentColor,
                     value: _showChart,
                     onChanged: (value) {
                       setState(() {
@@ -305,7 +316,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ]
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      //como o FAB não é um botão usado no padrão do 
+      //IOs, iremos escondê-lo caso a plataforma seja
+      //IOs. Importando o dart:io , temos acesso ao 
+      //Platform e a partir dele podemos verificar se é
+      //Android, IOs, entre outros.
+      floatingActionButton: Platform.isIOS ? Container() : FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _openTransactionFormModal(context),
       ),
