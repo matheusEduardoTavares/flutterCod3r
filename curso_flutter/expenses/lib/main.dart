@@ -144,8 +144,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (_) {
-        return TransactionForm(onSubmit: _addTransaction);
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom
+          ),
+          child: TransactionForm(onSubmit: _addTransaction),
+        );
       }
     );
   }

@@ -66,75 +66,72 @@ class _TransactionFormState extends State<TransactionForm> {
     //do teclado uma vez que ele sobe, ou seja, a view 
     //em baixo fica com o espaçamento exatamente do 
     //tamanho do teclado.
+    //Para implementar da forma certa agora, será 
+    //tirado o wrap do Padding em volta da Column,
+    //e onde é chamado o TransactionForm foi 
+    //feito um wrap do TransactionForm com 
+    //um Padding adicionando um padding apenas
+    //em baixo com o valor do tamanho do 
+    //teclado, e foi adicionado a propriedade
+    //isScrollControlled: true no 
+    //showModalBottomSheet 
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
-        child: Padding(
-          //Esse EdgeInsets não pode mais ter o const antes pois
-          //seu bottom irá usar o valor da MediaQuery, é algo
-          //que será detectado em execução e não em compilação,
-          //logo não pode mais ser const.
-          padding: EdgeInsets.only(
-            top: 10,
-            right: 10,
-            left: 10,
-            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Column(
-            children: <Widget> [
-              TextField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: 'Título'
-                ),
-                onSubmitted: (_) => _submitForm(),
+        child: Column(
+          children: <Widget> [
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(
+                labelText: 'Título'
               ),
-              TextField(
-                controller: _valueController,
-                decoration: InputDecoration(
-                  labelText: 'Valor (R\$)'
-                ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (_) => _submitForm(),
+              onSubmitted: (_) => _submitForm(),
+            ),
+            TextField(
+              controller: _valueController,
+              decoration: InputDecoration(
+                labelText: 'Valor (R\$)'
               ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        _selectedDate == null ? 'Nenhuma data selecionada!' :
-                        'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'
-                      ),
-                    ),
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      child: Text(
-                        'Selecionar Data', 
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        )
-                      ),
-                      onPressed: _showDatePicker,
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  RaisedButton(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitForm(),
+            ),
+            Container(
+              height: 70,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
                     child: Text(
-                      'Nova Transação'
+                      _selectedDate == null ? 'Nenhuma data selecionada!' :
+                      'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'
                     ),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).textTheme.button.color,
-                    onPressed: _submitForm
                   ),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      'Selecionar Data', 
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      )
+                    ),
+                    onPressed: _showDatePicker,
+                  )
                 ],
-              )
-            ]
-          ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                RaisedButton(
+                  child: Text(
+                    'Nova Transação'
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).textTheme.button.color,
+                  onPressed: _submitForm
+                ),
+              ],
+            )
+          ]
         )
       ),
     );
