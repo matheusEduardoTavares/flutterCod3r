@@ -46,66 +46,97 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override 
   Widget build(BuildContext context){
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: <Widget> [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                labelText: 'Título'
-              ),
-              onSubmitted: (_) => _submitForm(),
-            ),
-            TextField(
-              controller: _valueController,
-              decoration: InputDecoration(
-                labelText: 'Valor (R\$)'
-              ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => _submitForm(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null ? 'Nenhuma data selecionada!' :
-                      'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'
-                    ),
-                  ),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      'Selecionar Data', 
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      )
-                    ),
-                    onPressed: _showDatePicker,
-                  )
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                RaisedButton(
-                  child: Text(
-                    'Nova Transação'
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Theme.of(context).textTheme.button.color,
-                  onPressed: _submitForm
+    //Estávamos tendo um problema que quando estamos 
+    //selecionados em um dado TextField e queiramos ir 
+    //para o TextField de baixo não conseguimos a não 
+    //ser fechando o showModalBottomSheet, e isso ocorre
+    //pois o teclado fica por cima do conteúdo dele.
+    //Para resolver isso, pegaremos o tamanho do teclado
+    //e faremos com que a margem de baixo seja esse tamanho
+    //+ 10, de forma que podemos usar um SingleChildScrollView
+    //em volta para caso o tamanho do modal acabe estrapolando
+    //o tamanho da tela, e assim usamos uma solução simples
+    //para resolver este problema, mas que não é a 
+    //melhor solução.
+    //Conseguimos o tamanho do teclado a partir de:
+    //MediaQuery.of(context).viewInsets.bottom
+    //O viewInsets são as dimensões da view, da nossa
+    //tela. Quando o teclado aparece, a view fica menor,
+    //então o espaço bottom é exatamente o mesmo tamanho
+    //do teclado uma vez que ele sobe, ou seja, a view 
+    //em baixo fica com o espaçamento exatamente do 
+    //tamanho do teclado.
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          //Esse EdgeInsets não pode mais ter o const antes pois
+          //seu bottom irá usar o valor da MediaQuery, é algo
+          //que será detectado em execução e não em compilação,
+          //logo não pode mais ser const.
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: <Widget> [
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Título'
                 ),
-              ],
-            )
-          ]
-        ),
-      )
+                onSubmitted: (_) => _submitForm(),
+              ),
+              TextField(
+                controller: _valueController,
+                decoration: InputDecoration(
+                  labelText: 'Valor (R\$)'
+                ),
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (_) => _submitForm(),
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null ? 'Nenhuma data selecionada!' :
+                        'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'
+                      ),
+                    ),
+                    FlatButton(
+                      textColor: Theme.of(context).primaryColor,
+                      child: Text(
+                        'Selecionar Data', 
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                      onPressed: _showDatePicker,
+                    )
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  RaisedButton(
+                    child: Text(
+                      'Nova Transação'
+                    ),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).textTheme.button.color,
+                    onPressed: _submitForm
+                  ),
+                ],
+              )
+            ]
+          ),
+        )
+      ),
     );
   }
 }
