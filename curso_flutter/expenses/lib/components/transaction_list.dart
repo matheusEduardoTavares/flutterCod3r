@@ -11,22 +11,37 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return transactions.isEmpty ? Column(
-      children: [
-        SizedBox(height: 20),
-        Text(
-          'Nenhuma Transação Cadastrada',
-          style: Theme.of(context).textTheme.headline6
-        ),
-        SizedBox(height: 20),
-        Container(
-          height: 200,
-          child: Image.asset(
-            'assets/images/waiting.png',
-            fit: BoxFit.cover
+    //Para evitar que o tamanho da imagem quebre iremos
+    //fazer um wrap da Column com um LayoutBuilder para 
+    //usarmos as constraints para ter um tamanho certo para
+    //que a imagem tenha um espaço para ser renderizado de
+    //forma correta. O problema no momento é que estamos
+    //usando um container com height 200 como wrap da 
+    //imagem para poder renderizá-la, e usando o 
+    //LayoutBuilder ela terá todo o tamanho disponível
+    return transactions.isEmpty ? LayoutBuilder(
+      builder: (context, constraints) => Column(
+        children: [
+          SizedBox(height: constraints.maxHeight * 0.05),
+          Container(
+            height: constraints.maxHeight * 0.3,
+            child: FittedBox(
+              child: Text(
+                'Nenhuma Transação Cadastrada',
+                style: Theme.of(context).textTheme.headline6
+              ),
+            ),
           ),
-        ),
-      ],
+          SizedBox(height: constraints.maxHeight * 0.05),
+          Container(
+            height: constraints.maxHeight * 0.6,
+            child: Image.asset(
+              'assets/images/waiting.png',
+              fit: BoxFit.cover
+            ),
+          ),
+        ],
+      )
     ) : ListView.builder(
       itemCount: transactions.length,
       itemBuilder: (ctx, index) {
