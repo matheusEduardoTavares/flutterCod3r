@@ -42,7 +42,8 @@ class ExpensesApp extends StatelessWidget {
       title: 'ExpensesApp',
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
         const Locale('pt', 'BR')

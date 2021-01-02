@@ -84,7 +84,7 @@ class _TransactionFormState extends State<TransactionForm> {
               label: 'Valor (R\$)',
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) => _submitForm(),
-              placeholder: 'Título',
+              placeholder: 'Valor (R\$)',
             ),
             AdaptativeDatePicker(
               selectedDate: _selectedDate, 

@@ -42,29 +42,48 @@ class AdaptativeTextField extends StatelessWidget {
     'É obrigatório ter um placeholder quando se está usando a decoração do iOS'
   );
 
+  Widget _getCupertinoTextField(bool hasIosDecoration) {
+    return hasIosDecoration ? CupertinoTextField(
+      placeholder: placeholder,
+      controller: controller,
+      decoration: iosDecoration,
+      focusNode: focusNode,
+      keyboardType: keyboardType,
+      onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      onSubmitted: onSubmitted,
+      onTap: onTap,
+      autofocus: autofocus ?? false,
+      readOnly: readOnly ?? false,
+      padding: paddingInside ?? EdgeInsets.symmetric(
+        horizontal: 6,
+        vertical: 12
+      ),
+    ) : CupertinoTextField(
+      placeholder: placeholder,
+      controller: controller,
+      focusNode: focusNode,
+      keyboardType: keyboardType,
+      onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      onSubmitted: onSubmitted,
+      onTap: onTap,
+      autofocus: autofocus ?? false,
+      readOnly: readOnly ?? false,
+      padding: paddingInside ?? EdgeInsets.symmetric(
+        horizontal: 6,
+        vertical: 12
+      ),
+    );
+  }
+
   @override 
   Widget build(BuildContext context){
     return Platform.isIOS ? Padding(
       padding: paddingOutside ?? const EdgeInsets.only(
         bottom: 10
       ),
-      child: CupertinoTextField(
-        placeholder: placeholder,
-        controller: controller,
-        decoration: iosDecoration,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        onChanged: onChanged,
-        onEditingComplete: onEditingComplete,
-        onSubmitted: onSubmitted,
-        onTap: onTap,
-        autofocus: autofocus ?? false,
-        readOnly: readOnly ?? false,
-        padding: paddingInside ?? EdgeInsets.symmetric(
-          horizontal: 6,
-          vertical: 12
-        ),
-      ),
+      child: _getCupertinoTextField(iosDecoration != null),
     ) : TextField(
       controller: controller,
       decoration: androidDecoration ?? InputDecoration(
