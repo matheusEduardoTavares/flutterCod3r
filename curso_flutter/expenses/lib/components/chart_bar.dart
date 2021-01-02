@@ -5,6 +5,8 @@ class ChartBar extends StatelessWidget {
   final double value;
   final double percentage;
 
+  //Só conseguimos marcar este construtor como const pois
+  //todos os atributos dessa classe são final.
   const ChartBar({
       this.label, 
       this.value, 
@@ -13,7 +15,7 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build() ChartBar');
+    // print('build() ChartBar');
     return LayoutBuilder(
       builder: (ctx, constraints) {
         return Column(

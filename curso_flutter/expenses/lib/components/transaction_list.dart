@@ -11,16 +11,16 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build() TransactionList');
+    // print('build() TransactionList');
     return transactions.isEmpty ? LayoutBuilder(
       builder: (context, constraints) => Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             'Nenhuma Transação Cadastrada',
             style: Theme.of(context).textTheme.headline6
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Container(
             height: constraints.maxHeight * 0.6,
             child: Image.asset(
@@ -58,8 +58,12 @@ class TransactionList extends StatelessWidget {
             trailing: MediaQuery.of(context).size.width > 480 ? 
               FlatButton.icon(
                 onPressed: () => onRemove(transaction.id), 
-                icon: Icon(Icons.delete), 
-                label: Text('Excluir'),
+                icon: const Icon(Icons.delete), 
+                //aqui por exemplo podemos usar o const pois
+                //seu construtor é constante e o parâmetro
+                //que ele recebe já é conhecido em tempo de
+                //compilação.
+                label: const Text('Excluir'),
                 textColor: Theme.of(context).errorColor,
               ) : InkWell(
                 onTap: () => onRemove(transaction.id),
