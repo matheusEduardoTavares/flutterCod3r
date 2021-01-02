@@ -6,6 +6,7 @@ import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -157,6 +158,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  //Dará um erro no IOs dizendo que está tentando colocar o 
+  //IconButton e ele não é um componente disponível no 
+  //Cupertino, requer um Cupertino Widget. Então criaremos
+  //um método para ajudar a criar um botão:
+  Widget _getIconButton({IconData icon, Function fn}) {
+    return Platform.isIOS ? 
+      GestureDetector(
+        child: Icon(icon),
+        onTap: fn,
+      ) : IconButton(
+        icon: Icon(icon),
+        onPressed: fn,
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     //Uma pequena otimização para não ter que ficar 
@@ -165,6 +181,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //Verificando se o device está no modo paisagem:
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+
+    final actions = <Widget>[
+      if (isLandscape)
+        _getIconButton(
+          icon: _showChart ? Icons.list : Icons.show_chart,
+          fn: () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+          },
+        ),
+      _getIconButton(
+        icon: Platform.isIOS ? CupertinoIcons.add : Icons.add,
+        fn: () => _openTransactionFormModal(context),
+      ),
+    ];
 
     //Conseguimos pegar medidas relativas ao tamanho
     //da tela usando o método of, passando o context
@@ -200,34 +232,39 @@ class _MyHomePageState extends State<MyHomePage> {
     //tiraremos o AppBar direto da estrutura e o colocaremos
     //em uma constante:
 
-    final appBar = AppBar(
-      title: Text(
-        'Despesas Pessoais',
-        //Por default é 1 o MediaQuery.of(context).textScaleFactor, 
-        //e seu valor pode aumentar de acordo com quanto o 
-        //usuário setou em seu device na área de acessibilidade
-        //os tamanhos das fontes.
-        // style: TextStyle(
-        //   fontSize: 20 * MediaQuery.of(context).textScaleFactor,
-        // ),
-      ),
-      centerTitle: true,
-      actions: <Widget>[
-        if (isLandscape)
-          IconButton(
-            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
-            onPressed: () {
-              setState(() {
-                _showChart = !_showChart;
-              });
-            },
-          ),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _openTransactionFormModal(context),
+    //Todo appBar precisa ser um PreferredSizeWidget, e
+    //aqui o iremos tipar para poder reaproveitar esse 
+    //fazendo uma condicional no appBar pois no 
+    //navigationBar do CupertinoScaffoldPage ele precisa
+    //receber um CupertinoNavigationBar e no Scaffold 
+    //precisa receber um AppBar. 
+    //O title do AppBar é o middle do CupertinoNavigationBar
+    final PreferredSizeWidget appBar = Platform.isIOS ? 
+      CupertinoNavigationBar(
+        middle: Text('Despesas Pessoais'),
+        //Mas o CupertinoNavigationBar precisa ocupar o 
+        //mínimo de espaço possível com a Row para o trailing
+        //se não o middle será sobreposto e não aparecerá, 
+        //por isso passamos para a Row ocupar o menor tamanho
+        //do eixo X possível
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: actions,
+        )
+      ) : AppBar(
+        title: Text(
+          'Despesas Pessoais',
+          //Por default é 1 o MediaQuery.of(context).textScaleFactor, 
+          //e seu valor pode aumentar de acordo com quanto o 
+          //usuário setou em seu device na área de acessibilidade
+          //os tamanhos das fontes.
+          // style: TextStyle(
+          //   fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+          // ),
         ),
-      ],
-    );
+        centerTitle: true,
+        actions: actions
+      );
 
     //Para acessar a altura da AppBar pegamos o height do
     //atributo preferredSize que pegamos por sua vez 
@@ -241,81 +278,99 @@ class _MyHomePageState extends State<MyHomePage> {
     //a altura que restou disponível, já que tiramos o 
     //tamanho do AppBar e do StatusBar.
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            //Só exibiremos o switch (que é um toggle)
-            //se ele estiver em modo paisagem
-            /*
-            //Substituído pelo novo ícone usado na AppBar
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //Com o Widget Switch, podemos mostrar 
-                  //um widget ou outro
-                  //dependendo de uma condição, na verdade
-                  //ele dá um elemento que arrastamos um 
-                  //círculo em um slide para definir o 
-                  //true ou o false.
-                  Text('Exibir Gráfico'),
-                  //O Switch com seu construtor default 
-                  //terá o visual do android, para fazer 
-                  //um Switch com visual adaptado para o
-                  //IOs, devemos usar seu construtor 
-                  //adaptive. Assim ele irá se adaptar
-                  //de acordo com a plataforma. Usará
-                  //o padrão Material se estiver no 
-                  //android e usará o padrão do Cupertino
-                  //se estiver em um IOs.
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).accentColor,
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            */
-            //Em modo paisagem não é possível ver bem 
-            //as barras dos gráficos.
-            //Na operação ternária conseguimos apenas 
-            //mostrar um widget ou outro, já usando o 
-            //if conseguimos montar expressões mais 
-            //complexas, inclusive diferentes para cada
-            //componente
-            if (_showChart || !isLandscape)
-            //Outro problema no momento é que quando 
-            //estamos no modo paisagem o gráfico fica ruim
-            //de enxergar, isso porque até então o seu 
-            //tamanho era availableHeight * 0.3, e como 
-            //no modo paisagem provavelmente a altura já
-            //será um valor baixo, então usar 30% dessa 
-            //altura ficava ruim para enxergar ainda. Então
-            //teremos que verificar a orientação do 
-            //dispositivo e caso ela seja paisagem definir 
-            //um percentual maior.
-              Container(
-                height: availableHeight * (isLandscape ? 0.8 : 0.3),
-                child: Chart(_recentTransactions)
-              ),
-            if (!_showChart || !isLandscape)
+    final bodyPage = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          //Só exibiremos o switch (que é um toggle)
+          //se ele estiver em modo paisagem
+          /*
+          //Substituído pelo novo ícone usado na AppBar
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Com o Widget Switch, podemos mostrar 
+                //um widget ou outro
+                //dependendo de uma condição, na verdade
+                //ele dá um elemento que arrastamos um 
+                //círculo em um slide para definir o 
+                //true ou o false.
+                Text('Exibir Gráfico'),
+                //O Switch com seu construtor default 
+                //terá o visual do android, para fazer 
+                //um Switch com visual adaptado para o
+                //IOs, devemos usar seu construtor 
+                //adaptive. Assim ele irá se adaptar
+                //de acordo com a plataforma. Usará
+                //o padrão Material se estiver no 
+                //android e usará o padrão do Cupertino
+                //se estiver em um IOs.
+                Switch.adaptive(
+                  activeColor: Theme.of(context).accentColor,
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+          */
+          //Em modo paisagem não é possível ver bem 
+          //as barras dos gráficos.
+          //Na operação ternária conseguimos apenas 
+          //mostrar um widget ou outro, já usando o 
+          //if conseguimos montar expressões mais 
+          //complexas, inclusive diferentes para cada
+          //componente
+          if (_showChart || !isLandscape)
+          //Outro problema no momento é que quando 
+          //estamos no modo paisagem o gráfico fica ruim
+          //de enxergar, isso porque até então o seu 
+          //tamanho era availableHeight * 0.3, e como 
+          //no modo paisagem provavelmente a altura já
+          //será um valor baixo, então usar 30% dessa 
+          //altura ficava ruim para enxergar ainda. Então
+          //teremos que verificar a orientação do 
+          //dispositivo e caso ela seja paisagem definir 
+          //um percentual maior. O appBar do scaffold é 
+          //o navigationBar no Cupertino.
             Container(
-              height: availableHeight * (isLandscape ? 1 : 0.7),
-              child: TransactionList(
-                _transactions, 
-                _deleteTransaction,
-              ),
-            )
-          ]
-        ),
+              height: availableHeight * (isLandscape ? 0.8 : 0.3),
+              child: Chart(_recentTransactions)
+            ),
+          if (!_showChart || !isLandscape)
+          Container(
+            height: availableHeight * (isLandscape ? 1 : 0.7),
+            child: TransactionList(
+              _transactions, 
+              _deleteTransaction,
+            ),
+          )
+        ]
       ),
+    );
+
+    //Ao invés de simplesmente retornarmos o Scaffold, 
+    //iremos agora retorná-lo apenas se for android, e se
+    //for IOs iremos retornar o CupertinoPageScaffold, 
+    //mas primeiro devemos importar:
+    //import 'package:flutter/cupertino.dart';
+    //É importante de ressaltar que há uma certa 
+    //inconsistência nos nomes dos atributos. Enquanto
+    //no CupertinoPageScaffold tems child, no Scaffold
+    //temos body, mas é a mesma coisa, por isso 
+    //iremos abstrair o body e adicionar em uma 
+    //constante para poder reutilizar tanto no 
+    //CupertinoPageScaffold quanto no Scaffold.
+    return Platform.isIOS ? CupertinoPageScaffold(
+      navigationBar: appBar,
+      child: bodyPage,
+    ) : Scaffold(
+      appBar: appBar,
+      body: bodyPage,
       //como o FAB não é um botão usado no padrão do 
       //IOs, iremos escondê-lo caso a plataforma seja
       //IOs. Importando o dart:io , temos acesso ao 
