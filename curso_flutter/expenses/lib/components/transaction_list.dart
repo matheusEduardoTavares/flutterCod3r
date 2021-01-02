@@ -11,28 +11,9 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Para evitar que o tamanho da imagem quebre iremos
-    //fazer um wrap da Column com um LayoutBuilder para 
-    //usarmos as constraints para ter um tamanho certo para
-    //que a imagem tenha um espaço para ser renderizado de
-    //forma correta. O problema no momento é que estamos
-    //usando um container com height 200 como wrap da 
-    //imagem para poder renderizá-la, e usando o 
-    //LayoutBuilder ela terá todo o tamanho disponível
     return transactions.isEmpty ? LayoutBuilder(
       builder: (context, constraints) => Column(
         children: [
-          // SizedBox(height: constraints.maxHeight * 0.05),
-          // Container(
-          //   height: constraints.maxHeight * 0.3,
-          //   child: FittedBox(
-          //     child: Text(
-          //       'Nenhuma Transação Cadastrada',
-          //       style: Theme.of(context).textTheme.headline6
-          //     ),
-          //   ),
-          // ),
-          // SizedBox(height: constraints.maxHeight * 0.05),
           SizedBox(height: 20),
           Text(
             'Nenhuma Transação Cadastrada',
@@ -73,8 +54,6 @@ class TransactionList extends StatelessWidget {
             subtitle: Text(
               DateFormat('d MMM y').format(transaction.date)
             ),
-            //Agora de acordo com uma certa largura mostraremos
-            //um elemento ou não
             trailing: MediaQuery.of(context).size.width > 480 ? 
               FlatButton.icon(
                 onPressed: () => onRemove(transaction.id), 
