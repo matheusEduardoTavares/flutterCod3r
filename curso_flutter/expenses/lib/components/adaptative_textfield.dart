@@ -17,12 +17,15 @@ class AdaptativeTextField extends StatelessWidget {
   final bool readOnly;
   final bool autofocus;
   final String placeholder;
+  final String label;
+  final EdgeInsets paddingOutside;
+  final EdgeInsets paddingInside;
 
   const AdaptativeTextField({
     @required this.controller,
     this.androidDecoration,
     this.iosDecoration,
-    this.keyboardType,
+    this.keyboardType = TextInputType.text,
     this.onChanged,
     this.onSubmitted,
     this.focusNode,
@@ -30,7 +33,10 @@ class AdaptativeTextField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.autofocus = false,
-    this.placeholder
+    this.placeholder,
+    this.label,
+    this.paddingInside,
+    this.paddingOutside
   }) : assert(
     (iosDecoration != null && placeholder != null) || (iosDecoration == null),
     'É obrigatório ter um placeholder quando se está usando a decoração do iOS'
@@ -38,21 +44,32 @@ class AdaptativeTextField extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context){
-    return Platform.isIOS ? CupertinoTextField(
-      placeholder: placeholder,
-      controller: controller,
-      decoration: iosDecoration,
-      focusNode: focusNode,
-      keyboardType: keyboardType,
-      onChanged: onChanged,
-      onEditingComplete: onEditingComplete,
-      onSubmitted: onSubmitted,
-      onTap: onTap,
-      autofocus: autofocus ?? false,
-      readOnly: readOnly ?? false,
+    return Platform.isIOS ? Padding(
+      padding: paddingOutside ?? const EdgeInsets.only(
+        bottom: 10
+      ),
+      child: CupertinoTextField(
+        placeholder: placeholder,
+        controller: controller,
+        decoration: iosDecoration,
+        focusNode: focusNode,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        onEditingComplete: onEditingComplete,
+        onSubmitted: onSubmitted,
+        onTap: onTap,
+        autofocus: autofocus ?? false,
+        readOnly: readOnly ?? false,
+        padding: paddingInside ?? EdgeInsets.symmetric(
+          horizontal: 6,
+          vertical: 12
+        ),
+      ),
     ) : TextField(
       controller: controller,
-      decoration: androidDecoration,
+      decoration: androidDecoration ?? InputDecoration(
+        labelText: label
+      ),
       focusNode: focusNode,
       keyboardType: keyboardType,
       onChanged: onChanged,

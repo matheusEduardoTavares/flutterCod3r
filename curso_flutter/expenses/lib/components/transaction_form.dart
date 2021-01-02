@@ -84,17 +84,19 @@ class _TransactionFormState extends State<TransactionForm> {
           children: <Widget> [
             AdaptativeTextField(
               controller: _titleController,
-              androidDecoration: InputDecoration(
-                labelText: 'Título'
-              ),
+              // androidDecoration: InputDecoration(
+              //   labelText: 'Título'
+              // ),
+              label: 'Título',
               onSubmitted: (_) => _submitForm(),
               placeholder: 'Título',
             ),
             AdaptativeTextField(
               controller: _valueController,
-              androidDecoration: InputDecoration(
-                labelText: 'Valor (R\$)'
-              ),
+              // androidDecoration: InputDecoration(
+              //   labelText: 'Valor (R\$)'
+              // ),
+              label: 'Valor (R\$)',
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) => _submitForm(),
               placeholder: 'Título',
