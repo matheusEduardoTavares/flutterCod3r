@@ -150,6 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('build() _MyHomePageState');
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
     final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;
