@@ -65,7 +65,48 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  //usaremos o método initState e o método dispose para 
+  //registrar um listener que ficará responsável por 
+  //escutar as transições de estado da nossa aplicação.
+  //Precisaremos usar um recurso chamado mixin do dart,
+  //que significa mistura, quando queremos reaproveitar
+  //código sem querer usar herança, é como se pegássemos
+  //aquele código e copiássemos ele na classe, mas não 
+  //será por herança e sim por mixin. Usamos a palavra
+  //reservada with para usar os mixins e copiaremos o 
+  //código com o mixin da classe WidgetsBindingObserver
+
+  @override 
+  void initState(){
+    super.initState();
+
+    //O this referência está classe. Estamos adicionando
+    //esta classe como um observer para ser notificada
+    //quando houver um evento.
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  //Esse método é chamado sempre que houver uma mudança 
+  //no estado da aplicação. Mas para ele ser chamado
+  //precisamos registrar essa classe _MyHomePageState para
+  //ser um interessado, um observe para quando houver 
+  //mudanças nesse estado ele ser notificado. É 
+  //oque fizemos dentro do initState
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  //Esse é um bom uso do dispose, remover um observer 
+  //quando o componente que contém ele é destruído.
+  @override 
+  void dispose(){
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
   final List<Transaction> _transactions = [];
   bool _showChart = false;
 
