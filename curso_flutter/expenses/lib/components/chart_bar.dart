@@ -5,8 +5,6 @@ class ChartBar extends StatelessWidget {
   final double value;
   final double percentage;
 
-  //Só conseguimos marcar este construtor como const pois
-  //todos os atributos dessa classe são final.
   const ChartBar({
       this.label, 
       this.value, 

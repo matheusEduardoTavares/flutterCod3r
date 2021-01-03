@@ -39,8 +39,6 @@ class _TransactionFormState extends State<TransactionForm> {
   @override 
   void didUpdateWidget(TransactionForm oldWidget){
     super.didUpdateWidget(oldWidget);
-    //widget é o componente novo, o atual, enquanto 
-    //o oldWidget é o componente velho.
 
     print('didUpdateWidget _TransactionFormState');
   }

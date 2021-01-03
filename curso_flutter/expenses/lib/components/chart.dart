@@ -58,10 +58,6 @@ class Chart extends StatelessWidget {
           children: groupedTransactions.map((tr) {
             return Flexible(
               fit: FlexFit.tight,
-              //aqui não podemos colocar const antes de
-              //ChartBar pois os valores de tr serão 
-              //definidos apenas em runtime, não em 
-              //tempo de compilação.
               child: ChartBar(
                 label: tr['day'],
                 value: tr['value'],
