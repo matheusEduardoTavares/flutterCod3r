@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'transaction_item.dart';
 import '../models/transaction.dart';
 
 typedef DeleteTransaction = void Function(String);
@@ -34,50 +34,9 @@ class TransactionList extends StatelessWidget {
       itemCount: transactions.length,
       itemBuilder: (ctx, index) {
         final transaction = transactions[index];
-        return Card(
-          elevation: 5,
-          margin: EdgeInsets.symmetric(
-            vertical: 8.0,
-            horizontal: 5
-          ),
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: FittedBox(child: Text(NumberFormat.currency(symbol: 'R\$', decimalDigits: 2).format(transaction.value))),
-              )
-            ),
-            title: Text(
-              transaction.title,
-              style: Theme.of(context).textTheme.headline6
-            ),
-            subtitle: Text(
-              DateFormat('d MMM y').format(transaction.date)
-            ),
-            trailing: MediaQuery.of(context).size.width > 480 ? 
-              FlatButton.icon(
-                onPressed: () => onRemove(transaction.id), 
-                icon: const Icon(Icons.delete), 
-                //aqui por exemplo podemos usar o const pois
-                //seu construtor é constante e o parâmetro
-                //que ele recebe já é conhecido em tempo de
-                //compilação.
-                label: const Text('Excluir'),
-                textColor: Theme.of(context).errorColor,
-              ) : InkWell(
-                onTap: () => onRemove(transaction.id),
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).errorColor,
-                  ),
-                  child: Icon(Icons.delete, color: Colors.white),
-                ),
-              ),
-          ),
+        return TransactionItem(
+          transaction: transaction,
+          onRemove: onRemove
         );
       }
     );
