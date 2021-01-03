@@ -9,16 +9,46 @@ class TransactionForm extends StatefulWidget {
 
   TransactionForm({
     @required this.onSubmit,
-  });
+  }) {
+    print('Constructor TransactionForm');
+  }
 
   @override
-  _TransactionFormState createState() => _TransactionFormState();
+  _TransactionFormState createState() {
+    print('createState TransactionForm');
+    return _TransactionFormState();
+  }
 }
 
 class _TransactionFormState extends State<TransactionForm> {
   final _titleController = TextEditingController();
   final _valueController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+
+  _TransactionFormState() {
+    print('Constructor _TransactionFormState');
+  }
+
+  @override 
+  void initState(){
+    super.initState();
+
+    print('initState _TransactionFormState');
+  }
+
+  @override 
+  void didUpdateWidget(TransactionForm oldWidget){
+    super.didUpdateWidget(oldWidget);
+
+    print('didUpdateWidget _TransactionFormState');
+  }
+
+  @override 
+  void dispose(){
+    super.dispose();
+
+    print('dispose _TransactionFormState');
+  }
 
   void _submitForm() {
     final title = _titleController.text;
@@ -33,6 +63,7 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override 
   Widget build(BuildContext context){
+    print('build() TransactionForm');
     return SingleChildScrollView(
       child: Card(
         elevation: 5,

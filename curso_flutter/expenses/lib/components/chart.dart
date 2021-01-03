@@ -8,6 +8,9 @@ class Chart extends StatelessWidget {
   final List<Transaction> recentTransaction;
 
   const Chart(this.recentTransaction);
+  // Chart(this.recentTransaction) {
+  //   print('Constructor Chart');
+  // }
 
   double get _weekTotalValue {
     return groupedTransactions == null || groupedTransactions.isEmpty ?
@@ -44,6 +47,7 @@ class Chart extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context){
+    // print('build() Chart');
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),

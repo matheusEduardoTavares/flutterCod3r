@@ -65,7 +65,26 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  @override 
+  void initState(){
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  @override 
+  void dispose(){
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
   final List<Transaction> _transactions = [];
   bool _showChart = false;
 
@@ -150,6 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // print('build() _MyHomePageState');
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
     final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;

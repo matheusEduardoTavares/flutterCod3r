@@ -15,7 +15,7 @@ class Questionario extends StatelessWidget {
   final bool hasSelectedQuestion;
   final Pointing onPressed;
 
-  Questionario({
+  const Questionario({
     this.columnContent,
     this.mainAxisAlignement,
     this.crossAxisAlignement,

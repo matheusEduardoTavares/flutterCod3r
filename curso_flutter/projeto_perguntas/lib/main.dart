@@ -397,7 +397,7 @@ class PerguntaApp extends StatelessWidget{
           title: Text('Perguntas'),
           centerTitle: true,
         ),
-        body: BodyScaffold(),
+        body: const BodyScaffold(),
       )
     );
   }
