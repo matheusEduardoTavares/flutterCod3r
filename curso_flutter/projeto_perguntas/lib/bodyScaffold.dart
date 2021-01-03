@@ -53,15 +53,15 @@ class _BodyScaffoldState extends State<BodyScaffold> {
     bool choose = await showDialog(
       context: ctx,
       builder: (context) => AlertDialog(
-        title: Text('Reiniciar questionário'),
-        content: Text('Realmente deseja reiniciar o questionário ?'),
+        title: const Text('Reiniciar questionário'),
+        content: const Text('Realmente deseja reiniciar o questionário ?'),
         actions: [
           FlatButton(
-            child: Text('CANCELAR'),
+            child: const Text('CANCELAR'),
             onPressed: () => Navigator.pop(context, false),
           ),
           FlatButton(
-            child: Text('OK'),
+            child: const Text('OK'),
             onPressed: () => Navigator.pop(context, true),
           ),
         ],
@@ -88,6 +88,9 @@ class _BodyScaffoldState extends State<BodyScaffold> {
 }
 
 class BodyScaffold extends StatefulWidget {
+
+  const BodyScaffold();
+
   @override 
   _BodyScaffoldState createState() => _BodyScaffoldState();
 }
