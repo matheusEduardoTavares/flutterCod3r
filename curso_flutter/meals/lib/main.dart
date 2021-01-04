@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import './screens/categories_screen.dart';
  
 void main() => runApp(MyApp());
+
+//A lógica de estrutura de pastas neste APP é a seguinte:
+//temos a pasta components onde estarão os widgets nossos
+//e a pasta screens, que também serão componentes, mas 
+//responsáveis por renderizar nossas páginas, já nos
+//components serão apenas widgets de componentes mesmo,
+//não serão páginas em si. Teremos também a pasta models
+//para usar os modelos e a pasta data de onde pegaremos
+//os dados dummy.
  
 class MyApp extends StatelessWidget {
   @override
@@ -10,26 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
-    );
-  }
-}
- 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
- 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('DeliMeals'),
-      ),
-      body: Center(
-        child: Text('Navegar é preciso!!'),
-      ),
+      home: CategoriesScreen(),
     );
   }
 }
