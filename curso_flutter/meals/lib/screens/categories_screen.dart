@@ -11,9 +11,11 @@ class CategoriesScreen extends StatelessWidget {
     //queremos.
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DeliMeals'),
+        centerTitle: true,
+        title: const Text('Vamos Cozinhar?'),
       ),
       body: GridView(
+        padding: const EdgeInsets.all(25),
         //Sliver no contexto do flutter é uma área que tem 
         //scroll, grid delegate é uma forma de delegar como
         //a grid será delegada, que no caso é extendendo do 

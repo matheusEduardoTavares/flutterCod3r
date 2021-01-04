@@ -32,7 +32,10 @@ class CategoryItem extends StatelessWidget {
           end: Alignment.bottomRight
         )
       ),
-      child: Text(category.title),
+      child: Text(
+        category.title,
+        style: Theme.of(context).textTheme.headline6
+      ),
     );
   }
 }
