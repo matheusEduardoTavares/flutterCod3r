@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import '../models/category.dart';
 
 class CategoriesMealsScreen extends StatelessWidget {
-  final Category category;
-
-  const CategoriesMealsScreen(this.category);
-
   @override
   Widget build(BuildContext context) {
+    //Obtemos os arguments passados na 
+    //hora de usar o Navigator com o 
+    //ModalRoute.of .
+    final category = ModalRoute.of(context).settings.arguments as Category;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
