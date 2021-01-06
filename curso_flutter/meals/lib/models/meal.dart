@@ -52,4 +52,32 @@ class Meal {
     @required this.complexity,
     @required this.cost,
   });
+
+  //Criaremos um getter que dará um valor associado a cada
+  //uma das enumerações (enum)
+  String get complexityText {
+    switch(complexity){
+      case Complexity.Simple:
+        return 'Simples';
+      case Complexity.Medium:
+        return 'Normal';
+      case Complexity.Difficult:
+        return 'Difícil';
+      default:
+        return 'Desconhecida';
+    }
+  }
+
+  String get costText{
+    switch (cost){
+      case Cost.Cheap:
+        return 'Barato';
+      case Cost.Fair:
+        return 'Justo';
+      case Cost.Expensive:
+        return 'Caro';
+      default:
+        return 'Desconhecido';
+    }
+  }
 }
