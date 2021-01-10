@@ -46,7 +46,49 @@ class MyApp extends StatelessWidget {
         //O / representa o home
         AppRoutes.HOME: (ctx) => CategoriesScreen(),
         AppRoutes.CATEGORIES_MEALS: (ctx) => CategoriesMealsScreen(),
-        AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen()
+        // AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen()
+      },
+      //RouteSettings são os metadados de uma determinada rota,
+      onGenerateRoute: (settings) {
+        //Aqui conseguimos definir rotas dinamicamente, por exempl
+        //se foi colocado uma rota em um dado padrão vá para X,
+        //por exemplo:
+        if (settings.name == '/alguma-coisa') {
+          //Aqui retornaríamos uma rota:
+          return null;
+        }
+        else if (settings.name == '/outra-coisa'){
+          return null;
+        }
+        else {
+          //Se acabar não achando nenhuma rota nem no routes
+          //e nem no if e else if, mostra uma página default
+          //que no caso é a principal da aplicação, o 
+          //CategoriesScreen().
+          return MaterialPageRoute(
+            builder: (_) {
+              return CategoriesScreen();
+            } 
+          );
+        }
+        //Sempre é dado prioridade para o routes, ou seja, se a 
+        //navegação encontrar uma rota e navegar corretamente não
+        //irá entrar no método onGenerateRoute, mas caso não 
+        //encontre uma rota no routes então será chamado o método
+        //onGenerateRoute, e caso ainda no onGenerateRoute não
+        //seja encontrado nenhuma rota, por último é chamado o 
+        //método onUnknownRoute. Caso a função onGenerateRoute
+        //não tenha sido criada, então já irá direto para 
+        //onUnknownRoute
+      },
+      //Podemos fazer alguma lógica em cima do settings, para 
+      //definir que rota será retornada.
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (_) {
+            return CategoriesScreen();
+          } 
+        );
       }
     );
   }
