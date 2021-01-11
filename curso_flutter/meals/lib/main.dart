@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         //O / representa o home
         AppRoutes.HOME: (ctx) => CategoriesScreen(),
         AppRoutes.CATEGORIES_MEALS: (ctx) => CategoriesMealsScreen(),
-        // AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen()
+        AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen()
       },
       //RouteSettings são os metadados de uma determinada rota,
       onGenerateRoute: (settings) {
