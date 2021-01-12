@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'categories_screen.dart';
 import 'favorite_screen.dart';
+import '../components/main_drawer.dart';
 
 //Até que estávamos usando as abas na parte superior
 //da tela o componente era StatelessWidget, mas
@@ -82,6 +83,12 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Text(_screens[_selectedScreenIndex]['title']),
         centerTitle: true,
       ),
+      // Colocamos a drawer direto no scaffold também.
+      // Só de adicionar uma drawer com um child irá aparecer
+      // o ícone de menu na parte esquerda do scaffold, e 
+      // esse ícone permite clicar e arir o drawer, e em cima do
+      // drawer estará o que colocamos no child.
+      drawer: MainDrawer(),
       body: _screens[_selectedScreenIndex]['screen'],
       //Para fazer as abas ficarem na parte inferior da tela,
       //devemos usar o bottomNavigationBar
