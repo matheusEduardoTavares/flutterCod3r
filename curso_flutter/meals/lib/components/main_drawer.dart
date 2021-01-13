@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utils/app_routes.dart';
 
 class MainDrawer extends StatelessWidget {
-  Widget _createItem(IconData icon, String label, {VoidCallback onTap, String routeName = AppRoutes.HOME, BuildContext context}){
+  Widget _createItem(IconData icon, String label, {VoidCallback onTap, String routeName = AppRoutes.HOME, BuildContext context, bool replaceRoute = false}){
     return ListTile(
       leading: Icon(
         icon,
@@ -16,7 +16,8 @@ class MainDrawer extends StatelessWidget {
           fontWeight: FontWeight.bold,
         )
       ),
-      onTap: onTap ?? () => Navigator.of(context).pushNamed(routeName)
+      onTap: onTap ?? () => (replaceRoute ?? false) ? Navigator.of(context).pushReplacementNamed(routeName)
+        : Navigator.of(context).pushNamed(routeName)
     );
   }
 
@@ -44,13 +45,20 @@ class MainDrawer extends StatelessWidget {
           _createItem(
             Icons.restaurant, 
             'Refeições',
+            //Quando temos que dar um push várias vezes em uma
+            //tela principal como nesse caso, se fizermos só 
+            //um push irá começar a adicionar muitas telas 
+            //pois a mesma não será removida da stack, nesses
+            //casos usamos o pushReplacementNamed ao invés de
+            //apenas pushNamed
             onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutes.HOME)
           ),
           _createItem(
             Icons.settings, 
             'Configurações',
             routeName: AppRoutes.SETTINGS,
-            context: context
+            context: context,
+            replaceRoute: true
           ),
         ]
       )
