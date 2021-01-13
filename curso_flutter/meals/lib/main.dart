@@ -28,6 +28,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  //É importante ter o settings aqui pois se 
+  //não tiver e passar para o settings screen sempre
+  //que alterarmos um valor do settings será feito
+  //o filtro pois a função _filterMeals é chamada,
+  //mas quando voltarmos na página de configuração
+  //estará tudo vazio pois a variável settings de lá
+  //estará sendo inicializada com Settings.
   Settings _settings = Settings();
   List<Meal> _availableMeals = DUMMY_MEALS;
   
@@ -42,6 +49,9 @@ class _MyAppState extends State<MyApp> {
 
   void _filterMeals(Settings settings){
     setState(() {
+      //Aqui atualizamos o settings daqui quando for 
+      //atualizado lá no settings screen
+      _settings = settings;
       _availableMeals = DUMMY_MEALS.where((meal) {
         //Se a comida não tem gluten e o usuário quer apenas
         //comidas com glúten então esse filtro foi acionado
