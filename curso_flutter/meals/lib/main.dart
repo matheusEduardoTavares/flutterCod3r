@@ -6,6 +6,7 @@ import 'screens/tabs_screen.dart';
 import 'screens/settings_screen.dart';
 import 'utils/app_routes.dart';
 import 'models/meal.dart';
+import 'models/settings.dart';
 import 'data/dummy_data.dart';
  
 void main() => runApp(MyApp());
@@ -27,7 +28,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Settings _settings = Settings();
   List<Meal> _availableMeals = DUMMY_MEALS;
+  
+  // List<Meal> _disponibleMeals(){
+  //   return _availableMeals.where((meal) => 
+  //     meal.isGlutenFree == _settings.isGlutenFree && 
+  //     meal.isLactoseFree == _settings.isLactoseFree &&
+  //     meal.isVegan == _settings.isVegan &&
+  //     meal.isVegetarian == _settings.isVegetarian
+  //   );
+  // }
+
+  void _filterMeals(Settings settings){
+    setState(() {
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        //Se a comida não tem gluten e o usuário quer apenas
+        //comidas com glúten então esse filtro foi acionado
+        final filterGluten = settings.isGlutenFree && !meal.isGlutenFree;
+        final filterLactose = settings.isLactoseFree && !meal.isLactoseFree;
+        final filterVegan = settings.isVegan && !meal.isVegan;
+        final filterVegetarian = settings.isVegetarian && !meal.isVegetarian;
+
+        //Se qualquer um dos filtros for verdadeiro a comida não 
+        //deve ser exibida, pois se ao menos um filtro for macado,
+        //significa que a comida não é do tipo que o usuário quer,
+        //pois por exemplo ele quer só comidas vegetarianas mas a 
+        //comida não é vegetariana, logo não deve estar presente.
+
+        return !filterGluten && !filterLactose && !filterVegan && !filterVegetarian;
+      }).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +90,8 @@ class _MyAppState extends State<MyApp> {
         AppRoutes.HOME: (ctx) => TabsScreen(),
         AppRoutes.CATEGORIES_MEALS: (ctx) => CategoriesMealsScreen(_availableMeals),
         AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen(),
-        AppRoutes.SETTINGS: (ctx) => SettingsScreen(),
+        // AppRoutes.SETTINGS: (ctx) => SettingsScreen(_settings),
+        AppRoutes.SETTINGS: (ctx) => SettingsScreen(_settings, _filterMeals),
       },
       //RouteSettings são os metadados de uma determinada rota,
       onGenerateRoute: (settings) {
