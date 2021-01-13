@@ -7,12 +7,30 @@ class MealItem extends StatelessWidget {
 
   const MealItem(this.meal);
 
+  //O Navigator pop padrão que é colocado quando 
+  //damos um push para uma tela com scaffold por 
+  //exemplo retorna no seu pop null.
+
   void _selectMeal(BuildContext context) {
     Navigator.of(context).pushNamed(
       AppRoutes.MEAL_DETAIL,
       arguments: meal,
-    );
+    ).then((result) {
+      if (result == null){
+        print('Sem resultado!');
+      }
+      else{
+        print('O nome da refeição é $result');
+      }
+    });
   }
+  // void _selectMeal(BuildContext context) async {
+  //   var res = await Navigator.of(context).pushNamed(
+  //     AppRoutes.MEAL_DETAIL,
+  //     arguments: meal,
+  //   );
+  //   print(res);
+  // }
 
   @override
   Widget build(BuildContext context) {
