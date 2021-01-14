@@ -43,6 +43,7 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Text(_screens[widget.initialIndex]['title']),
         centerTitle: true,
       ),
+      body: _screens[widget.initialIndex]['screen'],
       drawer: MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectScreen,
