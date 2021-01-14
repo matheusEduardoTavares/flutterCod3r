@@ -1,0 +1,15 @@
+Uma das formas que o Navigator tem para fazer a 
+navegação é usando o conceito de pilha (stack),
+ou seja, quando temos o dispositivo temos uma tela,
+quando queremos colocar uma outra tela na stack,
+colocamos uma segunda tela por cima da outra, 
+isso faz com que apenas a última tela, a que está
+no topo da pilha seja exibida. Se colocarmos uma
+terceira tela vamos colocando-as na stack, dando
+push adicionando novas telas nessa pilha de telas,
+e vamos dando pop para tirar a tela. Lembrando
+que a stack é LIFO. Quando fazemos o push para 
+uma tela e colocamos ela na pilha de telas, 
+conseguimos a partir do appBar voltar para a tela
+anterior, de forma automática ele nos dá um botão
+para voltar.

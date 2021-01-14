@@ -1,0 +1,8 @@
+Quando temos muitas rotas, muitas páginas, é 
+interessante centralizar a organização dessas
+rotas, então se deixamos a criação das rotas em
+cantos diferentes fica difícil entender quais 
+são as rotas criadas, quais são os nomes dessas 
+rotas. O uso de rotas nomeadas serve justamente
+para isso, para centralizar de uma forma mais 
+interessante isso.
