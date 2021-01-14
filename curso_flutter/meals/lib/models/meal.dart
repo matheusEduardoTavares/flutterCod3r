@@ -1,14 +1,4 @@
 import 'package:meta/meta.dart';
-//Ou:
-//import 'package:flutter/foundation.dart';
-
-//Para os atributos custo e complexidade criaremos
-//enum's, que é uma boa alternativa quando temos
-//valores fixos para serem detalhados, e fica 
-//mais organizado do que usar simplesmente 
-//Strings, pois os valores dos enums são fixos.
-//Poderíamos até mesmo separá-lo em outros arquivos,
-//sem problemas
 
 enum Complexity {
   Simple,
@@ -53,8 +43,6 @@ class Meal {
     @required this.cost,
   });
 
-  //Criaremos um getter que dará um valor associado a cada
-  //uma das enumerações (enum)
   String get complexityText {
     switch(complexity){
       case Complexity.Simple:

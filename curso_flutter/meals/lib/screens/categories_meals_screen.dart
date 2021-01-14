@@ -10,9 +10,6 @@ class CategoriesMealsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Obtemos os arguments passados na 
-    //hora de usar o Navigator com o 
-    //ModalRoute.of .
     final category = ModalRoute.of(context).settings.arguments as Category;
 
     final categoryMeals = meals.where((meal) => meal.categories.contains(category.id)).toList();

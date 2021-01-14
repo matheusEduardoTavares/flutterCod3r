@@ -62,8 +62,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             )
           ),
           Expanded(
-            //Como sabemos a quantidade de elementos e 
-            //são poucos não precisamos usar o ListView.builder
             child: ListView(
               children: <Widget> [
                 _createSwitch(

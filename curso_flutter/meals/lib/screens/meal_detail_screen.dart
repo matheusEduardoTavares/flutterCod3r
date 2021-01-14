@@ -2,27 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/meal.dart';
 import '../utils/app_routes.dart';
 
-/*
-No momento temos o seguinte problema na aplicação:
-Quando favoritamos uma comida, vamos na tela de 
-favorito e desfavoritamos a comida, se clicarmos
-para voltar na tela anterior a comida continuará lá,
-a atualização do toggle se é favorito ou não realmente
-aconteceu, tanto que se trocarmos de aba e voltarmos
-veremos que a atualização ocorreu. Porém não é atualizado
-pois quando damos um pop, a tela que estava na pilha é
-deixada em forma de cache, e quando ela volta a 
-aparecer, não foi atualizada. Quando trabalharmos com
-gerência de estado esse problema não irá acontecer.
-Esse problema tem haver com o gerenciamento de estado
-da aplicação, não tem haver com a parte de rotas.
-Uma forma de corrigir temporariamente é ao invés de
-dar um pushNamed para a tela, dar um pushReplacementNamed
-e para sair da tela também dar um pushReplacementNamed.
-Não foi abordado mas resolvi o problema fazendo
-o que fora citado e passando o índice do tab para o main.dart
-*/
-
 class MealDetailScreen extends StatelessWidget {
   final void Function(Meal) onToggleFavorite;
   final bool Function(Meal) isFavorite;
@@ -77,8 +56,6 @@ class MealDetailScreen extends StatelessWidget {
               width: double.infinity,
               child: Image.network(
                 meal.imageUrl,
-                //Ajustar a imagem da melhor forma possível
-                //usamos o BoxFit.cover
                 fit: BoxFit.cover,
               )
             ),
@@ -123,7 +100,6 @@ class MealDetailScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(isFavorite(meal) ? Icons.star : Icons.star_border),
         onPressed: () {
-          // Navigator.of(context).pop(meal.title);
           onToggleFavorite(meal);
         }
       ),

@@ -8,10 +8,6 @@ class MealItem extends StatelessWidget {
 
   const MealItem(this.meal, {this.hasReplacementScreen = true});
 
-  //O Navigator pop padrão que é colocado quando 
-  //damos um push para uma tela com scaffold por 
-  //exemplo retorna no seu pop null.
-
   void _selectMeal(BuildContext context) {
     if (!hasReplacementScreen ?? false){
       Navigator.of(context).pushNamed(
@@ -40,13 +36,6 @@ class MealItem extends StatelessWidget {
       });
     }
   }
-  // void _selectMeal(BuildContext context) async {
-  //   var res = await Navigator.of(context).pushNamed(
-  //     AppRoutes.MEAL_DETAIL,
-  //     arguments: meal,
-  //   );
-  //   print(res);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +49,6 @@ class MealItem extends StatelessWidget {
         margin: const EdgeInsets.all(10),
         child: Column(
           children: <Widget> [
-            //Para colocarmos um widget por cima de outro
-            //usamos o Stack
             Stack(
               children: <Widget> [
                 ClipRRect(
@@ -69,26 +56,6 @@ class MealItem extends StatelessWidget {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15)
                   ),
-                  //Só colocar o Image.network sem um wrap 
-                  //em volta dele gera um problema em que estamos
-                  //dentro de um card que tem as bordas circulares
-                  //e estamos colocando uma imagem quadrada para
-                  //ficar em cima de um componente que tem bordas
-                  //circulas. Isso vai gerar que simplesmente 
-                  //acabará perdendo as bordas circulares, então
-                  //para arrumar isso, fazemos um wrap em 
-                  //Image.network com um ClipRRect, que é um 
-                  //widget que faz o trabalho de definir as bordas
-                  //para um determinado componente, garantindo que
-                  //a imagem ficará contida nessas bordas. Mas
-                  //no caso queremos que tenha apenas as bordas
-                  //circulas em cima, pois a imagem está dentro do
-                  //card, e abaixo da imagem haverá textos, então
-                  //essa parte dos textos no fim deles em baixo 
-                  //é onde estará as bordas circulares do card, 
-                  //já em cima a imagem é o primeiro componente
-                  //visual dentro do card, logo só terá as bordas
-                  //arredondadas em cima.
                   child: Image.network(
                     meal.imageUrl,
                     height: 250,
@@ -96,8 +63,6 @@ class MealItem extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                //O Widget positioned serve para posicionar 
-                //um elemento dentro de uma stack.
                 Positioned(
                   right: 10,
                   bottom: 20,
@@ -114,11 +79,7 @@ class MealItem extends StatelessWidget {
                         fontSize: 26,
                         color: Colors.white,
                       ),
-                      //permitir quebrar linha
                       softWrap: true,
-                      //Quando o texto é muito grande e não cabe
-                      //e precisa dar overflow definimos como 
-                      //queremos que ocorra o overflow
                       overflow: TextOverflow.fade,
                     ),
                   ),

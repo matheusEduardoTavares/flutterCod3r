@@ -45,12 +45,6 @@ class MainDrawer extends StatelessWidget {
           _createItem(
             Icons.restaurant, 
             'Refeições',
-            //Quando temos que dar um push várias vezes em uma
-            //tela principal como nesse caso, se fizermos só 
-            //um push irá começar a adicionar muitas telas 
-            //pois a mesma não será removida da stack, nesses
-            //casos usamos o pushReplacementNamed ao invés de
-            //apenas pushNamed
             onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutes.HOME)
           ),
           _createItem(
