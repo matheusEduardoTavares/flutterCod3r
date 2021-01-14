@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   Settings _settings = Settings();
   List<Meal> _availableMeals = DUMMY_MEALS;
   List<Meal> _favoriteMeals = [];
+  int _currentTabIndex = 0;
   
   // List<Meal> _disponibleMeals(){
   //   return _availableMeals.where((meal) => 
@@ -47,6 +48,12 @@ class _MyAppState extends State<MyApp> {
   //     meal.isVegetarian == _settings.isVegetarian
   //   );
   // }
+
+  void _updateTabIndex(int index){
+    setState(() {
+      _currentTabIndex = index;
+    });
+  }
 
   void _filterMeals(Settings settings){
     setState(() {
@@ -110,7 +117,7 @@ class _MyAppState extends State<MyApp> {
       // initialRoute: ,
       routes: {
         //O / representa o home
-        AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals),
+        AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals, initialIndex: _currentTabIndex, updateTabIndex: _updateTabIndex,),
         AppRoutes.CATEGORIES_MEALS: (ctx) => CategoriesMealsScreen(_availableMeals),
         AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen(_toggleFavorite, _isFavorite),
         // AppRoutes.SETTINGS: (ctx) => SettingsScreen(_settings),

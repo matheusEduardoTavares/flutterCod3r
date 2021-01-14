@@ -10,17 +10,20 @@ import '../models/meal.dart';
 //parte inferior da tela, então convertemos para
 //stateful, isso pois precisaremos controlar 
 //manualmente qual tela ficará visível
+
+typedef UpdateTabIndex = void Function(int);
 class TabsScreen extends StatefulWidget {
   final List<Meal> favoriteMeal;
+  final int initialIndex;
+  final UpdateTabIndex updateTabIndex;
 
-  const TabsScreen(this.favoriteMeal);
+  const TabsScreen(this.favoriteMeal, {@required this.initialIndex, @required this.updateTabIndex});
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  int _selectedScreenIndex = 0;
   List<Map<String, Object>> _screens;
 
   @override 
@@ -31,7 +34,7 @@ class _TabsScreenState extends State<TabsScreen> {
       { 'title': 'Lista de Categorias', 'screen': CategoriesScreen() },
       { 'title': 'Meus Favoritos', 'screen': FavoriteScreen(widget.favoriteMeal) }
     ];
-    
+
   }
   // final List<String> _titlesAppBar = [
   //   'Lista de Categorias',
@@ -40,7 +43,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _selectScreen(int index){
     setState(() {
-      _selectedScreenIndex = index;
+      widget.updateTabIndex(index);
     });
   }
 
@@ -93,7 +96,7 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       appBar: AppBar(
         // title: Text(_titlesAppBar[_selectedScreenIndex]),
-        title: Text(_screens[_selectedScreenIndex]['title']),
+        title: Text(_screens[widget.initialIndex]['title']),
         centerTitle: true,
       ),
       // Colocamos a drawer direto no scaffold também.
@@ -102,7 +105,7 @@ class _TabsScreenState extends State<TabsScreen> {
       // esse ícone permite clicar e arir o drawer, e em cima do
       // drawer estará o que colocamos no child.
       drawer: MainDrawer(),
-      body: _screens[_selectedScreenIndex]['screen'],
+      body: _screens[widget.initialIndex]['screen'],
       //Para fazer as abas ficarem na parte inferior da tela,
       //devemos usar o bottomNavigationBar
       bottomNavigationBar: BottomNavigationBar(
@@ -110,7 +113,7 @@ class _TabsScreenState extends State<TabsScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.white,
         selectedItemColor: Theme.of(context).accentColor,
-        currentIndex: _selectedScreenIndex,
+        currentIndex: widget.initialIndex,
         // Para trabalhar com animação na transição das abas,
         // usamos o atributo type
         // type: BottomNavigationBarType.shifting,

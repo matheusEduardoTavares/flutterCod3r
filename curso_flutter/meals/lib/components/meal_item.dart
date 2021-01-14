@@ -4,25 +4,41 @@ import '../models/meal.dart';
 
 class MealItem extends StatelessWidget {
   final Meal meal;
+  final bool hasReplacementScreen;
 
-  const MealItem(this.meal);
+  const MealItem(this.meal, {this.hasReplacementScreen = true});
 
   //O Navigator pop padrão que é colocado quando 
   //damos um push para uma tela com scaffold por 
   //exemplo retorna no seu pop null.
 
   void _selectMeal(BuildContext context) {
-    Navigator.of(context).pushNamed(
-      AppRoutes.MEAL_DETAIL,
-      arguments: meal,
-    ).then((result) {
-      if (result == null){
-        print('Sem resultado!');
-      }
-      else{
-        print('O nome da refeição é $result');
-      }
-    });
+    if (!hasReplacementScreen ?? false){
+      Navigator.of(context).pushNamed(
+        AppRoutes.MEAL_DETAIL,
+        arguments: {'meal': meal, 'hasReplacementScreen': false},
+      ).then((result) {
+        if (result == null){
+          print('Sem resultado!');
+        }
+        else{
+          print('O nome da refeição é $result');
+        }
+      });
+    }
+    else {
+      Navigator.of(context).pushReplacementNamed(
+        AppRoutes.MEAL_DETAIL,
+        arguments: {'meal': meal, 'hasReplacementScreen': hasReplacementScreen},
+      ).then((result) {
+        if (result == null){
+          print('Sem resultado!');
+        }
+        else{
+          print('O nome da refeição é $result');
+        }
+      });
+    }
   }
   // void _selectMeal(BuildContext context) async {
   //   var res = await Navigator.of(context).pushNamed(
