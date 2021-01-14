@@ -37,6 +37,7 @@ class _MyAppState extends State<MyApp> {
   //estará sendo inicializada com Settings.
   Settings _settings = Settings();
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoriteMeals = [];
   
   // List<Meal> _disponibleMeals(){
   //   return _availableMeals.where((meal) => 
@@ -71,6 +72,18 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _toggleFavorite(Meal meal){
+    setState(() {
+      _favoriteMeals.contains(meal) ? 
+        _favoriteMeals.remove(meal) :
+        _favoriteMeals.add(meal);
+    });
+  }
+
+  bool _isFavorite(Meal meal){
+    return _favoriteMeals.contains(meal);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,9 +110,9 @@ class _MyAppState extends State<MyApp> {
       // initialRoute: ,
       routes: {
         //O / representa o home
-        AppRoutes.HOME: (ctx) => TabsScreen(),
+        AppRoutes.HOME: (ctx) => TabsScreen(_favoriteMeals),
         AppRoutes.CATEGORIES_MEALS: (ctx) => CategoriesMealsScreen(_availableMeals),
-        AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen(),
+        AppRoutes.MEAL_DETAIL: (ctx) => MealDetailScreen(_toggleFavorite, _isFavorite),
         // AppRoutes.SETTINGS: (ctx) => SettingsScreen(_settings),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(_settings, _filterMeals),
       },

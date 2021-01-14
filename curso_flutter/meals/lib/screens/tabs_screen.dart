@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'categories_screen.dart';
 import 'favorite_screen.dart';
 import '../components/main_drawer.dart';
+import '../models/meal.dart';
 
 //Até que estávamos usando as abas na parte superior
 //da tela o componente era StatelessWidget, mas
@@ -10,16 +11,28 @@ import '../components/main_drawer.dart';
 //stateful, isso pois precisaremos controlar 
 //manualmente qual tela ficará visível
 class TabsScreen extends StatefulWidget {
+  final List<Meal> favoriteMeal;
+
+  const TabsScreen(this.favoriteMeal);
+
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedScreenIndex = 0;
-  final List<Map<String, Object>> _screens = [
-    { 'title': 'Lista de Categorias', 'screen': CategoriesScreen() },
-    { 'title': 'Meus Favoritos', 'screen': FavoriteScreen() }
-  ];
+  List<Map<String, Object>> _screens;
+
+  @override 
+  void initState(){
+    super.initState();
+    
+    _screens = [
+      { 'title': 'Lista de Categorias', 'screen': CategoriesScreen() },
+      { 'title': 'Meus Favoritos', 'screen': FavoriteScreen(widget.favoriteMeal) }
+    ];
+    
+  }
   // final List<String> _titlesAppBar = [
   //   'Lista de Categorias',
   //   'Meus Favoritos'
