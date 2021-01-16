@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
 import '../models/product.dart';
+import '../widgets/product_item.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
   
@@ -20,8 +21,8 @@ class ProductOverviewScreen extends StatelessWidget {
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: loadedProducts.length,
-        itemBuilder: (ctx, index) => Text(
-          loadedProducts[index].title
+        itemBuilder: (ctx, index) => ProductItem(
+          loadedProducts[index]
         ),
         //O gridDelegate que usaremos aqui agora, basicamente
         //o sliver é uma área que permite scroll, o grid delegate é
