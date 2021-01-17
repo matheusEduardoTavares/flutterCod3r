@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/utils/app_routes.dart';
 import '../models/product.dart';
 
 class ProductItem extends StatelessWidget {
@@ -14,14 +15,28 @@ class ProductItem extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
-         child: Image.network(
-           product.imageUrl,
-           //O cover faz com que toda área 
-           //do tile seja coberta pela imagem, que
-           //era o childAspectRatio que 
-           //colocamos 3/2, ou seja, proporção de
-           //1.5 em relação da largura com a altura.
-           fit: BoxFit.cover,
+         child: GestureDetector(
+           onTap: () {
+            Navigator.of(context).pushNamed(
+              AppRoutes.PRODUCT_DETAIL,
+              arguments: product
+            );
+
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => ProductDetailScreen(product)
+            //   ),
+            // );
+           },
+           child: Image.network(
+             product.imageUrl,
+             //O cover faz com que toda área 
+             //do tile seja coberta pela imagem, que
+             //era o childAspectRatio que 
+             //colocamos 3/2, ou seja, proporção de
+             //1.5 em relação da largura com a altura.
+             fit: BoxFit.cover,
+           ),
          ),
          footer: GridTileBar(
            backgroundColor: Colors.black87,
