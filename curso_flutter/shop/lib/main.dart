@@ -22,3 +22,27 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+/*
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //Agora aqui estamos envolvendo a aplicação com o 
+    //CounterProvider.
+    return CounterProvider(
+      child: MaterialApp(
+        title: 'Minha Loja',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.deepOrange,
+          fontFamily: 'Lato'
+        ),
+        home: ProductOverviewScreen(),
+        routes: {
+          AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen()
+        }
+      ),
+    );
+  }
+}
+*/
