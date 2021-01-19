@@ -1,0 +1,40 @@
+Frameworks que são voltados para interface
+do usuário tem o importante aspecto de
+lidar com os dados. Os dados geram 
+impactos na UI.
+
+Para Frameworks voltados para UI:
+O Estado são dados que afetam a UI (e
+que muda com o tempo). Todos eventos 
+que o usuário dispara na interface gráfica
+geram impacto nos dados, no estado da 
+aplicação, e assim eventualmente a 
+interface será atualizada para refletir 
+esses dados. 
+
+No caso do flutter, podemos alterar
+um componente e este componente acabar 
+impactando em um outro componente que 
+pode estar muito distante na árvore de 
+widgets. Temos 2 tipos de estados que 
+funcionam na aplicação (em uma mesma 
+aplicação podemos ter os 2 estados 
+sendo usados em conjunto e é o que 
+normalmente acontece, muitas vezes só 
+temos que passar dados de um componente 
+pai para um componente filho, e na maioria
+dos casos não faz sentido usar o estado 
+da aplicação para isso, só o estado local 
+já atende). Tudo depende da quantidade de 
+elementos e componentes que dependem de um
+determinado estado, mas não é 
+comum termos um estado que impacta a 
+aplicação inteira, todos os componentes 
+usados na aplicação:
+- Estado da APP: É um estado compartilhado,
+pertence mais ao âmbito da aplicação e 
+não necessariamente está restrito a um 
+componente só. 
+- Estado do Widget (Local): Quando 
+precisamos usar um detalhe de interface, 
+passamos esse estado entre filhos e pais.
