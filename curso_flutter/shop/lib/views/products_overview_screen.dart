@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import '../data/dummy_data.dart';
+import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../widgets/product_item.dart';
+import '../providers/products.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
-  
-  final List<Product> loadedProducts = DUMMY_PRODUCTS;
-
   ProductOverviewScreen({
     Key key
   }) : super(key: key);
 
   @override 
   Widget build(BuildContext context){
+    //Agora ao invés de usarmos o loadedProducts a partir
+    //de DUMMY_PRODUCTS, o usaremos a partir do provider:
+    // final List<Product> loadedProducts = Provider
+    //   .of<Products>(context).items;
+
+    //Ou podemos fazer isso:
+    final productsProvider = Provider.of<Products>(context);
+    final products = productsProvider.items;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Minha Loja'),
@@ -20,9 +27,9 @@ class ProductOverviewScreen extends StatelessWidget {
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
-        itemCount: loadedProducts.length,
+        itemCount: products.length,
         itemBuilder: (ctx, index) => ProductItem(
-          loadedProducts[index]
+          products[index]
         ),
         //O gridDelegate que usaremos aqui agora, basicamente
         //o sliver é uma área que permite scroll, o grid delegate é
