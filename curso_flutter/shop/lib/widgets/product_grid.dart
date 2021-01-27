@@ -18,8 +18,16 @@ class ProductGrid extends StatelessWidget {
     return GridView.builder(
       padding: const EdgeInsets.all(10),
       itemCount: products.length,
-      itemBuilder: (ctx, index) => ProductItem(
-        products[index]
+      //Iremos fazer u mwrap do ProductItem com o 
+      //ChangeNotifierProvider para podermos usar o 
+      //Provider.of(context) e acessar se o produto é
+      //favorito ou não
+      itemBuilder: (ctx, index) => ChangeNotifierProvider(
+        //Veremos o create melhor mais na frente, mas é 
+        //a partir dele que pegamos a informação que 
+        //precisamos
+        create: (ctx) => products[index],
+        child: ProductItem(),
       ),
       //O gridDelegate que usaremos aqui agora, basicamente
       //o sliver é uma área que permite scroll, o grid delegate é

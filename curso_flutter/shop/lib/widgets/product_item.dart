@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shop/utils/app_routes.dart';
 import '../models/product.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
-  final Product product;
-
-  const ProductItem(this.product);
-
   @override
   Widget build(BuildContext context) {
+    final Product product = Provider.of<Product>(context);
     //ClipRoundedRectangle, é um widget cujo nome
     //quer dizer que vai cortar fora uma parte do
     //arredondamento de um retângulo
@@ -41,8 +39,10 @@ class ProductItem extends StatelessWidget {
          footer: GridTileBar(
            backgroundColor: Colors.black87,
            leading: IconButton(
-             icon: Icon(Icons.favorite),
-             onPressed: () {},
+             icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
+             onPressed: () {
+               product.toggleFavorite();
+             },
              color: Theme.of(context).accentColor,
            ),
            title: Text(

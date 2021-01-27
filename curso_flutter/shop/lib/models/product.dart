@@ -4,7 +4,10 @@ import 'package:flutter/foundation.dart';
 //decorator @required
 
 
-class Product {
+//Faremos um mixin com a classe Product também para
+//poder ficar alternando se o produto é favorito ou 
+//não.
+class Product with ChangeNotifier{
   final String id;
   final String title;
   final String description;
@@ -20,6 +23,11 @@ class Product {
     @required this.imageUrl,
     this.isFavorite = false
   });
+
+  void toggleFavorite() {
+    isFavorite = !isFavorite;
+    notifyListeners();
+  }
 }
 
 //Faz sentido usarmos as imagens dentro
