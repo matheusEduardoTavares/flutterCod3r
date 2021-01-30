@@ -22,11 +22,30 @@ class ProductGrid extends StatelessWidget {
       //ChangeNotifierProvider para podermos usar o 
       //Provider.of(context) e acessar se o produto é
       //favorito ou não
-      itemBuilder: (ctx, index) => ChangeNotifierProvider(
+      //Aqui não estamos mais criando um novo
+      //ChangeNotifier, e sim usando um que já 
+      //foi criado anteriormente, o do main.dart.
+      //O ideal é usar o método create apenas para 
+      //criar um novo ChangeNotifier. Quando
+      //retornamos uma instância pré-existente, 
+      //devemos usar o ChangeNotifier com o 
+      //construtor .value, e não o ChangeNotifier
+      //normal. Ao reusar uma instância já existente,
+      //que é quando temos dois ChangeNotifier com 
+      //create. Temos as 3 árvores, e pelo fato de 
+      //reusarmos alguns elementos quando há uma 
+      //mudança na interface gráfica, isso pode gerar
+      //alguns bugs caso não respeitemos essa 
+      //sugestão da documentação. É oque faremos
+      //aqui, substituiremos o ChangeNotifierProvider pelo
+      //ChangeNotifierProvider.value, e trocaremos o 
+      //create por value, deixando de passar uma função
+      //e passando o produto na posição index direto.
+      itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
         //Veremos o create melhor mais na frente, mas é 
         //a partir dele que pegamos a informação que 
-        //precisamos
-        create: (ctx) => products[index],
+        //precisamos.
+        value: products[index],
         child: ProductItem(),
       ),
       //O gridDelegate que usaremos aqui agora, basicamente

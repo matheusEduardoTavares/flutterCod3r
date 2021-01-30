@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
       //de um ChangeNotifierProvider, caso haja alguma
       //mudança em products em que chamamos o notify
       //Listeners, os interessados serão notificados.
+      //Aqui estamos criando um novo ChangeNotifier,
+      //no create.
       create: (_) => Products(),
       child: MaterialApp(
         title: 'Minha Loja',
