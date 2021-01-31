@@ -6,6 +6,36 @@ import 'package:provider/provider.dart';
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //Aqui no product Provider.of, podemos passar um
+    //segundo atributo além do context, que é o 
+    //listen, que recebe uma booleana e a 
+    //iniciaremos como true. Ele serve para o seguinte:
+    //quando pegamos um elemento a partir do Provide.of,
+    //que é um ChangeNotifier, significa que esse 
+    //ChangeNotifier vai notificar sempre que houver
+    //uma mudança dentro dele. Quando ao pegar o 
+    //valor que está nesse provider, e passamos o 
+    //listen: true para ele, estamos dizendo que 
+    //queremos continuar escutando as mudanças do
+    //elemento, que no caso é o produto. Sempre que 
+    //mudar algo queremos ser notificados para poder 
+    //atualizar o componente. É o que acontece quando
+    //clicamos para favoritar um produto, muda o seu
+    //estado, já que um produto é um ChangeNotifier.
+    //O true é o padrão, agora, quando mudamos o 
+    //listen para false, paramos de escutar essas 
+    //alterações, paramos de ser notificados, deixando
+    //como false ao favoritar/desfavoritar um produto,
+    //não veremos as mudanças devido a isso. Iremos 
+    //usar o listen como false quando recebemos um 
+    //ChangeNotifier via provider e estivermos usando
+    //apenas atributos que são final, que não mudam,
+    //então se pegamos algo do provider, mas só usamos
+    //informações que não são alteráveis, então 
+    //não faz sentido deixar o listen: true. Tem
+    //mais alguns casos que veremos mais à frente. 
+    // final Product product = Provider.of<Product>(context, listen: false);
+
     final Product product = Provider.of<Product>(context);
     //ClipRoundedRectangle, é um widget cujo nome
     //quer dizer que vai cortar fora uma parte do
