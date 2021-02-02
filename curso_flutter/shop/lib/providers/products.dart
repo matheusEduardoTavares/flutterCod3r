@@ -37,8 +37,27 @@ class Products with ChangeNotifier{
   //classe Products, e não com a lista que é retornada
   //no getter.
 
+  bool _showFavoriteOnly = false;
+
   // List<Product> get items => [ ..._items ];
-  List<Product> get items => List.from(_items);
+  // List<Product> get items => List.from(_items);
+  List<Product> get items {
+    if (_showFavoriteOnly) {
+      return _items.where((prod) => prod.isFavorite).toList();
+    }
+
+    return List.from(_items);
+  }
+
+  void showFavoriteOnly() {
+    _showFavoriteOnly = true;
+    notifyListeners();
+  }
+
+  void showAll() {
+    _showFavoriteOnly = false;
+    notifyListeners();
+  }
 
   void addProduct(Product product) {
     //Aqui acabamos de mexer na lista de produtos. 
