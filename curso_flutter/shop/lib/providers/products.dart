@@ -37,26 +37,33 @@ class Products with ChangeNotifier{
   //classe Products, e não com a lista que é retornada
   //no getter.
 
-  bool _showFavoriteOnly = false;
+  // bool _showFavoriteOnly = false;
 
   // List<Product> get items => [ ..._items ];
-  // List<Product> get items => List.from(_items);
-  List<Product> get items {
-    if (_showFavoriteOnly) {
-      return _items.where((prod) => prod.isFavorite).toList();
-    }
+  List<Product> get items => List.from(_items);
+  // List<Product> get items {
+  //   if (_showFavoriteOnly) {
+  //     return _items.where((prod) => prod.isFavorite).toList();
+  //   }
 
-    return List.from(_items);
-  }
+  //   return List.from(_items);
+  // }
 
-  void showFavoriteOnly() {
-    _showFavoriteOnly = true;
-    notifyListeners();
-  }
+  // void showFavoriteOnly() {
+  //   _showFavoriteOnly = true;
+  //   notifyListeners();
+  // }
 
-  void showAll() {
-    _showFavoriteOnly = false;
-    notifyListeners();
+  // void showAll() {
+  //   _showFavoriteOnly = false;
+  //   notifyListeners();
+  // }
+
+  //Retornando apenas os itens favoritos para usarmos isso 
+  //para controlar mostrar só os favoritos ou todos de forma
+  //local, sem o estado global:
+  List<Product> get favoriteItems {
+    return _items.where((prod) => prod.isFavorite).toList();
   }
 
   void addProduct(Product product) {

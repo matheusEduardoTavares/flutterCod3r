@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import '../widgets/product_grid.dart';
-import '../providers/products.dart';
+// import '../providers/products.dart';
 
 //Podemos querer controlar de forma global os filtros
 //para poder mostrar apenas os produtos favoritos ou todos os
@@ -13,14 +13,21 @@ enum FilterOptions {
   All
 }
 
-class ProductOverviewScreen extends StatelessWidget {
+class ProductOverviewScreen extends StatefulWidget {
   ProductOverviewScreen({
     Key key
   }) : super(key: key);
 
+  @override
+  _ProductOverviewScreenState createState() => _ProductOverviewScreenState();
+}
+
+class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
+  bool _showFavoriteOnly = false;
+
   @override 
   Widget build(BuildContext context){
-    final Products products = Provider.of(context);
+    // final Products products = Provider.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,10 +51,18 @@ class ProductOverviewScreen extends StatelessWidget {
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               if (selectedValue == FilterOptions.Favorite) {
-                products.showFavoriteOnly();
+                // products.showFavoriteOnly();
+
+                setState(() {
+                  _showFavoriteOnly = true;
+                });
               }
               else {
-                products.showAll();
+                // products.showAll();
+
+                setState(() {
+                  _showFavoriteOnly = false;
+                });
               }
             },
             icon: Icon(Icons.more_vert),
@@ -64,7 +79,7 @@ class ProductOverviewScreen extends StatelessWidget {
           )
         ]
       ),
-      body: ProductGrid()
+      body: ProductGrid(_showFavoriteOnly)
     );
   }
 }

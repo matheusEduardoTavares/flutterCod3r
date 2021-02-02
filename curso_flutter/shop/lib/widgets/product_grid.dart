@@ -4,6 +4,10 @@ import '../widgets/product_item.dart';
 import '../providers/products.dart';
 
 class ProductGrid extends StatelessWidget {
+  final bool showFavoriteOnly;
+
+  const ProductGrid(this.showFavoriteOnly);
+
   @override
   Widget build(BuildContext context) {
     //Agora ao invés de usarmos o loadedProducts a partir
@@ -13,7 +17,9 @@ class ProductGrid extends StatelessWidget {
 
     //Ou podemos fazer isso:
     final productsProvider = Provider.of<Products>(context);
-    final products = productsProvider.items;
+    final products = showFavoriteOnly ? 
+      productsProvider.favoriteItems : 
+      productsProvider.items;
     
     return GridView.builder(
       padding: const EdgeInsets.all(10),
