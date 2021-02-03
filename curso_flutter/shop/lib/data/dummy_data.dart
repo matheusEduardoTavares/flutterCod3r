@@ -1,4 +1,4 @@
-import '../models/product.dart';
+import '../providers/product.dart';
 
 //O DUMMY_PRODUCTS não pode ser const pois o 
 //objeto Product tem um atributo que não é final,

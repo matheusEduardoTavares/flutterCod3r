@@ -15,7 +15,7 @@
 //importar nenhuma lib interna para tal a não ser o 
 //import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import 'product.dart';
 import '../data/dummy_data.dart';
 
 class Products with ChangeNotifier{
