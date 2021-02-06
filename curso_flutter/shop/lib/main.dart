@@ -12,13 +12,22 @@ import './utils/app_routes.dart';
 //é do pacote que importamos.
 import 'package:provider/provider.dart';
 import './providers/products.dart';
+import './providers/cart.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    //Agora precisamos por aqui passar como provider
+    //também o carrinho. Para passar mais de um 
+    //provider para toda aplicação para que 
+    //consigamos passar tanto o produto como do 
+    //carrinho via provider para a nossa aplicação.
+    //Para isso, precisamos usar o MultiProvider.
+    //Trocamos o ChangeNotifierProvider pelo 
+    //MultiProvider.
+    // return ChangeNotifierProvider(
       //ALém de ter o child é obrigatório passar o
       //atributo create que recebe um método que 
       //por sua vez recebe um contexto e iremos usar
@@ -29,7 +38,26 @@ class MyApp extends StatelessWidget {
       //Listeners, os interessados serão notificados.
       //Aqui estamos criando um novo ChangeNotifier,
       //no create.
-      create: (_) => Products(),
+    return MultiProvider(
+      //Passamos para o MultiProviders o 
+      //atributo providers que irá receber uma 
+      //lista que irá conter todos os providers 
+      //da aplicação. Nele, passamos todos os 
+      //ChangeNotifier que queremos, tudo que 
+      //queremos fazer o provider prover naquele
+      //momento. Haverá conter os atributos create
+      //e value normalmente. Precisaremos tanto
+      //do carrinho quanto do produto desde a 
+      //raíz da aplicação, pois desde a tela 
+      //home precisaremos usar esses dados.
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => Products()
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart()
+        ),
+      ],
       child: MaterialApp(
         title: 'Minha Loja',
         theme: ThemeData(
