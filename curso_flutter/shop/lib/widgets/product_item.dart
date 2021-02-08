@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/providers/cart.dart';
 import 'package:shop/utils/app_routes.dart';
 import '../providers/product.dart';
 import 'package:provider/provider.dart';
@@ -119,7 +120,17 @@ class ProductItem extends StatelessWidget {
     );
     */
 
-    final product = Provider.of<Product>(context, listen: false);
+    final Product product = Provider.of<Product>(context, listen: false);
+    //Aqui iremos pegar o carrinho, e o listen dele
+    //será false. Pois o componente de ProductItem
+    //ao clicar no carrinho não irá mudar nada, quem
+    //irá mudar é o contador de carrinhos que será
+    //colocado mais para frente na AppBar. Diferente
+    //do produto que usamos um Consumer para ele, pois
+    //no caso de produto ao clicar em favoritos o produto
+    //irá ou não aparecer dependendo do PopupMenuItem
+    //que estiver selecionado.
+    final Cart cart = Provider.of<Cart>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -187,8 +198,15 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {},
             color: Theme.of(context).accentColor,
+            onPressed: () {
+              //Ao clicar duas vezes em um mesmo item,
+              //é adicionado sua quantidade, mas não 
+              //na contagem de itens do carrinho, e 
+              //sim no atributo quantity do CartItem.
+              cart.addItem(product);
+              print(cart.itemCount);
+            },
           )
         ),
       ),

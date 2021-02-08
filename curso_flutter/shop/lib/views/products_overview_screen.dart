@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/providers/cart.dart';
+import 'package:shop/widgets/badge.dart';
 // import 'package:provider/provider.dart';
 import '../widgets/product_grid.dart';
 // import '../providers/products.dart';
@@ -76,6 +79,18 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 value: FilterOptions.All
               )
             ]
+          ),
+          Consumer<Cart>(
+            //Como o IconButton não irá alterar o colocamos
+            //no child para economizar processamento
+            child: IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {},
+            ),
+            builder: (context, cart, child) => Badge(
+              value: cart.itemCount.toString(),
+              child: child,
+            ),
           )
         ]
       ),

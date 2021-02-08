@@ -23,9 +23,22 @@ class CartItem {
 
 class Cart with ChangeNotifier {
   //chave = id do produto, valor = item do carrinho
-  Map<String, CartItem> _items;
+  //A partir do momento que colocamos um MultiProvider
+  //passamos a fazer o items receber um Map vazio para
+  //inicializá-lo, para garnatir que a variável
+  //_items não fique nulo, pois se tentarmos 
+  //adicionar um produto e o map não tiver sido
+  //inicializado, irá dar erro, então temos que 
+  //inicializar o map.
+  Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get item => {..._items}; 
+
+  //Getter que retorna a quantidade de elementos
+  //dentro do carrinho.
+  int get itemCount {
+    return _items.length;
+  }
 
   //Se o item não estiver no carrinho o adicionamos, mas
   //se o item já estiver no carrinho devemos aumentar a

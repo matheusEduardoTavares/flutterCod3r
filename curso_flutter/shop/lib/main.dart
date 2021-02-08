@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Minha Loja',
         theme: ThemeData(
           primarySwatch: Colors.purple,
