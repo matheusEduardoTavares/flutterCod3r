@@ -40,6 +40,16 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
+  double get totalAmount {
+    // double total = 0.0;
+    // _items.forEach((key, cartItem) { 
+    //   total += cartItem.price * cartItem.quantity;
+    // });
+
+    var total = _items.values.fold(0.0, (accumulator, currentItem) => (currentItem.price * currentItem.quantity) + accumulator);
+    return total;
+  }
+
   //Se o item não estiver no carrinho o adicionamos, mas
   //se o item já estiver no carrinho devemos aumentar a
   //quantidade.
