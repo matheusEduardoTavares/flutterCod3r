@@ -32,11 +32,11 @@ class Cart with ChangeNotifier {
   //inicializar o map.
   Map<String, CartItem> _items = {};
 
-  Map<String, CartItem> get item => {..._items}; 
+  Map<String, CartItem> get items => {..._items}; 
 
   //Getter que retorna a quantidade de elementos
   //dentro do carrinho.
-  int get itemCount {
+  int get itemsCount {
     return _items.length;
   }
 

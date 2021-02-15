@@ -205,7 +205,6 @@ class ProductItem extends StatelessWidget {
               //na contagem de itens do carrinho, e 
               //sim no atributo quantity do CartItem.
               cart.addItem(product);
-              print(cart.itemCount);
             },
           )
         ),
