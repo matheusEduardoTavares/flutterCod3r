@@ -9,15 +9,17 @@ import './product.dart';
 
 class CartItem {
   final String id;
+  final String productId;
   final String title;
   final int quantity;
   final double price;
   
   CartItem({
     @required this.id,
+    @required this.productId,
     @required this.title,
     @required this.quantity,
-    @required this.price
+    @required this.price,
   });
 }
 
@@ -62,9 +64,10 @@ class Cart with ChangeNotifier {
       // map
       _items.update(product.id, (existingItem) => CartItem(
         id: existingItem.id,
+        productId: product.id,
         price: existingItem.price,
         quantity: existingItem.quantity + 1,
-        title: existingItem.title
+        title: existingItem.title,
       ));
     }
     else {
@@ -73,12 +76,18 @@ class Cart with ChangeNotifier {
         //O id é o ID do item do carrinho, não é o ID do
         //produto, pois ele é a chave do map _items.
         id: Random().nextDouble().toString(),
+        productId: product.id,
         price: product.price,
         quantity: 1,
         title: product.title
       ));
     }
 
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 }
