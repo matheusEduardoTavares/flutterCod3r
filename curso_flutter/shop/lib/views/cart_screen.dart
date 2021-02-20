@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
+import '../providers/orders.dart';
 import '../widgets/cart_item_widget.dart';
 
 class CartScreen extends StatelessWidget {
@@ -44,9 +45,21 @@ class CartScreen extends StatelessWidget {
                   ///Spacer e aí ter o botão de comprar
                   Spacer(),
                   FlatButton(
-                    onPressed: () {},
                     child: Text('COMPRAR'),
-                    textColor: Theme.of(context).primaryColor
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      /*
+                      ///Passando os 2 parâmetros para o [addOrder]
+                      Provider.of<Orders>(context, listen: false)
+                        .addOrder(cartItems, cart.totalAmount);
+                      */
+
+                      ///Passando apenas o [cart] para o [addOrder]
+                      Provider.of<Orders>(context, listen: false)
+                        .addOrder(cart);
+
+                      cart.clear();
+                    },
                   )
                 ],
               )
