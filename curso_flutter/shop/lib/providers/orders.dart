@@ -20,9 +20,11 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
-  List<Order> _orders = [];
+  List<Order> _items = [];
 
-  List<Order> get orders => [..._orders];
+  List<Order> get items => [..._items];
+
+  int get itemsCount => _items.length;
 
   /*
   void addOrder(List<CartItem> products, double total) {
@@ -31,7 +33,7 @@ class Orders with ChangeNotifier {
 
     // var total = products.fold(0.0, combine);
 
-    _orders.insert(0, Order(
+    _items.insert(0, Order(
       id: Random().nextDouble().toString(),
       total: total,
       date: DateTime.now(),
@@ -44,7 +46,7 @@ class Orders with ChangeNotifier {
 
   ///Outra abordagem para adicionar um novo order:
   void addOrder(Cart cart) {
-    _orders.insert(0, Order(
+    _items.insert(0, Order(
       id: Random().nextDouble().toString(),
       total: cart.totalAmount,
       date: DateTime.now(),
