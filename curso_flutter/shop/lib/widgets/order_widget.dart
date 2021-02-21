@@ -26,7 +26,7 @@ class _OrderWidgetState extends State<OrderWidget> {
               DateFormat('dd/MM/yyyy hh:mm').format(widget.order.date)
             ),
             trailing: IconButton(
-              icon: Icon(Icons.expand_more),
+              icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
               ///Aqui precisamos que ao clicar nesse ícone seja
               ///expandido um [Container] em baixo do [ListTile]
               ///mostrando os detalhes daquele pedido. Para fazer
