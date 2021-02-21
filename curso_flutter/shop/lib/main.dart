@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import './providers/products.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
+import 'views/orders_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -73,8 +74,18 @@ class MyApp extends StatelessWidget {
         ),
         home: ProductOverviewScreen(),
         routes: {
+          ///Não é necessário mapear a página de [Home] pois
+          ///ela já é o [home] desse [MaterialApp], já que
+          ///definimos essa home como sendo a rota default 
+          ///que é apenas o [/], então ou na linha 75 passamos
+          ///o `home: ProductOverviewScreen()`, ou fazemos 
+          ///o seguinte:
+          ///```
+          ///AppRoutes.HOME: (ctx) => ProductOverviewScreen(),
+          ///```
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
-          AppRoutes.CART: (ctx) => CartScreen()
+          AppRoutes.CART: (ctx) => CartScreen(),
+          AppRoutes.ORDERS: (ctx) => OrdersScreen(),
         }
       ),
     );
