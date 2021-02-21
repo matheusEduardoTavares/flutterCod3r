@@ -26,25 +26,6 @@ class Orders with ChangeNotifier {
 
   int get itemsCount => _items.length;
 
-  /*
-  void addOrder(List<CartItem> products, double total) {
-    // final combine = (total, currentCartItem) => 
-    //   total + (currentCartItem.price * currentCartItem.quantity);
-
-    // var total = products.fold(0.0, combine);
-
-    _items.insert(0, Order(
-      id: Random().nextDouble().toString(),
-      total: total,
-      date: DateTime.now(),
-      products: products
-    ));
-
-    notifyListeners();
-  }
-  */
-
-  ///Outra abordagem para adicionar um novo order:
   void addOrder(Cart cart) {
     _items.insert(0, Order(
       id: Random().nextDouble().toString(),

@@ -13,13 +13,9 @@ class Badge extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    //Com a stack conseguimos por um elemento em cima
-    //do outro, por isso a usaremos aqui
     return Stack(
       alignment: Alignment.center,
       children: <Widget> [
-        //Primeiros elementos ficam em baixo, e os 
-        //próximos ficam em cima
         child,
         Positioned(
           right: 8,

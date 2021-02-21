@@ -1,11 +1,5 @@
 import '../providers/product.dart';
 
-//O DUMMY_PRODUCTS não pode ser const pois o 
-//objeto Product tem um atributo que não é final,
-//então não podemos criar Product com const, 
-//de forma que o DUMMY_PRODUCTS também não
-//poderá ser const.
-
 // ignore: non_constant_identifier_names
 final DUMMY_PRODUCTS = [
   Product(

@@ -37,24 +37,11 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor
                   ),
-                  ///Ao colocar o widget Spacer, podemos ocupar
-                  ///, todo resto do espaço ou da row ou da coluna
-                  ///assim conseguimos nesse caso fazer os 2 primeiros
-                  ///itens da Row ficarem juntos, haver um espaço devido
-                  ///o spaceBetween que será todo o espaço ocupado pelo
-                  ///Spacer e aí ter o botão de comprar
                   Spacer(),
                   FlatButton(
                     child: Text('COMPRAR'),
                     textColor: Theme.of(context).primaryColor,
                     onPressed: () {
-                      /*
-                      ///Passando os 2 parâmetros para o [addOrder]
-                      Provider.of<Orders>(context, listen: false)
-                        .addOrder(cartItems, cart.totalAmount);
-                      */
-
-                      ///Passando apenas o [cart] para o [addOrder]
                       Provider.of<Orders>(context, listen: false)
                         .addOrder(cart);
 

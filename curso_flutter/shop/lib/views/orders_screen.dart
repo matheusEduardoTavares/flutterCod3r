@@ -7,10 +7,6 @@ import '../widgets/order_widget.dart';
 class OrdersScreen extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
-    // final orders = Provider.of<Orders>(context)
-    //   .orders;
-    
-    //ou:
     final Orders orders = Provider.of(context);
 
     return Scaffold(

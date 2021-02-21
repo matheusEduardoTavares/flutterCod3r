@@ -27,18 +27,6 @@ class _OrderWidgetState extends State<OrderWidget> {
             ),
             trailing: IconButton(
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-              ///Aqui precisamos que ao clicar nesse ícone seja
-              ///expandido um [Container] em baixo do [ListTile]
-              ///mostrando os detalhes daquele pedido. Para fazer
-              ///isso, podemos fazer da seguinte forma: Ter uma 
-              ///variável que define um estado e a partir do 
-              ///estado mostrar um [Container] em baixo ou não, 
-              ///e podemos controlar isso diretamente no 
-              ///componente, sem ter que usar o Provider para isso.
-              ///Outra forma de fazer isso é usando um [GFAccordion],
-              ///que é uma importação de uma lib [getwidget] que
-              ///podemos fazer no flutter. Tem outra lib para isso
-              ///também, o [expandable].
               onPressed: () {
                 setState(() {
                   _expanded = !_expanded;

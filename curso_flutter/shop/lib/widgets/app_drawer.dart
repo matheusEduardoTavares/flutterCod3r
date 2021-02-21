@@ -9,10 +9,6 @@ class AppDrawer extends StatelessWidget {
         children: [
           AppBar(
             title: Text('Bem vindo Usuário!'),
-            ///Tira o ícone que vem à esquerda da
-            ///[AppBar] quando ela é colocada em uma
-            ///drawer, que é o ícone das três barras
-            ///verticais indicando um menu
             automaticallyImplyLeading: false,
           ),
           Divider(),

@@ -10,10 +10,7 @@ class CartItemWidget extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return Dismissible(
-      ///O dismissible é required o campo [key]
       key: ValueKey(cartItem.id),
-      ///O background é o que aparece enquanto o 
-      ///elemento está sendo arrastado
       background: Container(
         color: Theme.of(context).errorColor,
         child: Icon(
@@ -42,8 +39,6 @@ class CartItemWidget extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.all(8),
-          ///O listTile já tem as posições pré-definidas, deixando fácil
-          ///definir os itens para por na lista
           child: ListTile(
             title: Text(cartItem.title),
             subtitle: Text('Total: R\$${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}'),
