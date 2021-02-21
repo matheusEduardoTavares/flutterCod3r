@@ -1,0 +1,33 @@
+O provider funciona da seguinte forma:
+Temos que injetar o componente provider em algum 
+ponto da nossa árvore de Widgets, não necessariamente
+precisa estar no topo, ser a raíz, podemos colocar 
+um provider dentro de qualquer componente. Uma vez 
+tendo um provedor de dados que dentro dele há um 
+estado que ele está gerenciando (um conjunto de 
+informações). O Widget responsável pelo provider 
+pode ter algum widget visual ou não. A partir daí 
+todos os componentes filhos podem acessar esse 
+provider, esses dados diretamente. Fazemos esse 
+acesso a partir do método .of(context) .
+
+Quando o estado muda, o método build é chamado 
+novamente e a interface gráfica é analisada. Mas 
+tem algumas regras, caso queremos que um dado 
+seja atualizado em um componente stateless temos 
+que passá-lo via construtor pois sabemos que 
+precisamos do setState para poder atualizar um 
+dado a partir de um método direto do provider.
+
+Podemos por exemplo definir um provider a partir de 
+um dado ramo da nossa árvore de componentes. Uma 
+vez que definimos um provider que controla um 
+conjunto de dados para uma parte da aplicação, não 
+conseguimos acessar esses dados a partir de outro 
+componente que não pertence a esse ramo da árvore, 
+pois a navegação entre os contextos não irá navegar 
+na árvore inteira, e sim o contexto filho pergunta 
+pro pai se ele tem aquele provedor. Se não achar 
+um dado estado do primeiro provider que estiver mais 
+acima daquele componente na hierarquia, irá 
+retornar nulo.

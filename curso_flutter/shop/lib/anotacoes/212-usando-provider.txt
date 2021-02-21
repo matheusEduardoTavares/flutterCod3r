@@ -1,0 +1,18 @@
+Para a aula será importante o conhecimento prévio
+do padrão de projetos observer. 
+No pubspec.yaml iremos instalar a dependência
+provider na versão 4.0.5.
+O flutter usa o que chamamos de semantic version para 
+definir a versão de suas libs, no qual cada versão é 
+dividida em 3 partes:
+major.minor.fix (no lugar do fix podemos chamar de 
+patching). Colocando apenas 4.0.5 queremos exatamente 
+a versão 4.0.5. Quando colocamos ~4.0.5 podemos alterar 
+a versão do patching. Já quando colocamos ^4.0.5 é 
+possível evoluir tanto a versão do minor quanto do 
+patching, é pego o mais atual. O major são mudanças mais 
+significativas que quebra a compatibilidade. O minor 
+são versões menores, acrescentamos novas funcionalidades, 
+mas funcionalidades que não queram o que já eram usado, e
+o patching são correções, erros e bugs que foram 
+corrigidos nas versões.
