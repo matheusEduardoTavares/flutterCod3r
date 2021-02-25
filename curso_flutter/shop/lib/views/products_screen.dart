@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/providers/products.dart';
+import 'package:shop/widgets/product_item.dart';
 import '../widgets/app_drawer.dart';
 
 class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<Products>(context);
+    final productsData = Provider.of<Products>(context);
+    final products = productsData.items;
 
     return Scaffold(
       appBar: AppBar(
@@ -23,8 +25,15 @@ class ProductsScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
-          itemCount: products.itemsCount,
-          itemBuilder: (ctx, index) => Text(products.items[index].title) 
+          itemCount: productsData.itemsCount,
+          itemBuilder: (ctx, index) => Column(
+            children: [
+              ProductItem(
+                products[index]
+              ),
+              Divider()
+            ],
+          ) 
         )
       )
     );
