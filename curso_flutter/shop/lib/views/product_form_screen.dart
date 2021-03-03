@@ -6,6 +6,8 @@ class ProductFormScreen extends StatefulWidget {
 }
 
 class _ProductFormScreenState extends State<ProductFormScreen> {
+  final _priceFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,24 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 ///com o que foi definido no [FocusNode]. Se
                 ///for o último input, apenas fecha o teclado.
                 textInputAction: TextInputAction.next,
-              )
+                onFieldSubmitted: (_) {
+                  ///Para ir para o próximo input do 
+                  ///Focus:
+                  FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
+              ),
+              ///Hoje em dia já funciona ir para o próximo
+              ///item mesmo sem usar o [FocusNode]
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Preço',
+                ),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                focusNode: _priceFocusNode,
+              ),
             ],
           )
         ),
