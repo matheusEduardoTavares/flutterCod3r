@@ -67,7 +67,15 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 ///No caso do IOs, o [TextInputType.multiline]
                 ///não terá o mesmo comportamento do android
                 keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.next,
+                ///Ao tirar o [TextInputAction.next], agora
+                ///ao clicar onde ficava o ícone de done ou
+                ///de ir para o próximo, será pulado uma linha
+                ///pois criamos um [TextFormField] com 3 linhas,
+                ///e como sua ação não é de ir para um próximo
+                ///[TextFormField], então apenas são pulados as 
+                ///linhas desse campo já que é um campo marcado
+                ///com [TextInputType.multiline]
+                // textInputAction: TextInputAction.next,
                 focusNode: _descriptionFocusNode,
               ),
             ],
