@@ -8,6 +8,19 @@ class ProductFormScreen extends StatefulWidget {
 class _ProductFormScreenState extends State<ProductFormScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
+  final _imageUrlFocusNode = FocusNode();
+  final _imageUrlController = TextEditingController();
+
+  @override 
+  void initState() {
+    super.initState();
+
+    _imageUrlFocusNode.addListener(_updateImage);
+  }
+
+  void _updateImage() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +91,47 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 // textInputAction: TextInputAction.next,
                 focusNode: _descriptionFocusNode,
               ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'URL da Imagem',
+                      ),
+                      keyboardType: TextInputType.url,
+                      ///Campo que a partir dele vamos 
+                      ///submeter o formulário
+                      textInputAction: TextInputAction.done,
+                      focusNode: _imageUrlFocusNode,
+                      controller: _imageUrlController,
+                    ),
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: EdgeInsets.only(
+                      top: 8,
+                      left: 10
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1
+                      )
+                    ),
+                    alignment: Alignment.center,
+                    child: _imageUrlController.text.isEmpty ? 
+                      Text('Informe a URL') :
+                        FittedBox(
+                          child: Image.network(
+                            _imageUrlController.text,
+                            fit: BoxFit.cover,
+                          )
+                        ),
+                  ),
+                ],
+              ),
             ],
           )
         ),
@@ -89,6 +143,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   void dispose() {
     _priceFocusNode?.dispose();
     _descriptionFocusNode?.dispose();
+    _imageUrlFocusNode?.removeListener(_updateImage);
+    _imageUrlFocusNode?.dispose();
 
     super.dispose();
   }
