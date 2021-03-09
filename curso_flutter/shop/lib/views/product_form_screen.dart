@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import '../providers/product.dart';
 
@@ -28,6 +27,16 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   }
 
   void _saveForm() {
+    ///O método [validate] irá chamar todos os métodos [validator]
+    ///que forem passados para cada um dos [FormField] dentro do 
+    ///[Form], de forma que se um único retornar uma string, mostra
+    ///que a validação deu erro e tal método retorna então false.
+    var isValid = _formKey.currentState.validate();
+
+    if(!isValid) {
+      return;
+    }
+
     ///Esse método save irá chamar o método [onSaved] de cada
     ///um dos campos [TextFormField] do formulário
     _formKey.currentState.save();
@@ -69,6 +78,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 onSaved: (value) => _formData['title'] = value,
                 decoration: InputDecoration(
                   labelText: 'Título',
+                  ///Podemos passar atributos para personalizar 
+                  ///o erro do input
                 ),
                 ///Atributo que serve para definir qual
                 ///será a ação do input. Ao usar o 
@@ -87,6 +98,27 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   ///Focus:
                   FocusScope.of(context).requestFocus(_priceFocusNode);
                 },
+                ///A função [validator] é disparada ao 
+                ///disparar a validação do formulário. Temos
+                ///a possibilidade de usar o [autovalidate] como
+                ///true, ou então através do método [validate()]
+                ///que usamos a partir da chave global do 
+                ///[FormState], acessando primeiro o atributo
+                ///[currentState]. Caso retornemos [null] no 
+                ///[validator], não há validação para ser feita,
+                ///e caso retornemos uma string significa que há 
+                ///um erro de validação
+                validator: (value) {
+                  if (value.trim().isEmpty) {
+                    return 'Informe um título válido';
+                  }
+
+                  if (value.trim().length < 3) {
+                    return 'Informe um título com no mínimo 3 letras!';
+                  }
+
+                  return null;
+                }
               ),
               ///Hoje em dia já funciona ir para o próximo
               ///item mesmo sem usar o [FocusNode]
