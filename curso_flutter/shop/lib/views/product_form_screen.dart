@@ -3,6 +3,15 @@ import 'package:flutter/material.dart';
 import '../providers/product.dart';
 
 class ProductFormScreen extends StatefulWidget {
+
+  const ProductFormScreen({
+    this.isUrlImageFinishWithExtension = false
+  });
+
+  ///Se a URL de uma imagem não finaliza com uma dada extensão,
+  ///então a imagem deve conter aquela URL.
+  final bool isUrlImageFinishWithExtension;
+
   @override
   _ProductFormScreenState createState() => _ProductFormScreenState();
 }
@@ -39,12 +48,23 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   */
 
   bool _isValidImageUrl(String url) {
-    bool startWithHttp = url.toLowerCase().startsWith('http://');
-    bool startWithHttps = url.toLowerCase().startsWith('https://');
-      
-    bool endsWithPng = url.toLowerCase().endsWith('.png');
-    bool endsWithJpg = url.toLowerCase().endsWith('.jpg');
-    bool endsWithJpeg = url.toLowerCase().endsWith('.jpeg');
+    var urlOnLowerCase = url.toLowerCase();
+    bool startWithHttp = urlOnLowerCase.startsWith('http://');
+    bool startWithHttps = urlOnLowerCase.startsWith('https://');
+    bool endsWithPng;
+    bool endsWithJpg;
+    bool endsWithJpeg;
+
+    if (widget.isUrlImageFinishWithExtension ?? false) {
+      endsWithPng = urlOnLowerCase.endsWith('.png');
+      endsWithJpg = urlOnLowerCase.endsWith('.jpg');
+      endsWithJpeg = urlOnLowerCase.endsWith('.jpeg');
+    }
+    else {
+      endsWithPng = urlOnLowerCase.contains('.png');
+      endsWithJpg = urlOnLowerCase.contains('.jpg');
+      endsWithJpeg = urlOnLowerCase.contains('.jpeg');
+    }
 
     bool isValidProtocol = (startWithHttp || startWithHttps)
       && (endsWithPng || endsWithJpg || endsWithJpeg);
