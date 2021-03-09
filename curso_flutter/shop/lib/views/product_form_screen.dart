@@ -23,7 +23,33 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   }
 
   void _updateImage() {
-    setState(() {});
+    if (_isValidImageUrl(_imageUrlController.text)) {
+      setState(() {});
+    }
+  }
+
+  /*
+  bool isValidImageUrl(String url) {
+    final pattern = RegExp('/\.jpg|.png|\jpeg/g');
+    bool startWithHttp = url.toLowerCase().startsWith('http://');
+    bool startWithHttps = url.toLowerCase().startsWith('https://');
+    bool endsWithAllTypes = pattern.hasMatch(url);
+    return (startWithHttp || startWithHttps) && (endsWithAllTypes);
+  }
+  */
+
+  bool _isValidImageUrl(String url) {
+    bool startWithHttp = url.toLowerCase().startsWith('http://');
+    bool startWithHttps = url.toLowerCase().startsWith('https://');
+      
+    bool endsWithPng = url.toLowerCase().endsWith('.png');
+    bool endsWithJpg = url.toLowerCase().endsWith('.jpg');
+    bool endsWithJpeg = url.toLowerCase().endsWith('.jpeg');
+
+    bool isValidProtocol = (startWithHttp || startWithHttps)
+      && (endsWithPng || endsWithJpg || endsWithJpeg);
+
+    return isValidProtocol;
   }
 
   void _saveForm() {
@@ -114,7 +140,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   }
 
                   if (value.trim().length < 3) {
-                    return 'Informe um título com no mínimo 3 letras!';
+                    return 'Informe um título com no mínimo 3 caracteres!';
                   }
 
                   return null;
@@ -135,6 +161,17 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context)
                     .requestFocus(_descriptionFocusNode);
+                },
+                validator: (value) {
+                  var isEmpty = value.trim().isEmpty;
+                  var newPrice = double.tryParse(value);
+                  var isInvalid = newPrice == null || newPrice <= 0.0;
+
+                  if (isEmpty || isInvalid) {
+                    return 'Informe um preço válido!';
+                  }
+
+                  return null;
                 }
               ),
               TextFormField(
@@ -156,6 +193,16 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 ///com [TextInputType.multiline]
                 // textInputAction: TextInputAction.next,
                 focusNode: _descriptionFocusNode,
+                validator: (value) {
+                  var isEmpty = value.trim().isEmpty;
+                  var isInvalid = value.trim().length < 10;
+                  if (isEmpty || isInvalid) {
+                    return 'Informe uma descrição válida com no mínimo 10'
+                    ' caracteres!';
+                  }
+
+                  return null;
+                }
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -180,6 +227,16 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                       onFieldSubmitted: (_) {
                         _saveForm();
                       },
+                      validator: (value) {
+                        var isEmptyUrl = value.trim().isEmpty;
+                        var isValidUrl = _isValidImageUrl(value);
+
+                        if (isEmptyUrl || !isValidUrl) {
+                          return 'Informe uma URL válida!';
+                        }
+
+                        return null;
+                      }
                     ),
                   ),
                   Container(
