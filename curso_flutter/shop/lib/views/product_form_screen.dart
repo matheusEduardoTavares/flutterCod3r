@@ -91,7 +91,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               ///Hoje em dia já funciona ir para o próximo
               ///item mesmo sem usar o [FocusNode]
               TextFormField(
-                onSaved: (value) => _formData['price'] = double.parse(value),
+                onSaved: (value) => _formData['price'] = double.tryParse(value),
                 decoration: InputDecoration(
                   labelText: 'Preço',
                 ),
@@ -166,11 +166,17 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                     alignment: Alignment.center,
                     child: _imageUrlController.text.isEmpty ? 
                       Text('Informe a URL') :
-                        FittedBox(
-                          child: Image.network(
-                            _imageUrlController.text,
-                            fit: BoxFit.cover,
-                          )
+                        LayoutBuilder(
+                          builder: (ctx, constraints) => Container(
+                            height: constraints.maxHeight,
+                            width: constraints.maxWidth,
+                            child: FittedBox(
+                              child: Image.network(
+                                _imageUrlController.text,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
                   ),
                 ],
