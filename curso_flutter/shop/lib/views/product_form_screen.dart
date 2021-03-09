@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import '../providers/product.dart';
 
 class ProductFormScreen extends StatefulWidget {
   @override
@@ -10,6 +13,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _formData = Map<String, Object>();
 
   @override 
   void initState() {
@@ -22,19 +27,46 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     setState(() {});
   }
 
+  void _saveForm() {
+    ///Esse método save irá chamar o método [onSaved] de cada
+    ///um dos campos [TextFormField] do formulário
+    _formKey.currentState.save();
+
+    final newProduct = Product(
+      id: Random().nextDouble().toString(),
+      title: _formData['title'],
+      price: _formData['price'],
+      description: _formData['description'],
+      imageUrl: _formData['imageUrl'],
+    );
+
+    print(newProduct.title);
+    print(newProduct.id);
+    print(newProduct.price);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulário Produto'),
+        actions: <Widget> [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              _saveForm();
+            }
+          ),
+        ]
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
-          key: ValueKey(''),
+          key: _formKey,
           child: ListView(
             children: [
               TextFormField(
+                onSaved: (value) => _formData['title'] = value,
                 decoration: InputDecoration(
                   labelText: 'Título',
                 ),
@@ -59,6 +91,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               ///Hoje em dia já funciona ir para o próximo
               ///item mesmo sem usar o [FocusNode]
               TextFormField(
+                onSaved: (value) => _formData['price'] = double.parse(value),
                 decoration: InputDecoration(
                   labelText: 'Preço',
                 ),
@@ -73,6 +106,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 }
               ),
               TextFormField(
+                onSaved: (value) => _formData['description'] = value,
                 decoration: InputDecoration(
                   labelText: 'Descrição'
                 ),
@@ -96,6 +130,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      ///Não precisamos chamar o setState na hora de 
+                      ///atribuir esses valores pois não precisamos alterar
+                      ///a interface gráfica, e apenas alterar os valores
+                      ///dentro do [formData], mas não precisa haver uma 
+                      ///atualização na interface gráfica
+                      onSaved: (value) => _formData['imageUrl'] = value,
                       decoration: InputDecoration(
                         labelText: 'URL da Imagem',
                       ),
@@ -105,6 +145,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                       textInputAction: TextInputAction.done,
                       focusNode: _imageUrlFocusNode,
                       controller: _imageUrlController,
+                      onFieldSubmitted: (_) {
+                        _saveForm();
+                      },
                     ),
                   ),
                   Container(
