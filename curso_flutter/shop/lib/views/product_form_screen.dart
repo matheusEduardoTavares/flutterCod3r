@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/providers/products.dart';
 import '../providers/product.dart';
 
 class ProductFormScreen extends StatefulWidget {
@@ -88,16 +90,24 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _formKey.currentState.save();
 
     final newProduct = Product(
-      id: Random().nextDouble().toString(),
       title: _formData['title'],
       price: _formData['price'],
       description: _formData['description'],
       imageUrl: _formData['imageUrl'],
     );
 
-    print(newProduct.title);
-    print(newProduct.id);
-    print(newProduct.price);
+    ///Quando usamos o [Provider] fora do 
+    ///método build, e esse [Provider] precisa
+    ///ficar escutando as modificações, isso irá
+    ///gerar um erro dizendo que tentamos usar um
+    ///[Provider] fora da árvore de componentes.
+    ///Só conseguiremos usar um [Provider] fora 
+    ///do método build se marcarmos o seu 
+    ///[listen] para false
+    Provider.of<Products>(context, listen: false).
+      addProduct(newProduct);
+
+    Navigator.of(context).pop();
   }
 
   @override
