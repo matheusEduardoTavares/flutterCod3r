@@ -152,7 +152,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = ModalRoute.of(context)?.settings?.arguments;
+    // final Product product = ModalRoute.of(context)?.settings?.arguments;
 
     // _imageUrlController.text = _initialValueOrDefault(() => product.imageUrl);
 
