@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/providers/products.dart';
@@ -110,8 +109,21 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     Navigator.of(context).pop();
   }
 
+  String _initialValueOrDefault(String Function() returnValue) {
+    try {
+      return returnValue();
+    }
+    catch (_) {
+      return '';
+    } 
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Product product = ModalRoute.of(context)?.settings?.arguments;
+
+    _imageUrlController.text = _initialValueOrDefault(() => product.imageUrl);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulário Produto'),
@@ -131,6 +143,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           child: ListView(
             children: [
               TextFormField(
+                initialValue: _initialValueOrDefault(() => product.title),
                 onSaved: (value) => _formData['title'] = value,
                 decoration: InputDecoration(
                   labelText: 'Título',
@@ -179,6 +192,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               ///Hoje em dia já funciona ir para o próximo
               ///item mesmo sem usar o [FocusNode]
               TextFormField(
+                initialValue: _initialValueOrDefault(() => product.price.toString()),
                 onSaved: (value) => _formData['price'] = double.tryParse(value),
                 decoration: InputDecoration(
                   labelText: 'Preço',
@@ -205,6 +219,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 }
               ),
               TextFormField(
+                initialValue: _initialValueOrDefault(() => product.description),
                 onSaved: (value) => _formData['description'] = value,
                 decoration: InputDecoration(
                   labelText: 'Descrição'
