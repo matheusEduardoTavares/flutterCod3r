@@ -32,6 +32,31 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _imageUrlFocusNode.addListener(_updateImage);
   }
 
+  @override 
+  void didChangeDependencies() {
+    /// Método associado ao state que é 
+    /// chamado sempre que o widget é alterado
+    /// e a árvore é rebuildada, para notificar
+    /// que houve mudanças
+
+    if (_formData.isEmpty) {
+      final product = ModalRoute.of(context)
+        .settings.arguments as Product;
+
+      if (product != null) {
+        _formData['id'] = product.id;
+        _formData['title'] = product.title;
+        _formData['description'] = product.description;
+        _formData['price'] = product.price;
+        _formData['imageUrl'] = product.imageUrl;
+
+        _imageUrlController.text = _formData['imageUrl'];
+      }
+    }
+
+    super.didChangeDependencies();
+  }
+
   void _updateImage() {
     if (_isValidImageUrl(_imageUrlController.text)) {
       setState(() {});
@@ -89,6 +114,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     _formKey.currentState.save();
 
     final newProduct = Product(
+      id: _formData['id'],
       title: _formData['title'],
       price: _formData['price'],
       description: _formData['description'],
@@ -103,26 +129,32 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     ///Só conseguiremos usar um [Provider] fora 
     ///do método build se marcarmos o seu 
     ///[listen] para false
-    Provider.of<Products>(context, listen: false).
-      addProduct(newProduct);
+    final products = Provider.of<Products>(context, listen: false);
+
+    if (_formData['id'] == null) {
+      products.addProduct(newProduct);
+    }
+    else {
+      products.updateProduct(newProduct);
+    }
 
     Navigator.of(context).pop();
   }
 
-  String _initialValueOrDefault(String Function() returnValue) {
-    try {
-      return returnValue();
-    }
-    catch (_) {
-      return '';
-    } 
-  }
+  // String _initialValueOrDefault(String Function() returnValue) {
+  //   try {
+  //     return returnValue();
+  //   }
+  //   catch (_) {
+  //     return '';
+  //   } 
+  // }
 
   @override
   Widget build(BuildContext context) {
     final Product product = ModalRoute.of(context)?.settings?.arguments;
 
-    _imageUrlController.text = _initialValueOrDefault(() => product.imageUrl);
+    // _imageUrlController.text = _initialValueOrDefault(() => product.imageUrl);
 
     return Scaffold(
       appBar: AppBar(
@@ -143,7 +175,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           child: ListView(
             children: [
               TextFormField(
-                initialValue: _initialValueOrDefault(() => product.title),
+                initialValue: _formData['title'],
+                // initialValue: _initialValueOrDefault(() => product.title),
                 onSaved: (value) => _formData['title'] = value,
                 decoration: InputDecoration(
                   labelText: 'Título',
@@ -192,7 +225,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               ///Hoje em dia já funciona ir para o próximo
               ///item mesmo sem usar o [FocusNode]
               TextFormField(
-                initialValue: _initialValueOrDefault(() => product.price.toString()),
+                initialValue: _formData['price']?.toString(),
+                // initialValue: _initialValueOrDefault(() => product.price.toString()),
                 onSaved: (value) => _formData['price'] = double.tryParse(value),
                 decoration: InputDecoration(
                   labelText: 'Preço',
@@ -219,7 +253,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 }
               ),
               TextFormField(
-                initialValue: _initialValueOrDefault(() => product.description),
+                initialValue: _formData['description'],
+                // initialValue: _initialValueOrDefault(() => product.description),
                 onSaved: (value) => _formData['description'] = value,
                 decoration: InputDecoration(
                   labelText: 'Descrição'
@@ -254,6 +289,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      ///Dá erro se usar o [initialValue] 
+                      ///aqui porquê já usamos o controller.
+                      ///Só mexemos no valor inicial se o 
+                      ///[controller] não for passado
+                      // initialValue: _formData['imageUrl'],
                       ///Não precisamos chamar o setState na hora de 
                       ///atribuir esses valores pois não precisamos alterar
                       ///a interface gráfica, e apenas alterar os valores

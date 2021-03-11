@@ -30,7 +30,7 @@ class Products with ChangeNotifier{
   }
 
   void updateProduct(Product product) {
-    if (product != null && product.id != null) {
+    if (product == null || product.id == null) {
       return;
     }
 
