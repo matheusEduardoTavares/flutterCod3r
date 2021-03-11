@@ -40,13 +40,39 @@ class ProductItem extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {
+              onPressed: () async {
                 ///Precisamos marcar o [listen] false aqui pois ele
                 ///não está sendo usado no build, e sim dentro de um
                 ///widget. Não precisamos esperar as mudanças, então
                 ///sem o [listen] false dá erro que não está na tree
                 ///tal produto
-                Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+                var isDeleteProduct = await showGeneralDialog<bool>(
+                  context: context,
+                  barrierDismissible: true,
+                  barrierLabel: 'Sair',
+                  pageBuilder: (_, __, ___) => AlertDialog(
+                    title: Text('Excluir produto'),
+                    content: Text('Realmente deseja excluir o produto ${product.title} ?'),
+                    actions: [
+                      FlatButton(
+                        child: Text('CANCELAR'),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        }
+                      ),
+                      FlatButton(
+                        child: Text('EXCLUIR'),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        }
+                      ),
+                    ],
+                  )
+                );
+
+                if (isDeleteProduct != null && isDeleteProduct) {
+                  Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+                }
               },
               color: Theme.of(context).errorColor,
             ),
