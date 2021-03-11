@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/providers/products.dart';
 import '../providers/product.dart';
 import '../utils/app_routes.dart';
 
@@ -38,7 +40,14 @@ class ProductItem extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {},
+              onPressed: () {
+                ///Precisamos marcar o [listen] false aqui pois ele
+                ///não está sendo usado no build, e sim dentro de um
+                ///widget. Não precisamos esperar as mudanças, então
+                ///sem o [listen] false dá erro que não está na tree
+                ///tal produto
+                Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+              },
               color: Theme.of(context).errorColor,
             ),
           ],
