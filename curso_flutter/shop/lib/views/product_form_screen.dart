@@ -9,8 +9,6 @@ class ProductFormScreen extends StatefulWidget {
     this.isUrlImageFinishWithExtension = false
   });
 
-  ///Se a URL de uma imagem não finaliza com uma dada extensão,
-  ///então a imagem deve conter aquela URL.
   final bool isUrlImageFinishWithExtension;
 
   @override
@@ -34,11 +32,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
 
   @override 
   void didChangeDependencies() {
-    /// Método associado ao state que é 
-    /// chamado sempre que o widget é alterado
-    /// e a árvore é rebuildada, para notificar
-    /// que houve mudanças
-
     if (_formData.isEmpty) {
       final product = ModalRoute.of(context)
         .settings.arguments as Product;
@@ -62,16 +55,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       setState(() {});
     }
   }
-
-  /*
-  bool isValidImageUrl(String url) {
-    final pattern = RegExp('/\.jpg|.png|\jpeg/g');
-    bool startWithHttp = url.toLowerCase().startsWith('http://');
-    bool startWithHttps = url.toLowerCase().startsWith('https://');
-    bool endsWithAllTypes = pattern.hasMatch(url);
-    return (startWithHttp || startWithHttps) && (endsWithAllTypes);
-  }
-  */
 
   bool _isValidImageUrl(String url) {
     var urlOnLowerCase = url.toLowerCase();
@@ -99,18 +82,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   }
 
   void _saveForm() {
-    ///O método [validate] irá chamar todos os métodos [validator]
-    ///que forem passados para cada um dos [FormField] dentro do 
-    ///[Form], de forma que se um único retornar uma string, mostra
-    ///que a validação deu erro e tal método retorna então false.
     var isValid = _formKey.currentState.validate();
 
     if(!isValid) {
       return;
     }
 
-    ///Esse método save irá chamar o método [onSaved] de cada
-    ///um dos campos [TextFormField] do formulário
     _formKey.currentState.save();
 
     final newProduct = Product(
@@ -121,14 +98,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       imageUrl: _formData['imageUrl'],
     );
 
-    ///Quando usamos o [Provider] fora do 
-    ///método build, e esse [Provider] precisa
-    ///ficar escutando as modificações, isso irá
-    ///gerar um erro dizendo que tentamos usar um
-    ///[Provider] fora da árvore de componentes.
-    ///Só conseguiremos usar um [Provider] fora 
-    ///do método build se marcarmos o seu 
-    ///[listen] para false
     final products = Provider.of<Products>(context, listen: false);
 
     if (_formData['id'] == null) {
@@ -141,21 +110,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     Navigator.of(context).pop();
   }
 
-  // String _initialValueOrDefault(String Function() returnValue) {
-  //   try {
-  //     return returnValue();
-  //   }
-  //   catch (_) {
-  //     return '';
-  //   } 
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // final Product product = ModalRoute.of(context)?.settings?.arguments;
-
-    // _imageUrlController.text = _initialValueOrDefault(() => product.imageUrl);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulário Produto'),
@@ -176,40 +132,14 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
             children: [
               TextFormField(
                 initialValue: _formData['title'],
-                // initialValue: _initialValueOrDefault(() => product.title),
                 onSaved: (value) => _formData['title'] = value,
                 decoration: InputDecoration(
                   labelText: 'Título',
-                  ///Podemos passar atributos para personalizar 
-                  ///o erro do input
                 ),
-                ///Atributo que serve para definir qual
-                ///será a ação do input. Ao usar o 
-                ///[TextInputAction.next], ao invés do
-                ///botão confirmar irá aparecer um botão
-                ///escrito avançar, e assim, se houverem 
-                ///mais [TextFormField] e for programado
-                ///para ir para um próximo - é o dev quem
-                ///programa isso através dos [FocusNode],
-                ///então irá para o próximo input de acordo
-                ///com o que foi definido no [FocusNode]. Se
-                ///for o último input, apenas fecha o teclado.
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
-                  ///Para ir para o próximo input do 
-                  ///Focus:
                   FocusScope.of(context).requestFocus(_priceFocusNode);
                 },
-                ///A função [validator] é disparada ao 
-                ///disparar a validação do formulário. Temos
-                ///a possibilidade de usar o [autovalidate] como
-                ///true, ou então através do método [validate()]
-                ///que usamos a partir da chave global do 
-                ///[FormState], acessando primeiro o atributo
-                ///[currentState]. Caso retornemos [null] no 
-                ///[validator], não há validação para ser feita,
-                ///e caso retornemos uma string significa que há 
-                ///um erro de validação
                 validator: (value) {
                   if (value.trim().isEmpty) {
                     return 'Informe um título válido';
@@ -222,11 +152,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                   return null;
                 }
               ),
-              ///Hoje em dia já funciona ir para o próximo
-              ///item mesmo sem usar o [FocusNode]
               TextFormField(
                 initialValue: _formData['price']?.toString(),
-                // initialValue: _initialValueOrDefault(() => product.price.toString()),
                 onSaved: (value) => _formData['price'] = double.tryParse(value),
                 decoration: InputDecoration(
                   labelText: 'Preço',
@@ -254,24 +181,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
               ),
               TextFormField(
                 initialValue: _formData['description'],
-                // initialValue: _initialValueOrDefault(() => product.description),
                 onSaved: (value) => _formData['description'] = value,
                 decoration: InputDecoration(
                   labelText: 'Descrição'
                 ),
                 maxLines: 3,
-                ///No caso do IOs, o [TextInputType.multiline]
-                ///não terá o mesmo comportamento do android
                 keyboardType: TextInputType.multiline,
-                ///Ao tirar o [TextInputAction.next], agora
-                ///ao clicar onde ficava o ícone de done ou
-                ///de ir para o próximo, será pulado uma linha
-                ///pois criamos um [TextFormField] com 3 linhas,
-                ///e como sua ação não é de ir para um próximo
-                ///[TextFormField], então apenas são pulados as 
-                ///linhas desse campo já que é um campo marcado
-                ///com [TextInputType.multiline]
-                // textInputAction: TextInputAction.next,
                 focusNode: _descriptionFocusNode,
                 validator: (value) {
                   var isEmpty = value.trim().isEmpty;
@@ -289,23 +204,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      ///Dá erro se usar o [initialValue] 
-                      ///aqui porquê já usamos o controller.
-                      ///Só mexemos no valor inicial se o 
-                      ///[controller] não for passado
-                      // initialValue: _formData['imageUrl'],
-                      ///Não precisamos chamar o setState na hora de 
-                      ///atribuir esses valores pois não precisamos alterar
-                      ///a interface gráfica, e apenas alterar os valores
-                      ///dentro do [formData], mas não precisa haver uma 
-                      ///atualização na interface gráfica
                       onSaved: (value) => _formData['imageUrl'] = value,
                       decoration: InputDecoration(
                         labelText: 'URL da Imagem',
                       ),
                       keyboardType: TextInputType.url,
-                      ///Campo que a partir dele vamos 
-                      ///submeter o formulário
                       textInputAction: TextInputAction.done,
                       focusNode: _imageUrlFocusNode,
                       controller: _imageUrlController,

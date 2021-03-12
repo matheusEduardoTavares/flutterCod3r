@@ -28,37 +28,6 @@ class CartItemWidget extends StatelessWidget {
         )
       ),
       direction: DismissDirection.endToStart,
-      //Solução implementada por mim:
-      // confirmDismiss: (_) async {
-      //   var shouldDeleteItem = await showDialog<bool>(
-      //     context: context,
-      //     builder: (ctx) => AlertDialog(
-      //       title: Text('Excluir o item'),
-      //       content: Text('Realmente deseja excluir o item ${cartItem.title} do carrinho ?'),
-      //       actions: [
-      //         FlatButton(
-      //           child: Text('CANCELAR'),
-      //           onPressed: () {
-      //             Navigator.of(context).pop(false);
-      //           }
-      //         ),
-      //         FlatButton(
-      //           child: Text('OK'),
-      //           onPressed: () {
-      //             Navigator.of(context).pop(true);
-      //           }
-      //         ),
-      //       ],
-      //     )
-      //   );
-
-      //   if (shouldDeleteItem != null && shouldDeleteItem) {
-          // Provider.of<Cart>(context, listen: false).
-          //   removeItem(cartItem.productId);
-      //   }
-
-      //   return shouldDeleteItem != null && shouldDeleteItem;
-      // },
       confirmDismiss: (_) {
         return showDialog<bool>(
           context: context,
@@ -82,9 +51,6 @@ class CartItemWidget extends StatelessWidget {
           )
         );
       },
-      ///O [onDismissed] só é chamado após terminar de arrastar o 
-      ///componente para fora, e por sua vez isso só 
-      ///acontecerá quando o [confirmDismiss] retornar true
       onDismissed: (_) {
         Provider.of<Cart>(context, listen: false).
           removeItem(cartItem.productId);

@@ -67,8 +67,6 @@ class Cart with ChangeNotifier {
       _items.update(productId, (existingItem) {
         return CartItem(
           id: existingItem.id,
-          // productId: existingItem.productId,
-          //Ou (tanto faz):
           productId: productId,
           title: existingItem.title,
           quantity: existingItem.quantity - 1,

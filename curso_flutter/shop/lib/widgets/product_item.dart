@@ -14,11 +14,6 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        ///Antes estávamos usando o Image.network, mas para
-        ///o parâmetro [backgroundImage] do [CircleAvatar]
-        ///precisamos de um [ImageProvider], e para tal
-        ///usaremos o [NetworkImage], e se for um asset que 
-        ///não é o caso é só usar o [AssetImage]
         backgroundImage: NetworkImage(
           product.imageUrl
         ),
@@ -41,11 +36,6 @@ class ProductItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () async {
-                ///Precisamos marcar o [listen] false aqui pois ele
-                ///não está sendo usado no build, e sim dentro de um
-                ///widget. Não precisamos esperar as mudanças, então
-                ///sem o [listen] false dá erro que não está na tree
-                ///tal produto
                 var isDeleteProduct = await showGeneralDialog<bool>(
                   context: context,
                   barrierDismissible: true,
@@ -73,59 +63,6 @@ class ProductItem extends StatelessWidget {
                 if (isDeleteProduct != null && isDeleteProduct) {
                   Provider.of<Products>(context, listen: false).deleteProduct(product.id);
                 }
-
-                ///Soluções usadas na aula:
-                
-                ///SOLUÇÃO 1:
-                // showDialog(
-                //   context: context,
-                //   builder: (ctx) => AlertDialog(
-                //     title: Text('Excluir Produto'),
-                //     content: Text('Tem certeza?'),
-                //     actions: <Widget> [
-                //       FlatButton(
-                //         child: Text('NÃO'),
-                //         onPressed: () {
-                //           Navigator.of(context).pop();
-                //         }
-                //       ),
-                //       FlatButton(
-                //         child: Text('SIM'),
-                //         onPressed: () {
-                //           Provider.of<Products>(context, listen: false).deleteProduct(product.id);
-                //           Navigator.of(context).pop();
-                //         }
-                //       ),
-                //     ]
-                //   )
-                // );
-
-                ///SOLUÇÃO 2:
-                // showDialog(
-                //   context: context,
-                //   builder: (ctx) => AlertDialog(
-                //     title: Text('Excluir Produto'),
-                //     content: Text('Tem certeza?'),
-                //     actions: <Widget> [
-                //       FlatButton(
-                //         child: Text('NÃO'),
-                //         onPressed: () {
-                //           Navigator.of(context).pop(false);
-                //         }
-                //       ),
-                //       FlatButton(
-                //         child: Text('SIM'),
-                //         onPressed: () {
-                //           Navigator.of(context).pop(true);
-                //         }
-                //       ),
-                //     ]
-                //   )
-                // ).then((value) {
-                //   if (value != null && value) {
-                //     Provider.of<Products>(context, listen: false).deleteProduct(product.id);
-                //   }
-                // });
               },
               color: Theme.of(context).errorColor,
             ),
