@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:shop/utils/url_firebase.dart';
 import 'package:shop/views/cart_screen.dart';
 import 'package:shop/views/product_detail_screen.dart';
 import 'package:shop/views/product_form_screen.dart';
 import 'package:shop/views/products_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:provider/provider.dart';
 import './views/products_overview_screen.dart';
 import './utils/app_routes.dart';
-import 'package:provider/provider.dart';
 import './providers/products.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
 import 'views/orders_screen.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  ///Agora que está sendo trabalhado com o package 
+  ///[DotEnv] - https://pub.dev/packages/flutter_dotenv
+  ///basta criar na pasta raíz (fora de lib) o arquivo
+  ///exatamente com nome [.env], e adicionar o conteúdo:
+  ///urlFirebase='[URL PARA ACESSO AO FIREBASE]'
+
+  await DotEnv.load(fileName: ".env");
+
+  UrlFirebase.urlFirebase = env['urlFirebase'];
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

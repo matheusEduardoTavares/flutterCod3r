@@ -1,6 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
 import '../data/dummy_data.dart';
 import 'package:http/http.dart' as http;
@@ -39,8 +39,7 @@ class Products with ChangeNotifier {
     ///de post será criado como itens de um atributo pai que 
     ///será esse [nome da entidade], que no nosso caso será
     ///products
-    const YOUR_URL = 'URL';
-    const url = YOUR_URL;
+    final url = '${UrlFirebase.urlFirebase}/products.json';
     
     ///Recebemos aqui a URL
     http.post(
