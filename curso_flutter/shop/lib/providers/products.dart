@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'product.dart';
 import '../data/dummy_data.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Products with ChangeNotifier{
+class Products with ChangeNotifier {
 
   List<Product> _items = DUMMY_PRODUCTS;
 
@@ -19,6 +21,41 @@ class Products with ChangeNotifier{
   }
 
   void addProduct(Product newProduct) {
+    ///Esse é um bom local para colocarmos as chamadas 
+    ///HTTP, pois é o provider do produto, toda lógica 
+    ///relacionada a produtos está aqui. Até poderíamos
+    ///criar uma outra classe e encapsular todas as chamadas
+    ///HTTP em um único local, mas por enquanto iremos 
+    ///colocar aqui.
+    
+    ///Caso usemos um backend próprio a regra aqui muda, mas
+    ///basicamente como queremos criar uma coleção chamada de 
+    ///produtos e dentro conter todos os produtos lá no 
+    ///realtime database do firebase, então precisamos usar
+    ///a URL do banco e colocar no fim /[nome da entidade].json,
+    ///o que não é padrão nas rotas de backends próprios, não 
+    ///temos rotas com .json no fim, mas no caso do firebase
+    ///essa é a regra. Assim o que passarmos no body da requisição
+    ///de post será criado como itens de um atributo pai que 
+    ///será esse [nome da entidade], que no nosso caso será
+    ///products
+    const YOUR_URL = 'URL';
+    const url = YOUR_URL;
+    
+    ///Recebemos aqui a URL
+    http.post(
+      url,
+      ///Precisamos do formato JSON no conteúdo que 
+      ///passamos para a requisição
+      body: json.encode({
+        'title': newProduct.title,
+        'description': newProduct.description,
+        'price': newProduct.price,
+        'imageUrl': newProduct.imageUrl,
+        'isFavorite': newProduct.isFavorite,
+      }),
+    );
+
     _items.add(Product(
       id: Random().nextDouble().toString(),
       title: newProduct.title,

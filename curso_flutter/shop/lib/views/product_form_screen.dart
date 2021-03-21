@@ -101,6 +101,15 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     final products = Provider.of<Products>(context, listen: false);
 
     if (_formData['id'] == null) {
+      ///Poderíamos fazer a requisição HTTP de POST neste ponto, 
+      ///para na hora de adicionar o produto salvá-lo no 
+      ///firebase também.
+      ///Não é interessante colocar aqui porquê este 
+      ///componente tem como objetivo unicamente focar 
+      ///na definição da interface gráfica. Quanto mais limpo
+      ///for o componente. Não faz sentido adicionar uma 
+      ///complexidade adicional de uma chamada HTTP dentro do
+      ///componente visual.
       products.addProduct(newProduct);
     }
     else {
