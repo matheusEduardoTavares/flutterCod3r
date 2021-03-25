@@ -41,6 +41,27 @@ class Products with ChangeNotifier {
     ///products
     final url = '${UrlFirebase.urlFirebase}/products.json';
     
+    ///Agora iremos simular um erro para ver o que 
+    ///irá acontecer e depois tratar o erro. Para simular
+    ///o erro basta tirar o .json da variável [url].
+    ///O erro é gerado no debug console com a seguinte
+    //final url = '${UrlFirebase.urlFirebase}/products';
+    ///mensagem:
+    /*
+      [ERROR:flutter/lib/ui/ui_dart_state.cc(177)] Unhandled Exception: FormatException: Unexpected character (at character 1)
+      E/flutter (18142): append .json to your request URI to use the REST API.
+      E/flutter (18142): ^
+    */
+    ///E a aplicação irá ficar aparecendo o 
+    ///[CircularProgressIndicator] infinitamente, pois 
+    ///o response nunca chegará. Não é uma experiência 
+    ///agradável para a aplicação. 
+    ///Iremos tratar para quando ocorrer um erro usando
+    ///o método [catchError] que temos para o [then]. Outra
+    ///possibilidade mas não boa é retornar uma string se
+    ///tiver erro, e se não tiver retornar null e depois
+    ///tratar onde esperamos a resposta da request.
+
     ///Recebemos aqui a URL
     return http.post(
       url,
@@ -54,13 +75,15 @@ class Products with ChangeNotifier {
         'isFavorite': newProduct.isFavorite,
       }),
     ).then((response) {
-      _items.add(Product(
-        id: json.decode(response.body)['name'],
-        title: newProduct.title,
-        description: newProduct.description,
-        price: newProduct.price,
-        imageUrl: newProduct.imageUrl,
-      ));
+      _items.add(
+        Product(
+          id: json.decode(response.body)['name'],
+          title: newProduct.title,
+          description: newProduct.description,
+          price: newProduct.price,
+          imageUrl: newProduct.imageUrl,
+        ),
+      );
       notifyListeners();
 
       ///Assim podemos retornar um Future vazio:
@@ -70,7 +93,21 @@ class Products with ChangeNotifier {
       ///servidor, fazendo com que todo o método já 
       ///tivesse sido executado e assim o [Future] na
       ///função não faria sentido.
+      ///O [catchError] adicionado aqui serviu apenas 
+      ///como explicação, não precisamos dele aqui pois 
+      ///é só capturar o erro na hora de chamar o método
+      ///[addProduct].
     });
+    /*
+      .catchError((error) {
+        print(error);
+
+        ///Para não silenciar a requisição, iremos lançar
+        ///ela com o [throw], relançando assim o erro, aí
+        ///tratamos onde esse método [addProduct] é chamado
+        throw error;
+      });
+    */
 
     // return Future.value();
     ///Não funciona colocar aqui também porquê esse
