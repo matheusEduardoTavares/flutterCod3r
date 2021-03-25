@@ -22,6 +22,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   final _imageUrlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _formData = Map<String, Object>();
+  var _isLoading = false;
 
   @override 
   void initState() {
@@ -98,6 +99,10 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       imageUrl: _formData['imageUrl'],
     );
 
+    setState(() {
+      _isLoading = true;
+    });
+
     final products = Provider.of<Products>(context, listen: false);
 
     if (_formData['id'] == null) {
@@ -110,13 +115,20 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       ///for o componente. Não faz sentido adicionar uma 
       ///complexidade adicional de uma chamada HTTP dentro do
       ///componente visual.
-      products.addProduct(newProduct);
+      products.addProduct(newProduct).then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
+      });
     }
     else {
       products.updateProduct(newProduct);
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     }
-
-    Navigator.of(context).pop();
   }
 
   @override
@@ -133,7 +145,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           ),
         ]
       ),
-      body: Padding(
+      body: _isLoading ? Center(
+        child: CircularProgressIndicator(),
+      ) : Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: _formKey,

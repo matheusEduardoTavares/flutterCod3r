@@ -20,7 +20,7 @@ class Products with ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
-  void addProduct(Product newProduct) {
+  Future<void> addProduct(Product newProduct) {
     ///Esse é um bom local para colocarmos as chamadas 
     ///HTTP, pois é o provider do produto, toda lógica 
     ///relacionada a produtos está aqui. Até poderíamos
@@ -42,7 +42,7 @@ class Products with ChangeNotifier {
     final url = '${UrlFirebase.urlFirebase}/products.json';
     
     ///Recebemos aqui a URL
-    http.post(
+    return http.post(
       url,
       ///Precisamos do formato JSON no conteúdo que 
       ///passamos para a requisição
@@ -62,7 +62,23 @@ class Products with ChangeNotifier {
         imageUrl: newProduct.imageUrl,
       ));
       notifyListeners();
+
+      ///Assim podemos retornar um Future vazio:
+      // return Future.value();
+      ///Mas não é isso que queremos pois esse return
+      ///só será chamado depois de chegar a resposta do
+      ///servidor, fazendo com que todo o método já 
+      ///tivesse sido executado e assim o [Future] na
+      ///função não faria sentido.
     });
+
+    // return Future.value();
+    ///Não funciona colocar aqui também porquê esse
+    ///código será executado por completo e iremos 
+    ///retornar algo antes do [response] ter chegado.
+    ///O ideal nesse caso é por um return antes do
+    ///[http.post] pois será associado a todo o bloco, 
+    ///de forma que um [Future] será retornado.
   }
 
   void updateProduct(Product product) {
