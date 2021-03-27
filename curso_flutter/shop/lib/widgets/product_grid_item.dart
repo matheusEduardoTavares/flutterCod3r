@@ -5,10 +5,17 @@ import '../providers/product.dart';
 import 'package:provider/provider.dart';
 
 class ProductGridItem extends StatelessWidget {
+  final bool showDialogOnFavoriteUpdateError;
+
+  ProductGridItem({
+    this.showDialogOnFavoriteUpdateError = true,
+  });
+
   @override
   Widget build(BuildContext context) {
     final Product product = Provider.of<Product>(context, listen: false);
     final Cart cart = Provider.of<Cart>(context, listen: false);
+    final _scaffoldState = Scaffold.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -30,8 +37,34 @@ class ProductGridItem extends StatelessWidget {
           leading: Consumer<Product>(
             builder: (ctx, product, _) => IconButton(
               icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
-              onPressed: () {
-                product.toggleFavorite();
+              onPressed: () async {
+                try {
+                  await product.toggleFavorite();
+                }
+                catch (e) {
+                  if (showDialogOnFavoriteUpdateError) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Text('Erro'),
+                        content: Text(e.toString()),
+                        actions: [
+                          FlatButton(
+                            child: Text('OK'),
+                            onPressed: () => Navigator.of(context).pop()
+                          ),
+                        ],
+                      )
+                    );
+                  }
+                  else {
+                    _scaffoldState.showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                      ),
+                    );
+                  }
+                }
               },
               color: Theme.of(context).accentColor,
             ),

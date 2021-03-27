@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop/application/application.dart';
 import 'package:shop/exceptions/http_exception.dart';
-import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -18,7 +18,6 @@ class Products with ChangeNotifier {
   ///de post será criado como itens de um atributo pai que 
   ///será esse [nome da entidade], que no nosso caso será
   ///products
-  final _baseUrl = '${UrlFirebase.urlFirebase}/products';
 
   List<Product> _items = [];
 
@@ -104,7 +103,7 @@ class Products with ChangeNotifier {
     ///Com async e await:
     final response = await http.post(
       ///No [post] precisamos usar o [.json] na URL.
-      '$_baseUrl.json',
+      '${Application.productsUrl}.json',
       body: json.encode({
         'title': newProduct.title,
         'description': newProduct.description,
@@ -148,7 +147,7 @@ class Products with ChangeNotifier {
   Future<void> loadProducts() async {
     final response = await http.get(
       ///No [get] precisamos colocar o [.json] na URL
-      '$_baseUrl.json',
+      '${Application.productsUrl}.json',
     );
 
     Map<String, dynamic> data = json.decode(response.body);
@@ -209,7 +208,7 @@ class Products with ChangeNotifier {
       ///produto. Aqui seria interessante usar o [toJson] que 
       ///deveria ser colocado no model
       await http.patch(
-        '$_baseUrl/${product.id}.json',
+        '${Application.productsUrl}/${product.id}.json',
         ///Nesse caso ao alterar um produto não queremos salvar
         ///se ele é favorito ou não, fazemos isso em outras partes,
         ///mas aqui não importa.
@@ -245,7 +244,7 @@ class Products with ChangeNotifier {
         ///caso do delete, diferente dos outros, não irá jogar uma
         ///exceção caso aconteça algum erro na hora de excluir
         final response = await http.delete(
-          '$_baseUrl/${product.id}.json'
+          '${Application.productsUrl}/${product.id}.json'
         );
 
         ///Se o [statusCode] do response da requisição for >= a 400,
@@ -267,7 +266,7 @@ class Products with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        '$_baseUrl/${product.id}.json'
+        '${Application.productsUrl}/${product.id}.json'
       );
 
       if (response.statusCode >= 400) {

@@ -1,4 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop/application/application.dart';
+import 'dart:convert';
+import 'package:shop/exceptions/http_exception.dart';
 
 class Product with ChangeNotifier{
   final String id;
@@ -17,8 +21,32 @@ class Product with ChangeNotifier{
     this.isFavorite = false
   });
 
-  void toggleFavorite() {
+  void _changeFavorite() {
     isFavorite = !isFavorite;
     notifyListeners();
+  }
+
+  Future<void> toggleFavorite([bool isRethrowException = true]) async {
+    _changeFavorite();
+
+    try {
+      final response = await http.patch(
+        '${Application.productsUrl}/$id.json',
+        body: json.encode({
+          'isFavorite': isFavorite
+        })
+      );
+
+      if (response.statusCode >= 400) {
+        throw HttpException('Ocorreu um erro na atualização do favorito do produto "$title"');
+      }
+    }
+    catch (e) {
+      _changeFavorite();
+
+      if (isRethrowException ?? false) {
+        rethrow;
+      }
+    }
   }
 }

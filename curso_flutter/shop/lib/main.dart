@@ -25,6 +25,7 @@ Future<void> main() async {
   await DotEnv.load(fileName: ".env");
 
   UrlFirebase.urlFirebase = env['urlFirebase'];
+  Application.productsUrl = '${UrlFirebase.urlFirebase}/products';
 
   runApp(MyApp());
 }
