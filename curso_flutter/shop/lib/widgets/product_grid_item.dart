@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/utils/app_routes.dart';
 import '../providers/product.dart';
@@ -10,6 +11,31 @@ class ProductGridItem extends StatelessWidget {
   ProductGridItem({
     this.showDialogOnFavoriteUpdateError = true,
   });
+
+  void _showFavoriteChangeError(BuildContext context, ScaffoldState scaffoldState, String errorMessage) {
+    if (showDialogOnFavoriteUpdateError) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Erro'),
+          content: Text(errorMessage),
+          actions: [
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop()
+            ),
+          ],
+        )
+      );
+    }
+    else {
+      scaffoldState.showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,29 +67,19 @@ class ProductGridItem extends StatelessWidget {
                 try {
                   await product.toggleFavorite();
                 }
+                on HttpException catch (e) {
+                  _showFavoriteChangeError(
+                    context,
+                    _scaffoldState,
+                    e.toString()
+                  );
+                }
                 catch (e) {
-                  if (showDialogOnFavoriteUpdateError) {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: Text('Erro'),
-                        content: Text(e.toString()),
-                        actions: [
-                          FlatButton(
-                            child: Text('OK'),
-                            onPressed: () => Navigator.of(context).pop()
-                          ),
-                        ],
-                      )
-                    );
-                  }
-                  else {
-                    _scaffoldState.showSnackBar(
-                      SnackBar(
-                        content: Text(e.toString()),
-                      ),
-                    );
-                  }
+                  _showFavoriteChangeError(
+                    context,
+                    _scaffoldState,
+                    'Ocorreu um erro ao trocar a favoritação. Contate um administrador.'
+                  );
                 }
               },
               color: Theme.of(context).accentColor,
