@@ -23,6 +23,7 @@ class ProductOverviewScreen extends StatefulWidget {
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   bool _showFavoriteOnly = false;
+  var _isLoadingProducts = true;
 
   @override 
   void initState() {
@@ -31,7 +32,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     /// aqui pegamos os produtos do backend, no caso, do firebase,
     ///e como não estamos usando o [Provider.of] dentro do 
     ///método build, temos que por seu [listen] para false.
-    Provider.of<Products>(context, listen: false).loadProducts();
+    Provider.of<Products>(context, listen: false).loadProducts()
+      .then((_) => setState(() {_isLoadingProducts = false;}));
+    
   }
 
   @override 
@@ -82,7 +85,10 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           )
         ]
       ),
-      body: ProductGrid(_showFavoriteOnly),
+      body: _isLoadingProducts ? 
+        Center(
+          child: CircularProgressIndicator(),
+        ) : ProductGrid(_showFavoriteOnly),
       drawer: AppDrawer()
     );
   }

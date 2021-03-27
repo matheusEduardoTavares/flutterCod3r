@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
-import '../data/dummy_data.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -20,7 +19,7 @@ class Products with ChangeNotifier {
   ///products
   final _url = '${UrlFirebase.urlFirebase}/products.json';
 
-  List<Product> _items = DUMMY_PRODUCTS;
+  List<Product> _items = [];
 
   List<Product> get items => List.from(_items);
 
@@ -148,7 +147,39 @@ class Products with ChangeNotifier {
     final response = await http.get(
       _url,
     );
-    print(json.decode(response.body));
+
+    Map<String, dynamic> data = json.decode(response.body);
+
+    ///Não é interessante usar o método forEach pois ele custa
+    ///mais processamento que um for in por exemplo. Além disso
+    ///o ideal é que no nosso model coloquemos os métodos 
+    ///[toJson] e [fromJson] para fazer as conversões do que vem
+    ///do backend para poder utilizar no mobile. Como estamos
+    ///armazenando os valores com a tipagem correta no firebase,
+    ///aqui a tipagem já estará correta também, o [price] já está 
+    ///como double lá e o [isFavorite] já está como boolean, 
+    ///enquanto os demais são Strings.
+    if (data != null) {
+      _items.clear();
+      
+      data.forEach((productId, productData) {
+        _items.add(
+          Product(
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            price: productData['price'],
+            imageUrl: productData['imageUrl'],
+            isFavorite: productData['isFavorite'],
+          ),
+        );
+      });
+
+      notifyListeners();
+    }
+
+    ///É opcional colocar:
+    //return Future.value();
   }
 
   void updateProduct(Product product) {
