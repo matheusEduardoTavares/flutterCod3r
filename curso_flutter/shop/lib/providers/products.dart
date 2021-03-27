@@ -224,13 +224,58 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
+    ///Temos uma técnica chamada exclusão otimista. Podemos 
+    ///refletir na interface gráfica a exclusão mesmo antes de
+    ///no firebase termos a confirmação que o produto foi 
+    ///excluído, e caso aconteça algum erro, voltamos o produto
+    ///para lista e mostramos uma mensagem de erro para o 
+    ///usuário.
+    
     final index = _items.indexWhere((prod) => prod.id == id);
 
     if (index >= 0) {
-      _items.removeWhere((product) => product.id == id);
+      /*
+        ///Exclusão usando a estratégia natural:
+        final product = _items[index];
 
+        ///Para o delete também precisamos do [.json] na URL e
+        ///usar o route params para identificar o produto. Nesse
+        ///caso do delete, diferente dos outros, não irá jogar uma
+        ///exceção caso aconteça algum erro na hora de excluir
+        final response = await http.delete(
+          '$_baseUrl/${product.id}.json'
+        );
+
+        ///Se o [statusCode] do response da requisição for >= a 400,
+        ///significa que houve algum erro nela. O 400 é erro na 
+        ///requisição e 500 é erro do lado do servidor. Já o status
+        ///da família dos 200 significa bem sucedido.
+        if (response.statusCode >= 400) {
+          print('problema');
+        }
+        else {
+          _items.remove(product);
+          notifyListeners();
+        }
+      */
+
+      ///Exclusão usando a estratégia de exclusão otimista:
+      final product = _items[index];
+      _items.remove(product);
       notifyListeners();
+
+      final response = await http.delete(
+        '$_baseUrl/${product.id}.json'
+      );
+
+      if (response.statusCode >= 400) {
+        ///Aí aqui podemos lançar uma excecão para que essa 
+        ///exceção seja tratada na aplicação e essa informação
+        ///seja mostrada.
+        _items.insert(index, product);
+        notifyListeners();
+      }
     }
   }
 }
