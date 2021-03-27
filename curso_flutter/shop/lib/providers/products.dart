@@ -7,6 +7,19 @@ import 'dart:convert';
 
 class Products with ChangeNotifier {
 
+  ///Caso usemos um backend próprio a regra aqui muda, mas
+  ///basicamente como queremos criar uma coleção chamada de 
+  ///produtos e dentro conter todos os produtos lá no 
+  ///realtime database do firebase, então precisamos usar
+  ///a URL do banco e colocar no fim /[nome da entidade].json,
+  ///o que não é padrão nas rotas de backends próprios, não 
+  ///temos rotas com .json no fim, mas no caso do firebase
+  ///essa é a regra. Assim o que passarmos no body da requisição
+  ///de post será criado como itens de um atributo pai que 
+  ///será esse [nome da entidade], que no nosso caso será
+  ///products
+  final _url = '${UrlFirebase.urlFirebase}/products.json';
+
   List<Product> _items = DUMMY_PRODUCTS;
 
   List<Product> get items => List.from(_items);
@@ -26,19 +39,6 @@ class Products with ChangeNotifier {
     ///criar uma outra classe e encapsular todas as chamadas
     ///HTTP em um único local, mas por enquanto iremos 
     ///colocar aqui.
-    
-    ///Caso usemos um backend próprio a regra aqui muda, mas
-    ///basicamente como queremos criar uma coleção chamada de 
-    ///produtos e dentro conter todos os produtos lá no 
-    ///realtime database do firebase, então precisamos usar
-    ///a URL do banco e colocar no fim /[nome da entidade].json,
-    ///o que não é padrão nas rotas de backends próprios, não 
-    ///temos rotas com .json no fim, mas no caso do firebase
-    ///essa é a regra. Assim o que passarmos no body da requisição
-    ///de post será criado como itens de um atributo pai que 
-    ///será esse [nome da entidade], que no nosso caso será
-    ///products
-    final url = '${UrlFirebase.urlFirebase}/products.json';
     
     ///Agora iremos simular um erro para ver o que 
     ///irá acontecer e depois tratar o erro. Para simular
@@ -103,7 +103,7 @@ class Products with ChangeNotifier {
 
     ///Com async e await:
     final response = await http.post(
-      url,
+      _url,
       body: json.encode({
         'title': newProduct.title,
         'description': newProduct.description,
@@ -142,6 +142,13 @@ class Products with ChangeNotifier {
     ///O ideal nesse caso é por um return antes do
     ///[http.post] pois será associado a todo o bloco, 
     ///de forma que um [Future] será retornado.
+  }
+
+  Future<void> loadProducts() async {
+    final response = await http.get(
+      _url,
+    );
+    print(json.decode(response.body));
   }
 
   void updateProduct(Product product) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/providers/cart.dart';
+import 'package:shop/providers/products.dart';
 import 'package:shop/utils/app_routes.dart';
 import 'package:shop/widgets/app_drawer.dart';
 import 'package:shop/widgets/badge.dart';
@@ -22,6 +23,16 @@ class ProductOverviewScreen extends StatefulWidget {
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   bool _showFavoriteOnly = false;
+
+  @override 
+  void initState() {
+    super.initState();
+
+    /// aqui pegamos os produtos do backend, no caso, do firebase,
+    ///e como não estamos usando o [Provider.of] dentro do 
+    ///método build, temos que por seu [listen] para false.
+    Provider.of<Products>(context, listen: false).loadProducts();
+  }
 
   @override 
   Widget build(BuildContext context){
