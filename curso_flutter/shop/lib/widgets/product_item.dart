@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/providers/products.dart';
 import '../providers/product.dart';
 import '../utils/app_routes.dart';
@@ -12,6 +13,8 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _scaffold = Scaffold.of(context);
+
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
@@ -61,7 +64,40 @@ class ProductItem extends StatelessWidget {
                 );
 
                 if (isDeleteProduct != null && isDeleteProduct) {
-                  Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+                  try {
+                    await Provider.of<Products>(context, listen: false)
+                      .deleteProduct(product.id);
+                  }
+                  ///Podemos tratar exceções de forma específica com o [on],
+                  ///e passando qual tipo queremos tratar, aí o [catch]
+                  ///para esse caso é opcional e só o passamos caso queiramos
+                  ///pegar algum detalhe do erro
+                  on HttpException catch (error) {
+                    ///Por ser um método assíncrono, não conseguimos 
+                    ///carregar o [context] aqui, portanto, não 
+                    ///conseguimos mostrar uma snackBar aqui diretamente
+                    ///com o [Scaffold.of(context)], então iremos
+                    ///armazenar o [Scaffold.of(context)] em uma 
+                    ///variável dentro do build, para apenas 
+                    ///acessá-la aqui usando o [showSnackBar]
+                    // Scaffold.of(context)
+                    //   .showSnackBar(
+                    //     SnackBar(
+                    //       duration: Duration(seconds: 3),
+                    //       content: Text('Erro ao excluir o produto'),
+                    //       action: SnackBarAction(
+                    //         onPressed: () {},
+                    //         label: 'OK'
+                    //       ),
+                    //     ),
+                    //   );
+                    _scaffold
+                      .showSnackBar(
+                        SnackBar(
+                          content: Text(error.toString()),
+                        ),
+                      );
+                  }
                 }
               },
               color: Theme.of(context).errorColor,

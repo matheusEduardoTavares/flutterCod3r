@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
 import 'package:http/http.dart' as http;
@@ -275,6 +276,8 @@ class Products with ChangeNotifier {
         ///seja mostrada.
         _items.insert(index, product);
         notifyListeners();
+        ///Agora aqui iremos lançar nossa exceção personalizada:
+        throw HttpException('Ocorreu um erro na exclusão do produto');
       }
     }
   }
