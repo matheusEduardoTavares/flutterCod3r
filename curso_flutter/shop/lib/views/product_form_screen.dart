@@ -82,7 +82,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     return isValidProtocol;
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     var isValid = _formKey.currentState.validate();
 
     if(!isValid) {
@@ -105,6 +105,8 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
 
     final products = Provider.of<Products>(context, listen: false);
 
+    /*
+    ///Com then:
     if (_formData['id'] == null) {
       ///Poderíamos fazer a requisição HTTP de POST neste ponto, 
       ///para na hora de adicionar o produto salvá-lo no 
@@ -164,6 +166,38 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         _isLoading = false;
       });
       Navigator.of(context).pop();
+    }
+    */
+
+    ///Com async e await
+    if (_formData['id'] == null) {
+      try {
+        await products.addProduct(newProduct);
+        Navigator.of(context).pop();
+      }
+      catch (error) {
+        await showDialog<Null>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Ocorreu um erro!'),
+            content: Text('Ocorreu um erro durante o salvamento do produto!'),
+            actions: [
+              FlatButton(
+                child: Text('FECHAR'),
+                onPressed: () => Navigator.of(context).pop()
+              ),
+            ],
+          ),
+        );
+      }
+      finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+    else {
+      products.updateProduct(newProduct);
     }
   }
 

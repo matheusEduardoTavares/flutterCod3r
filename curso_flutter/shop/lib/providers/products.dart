@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
@@ -20,7 +19,7 @@ class Products with ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
-  Future<void> addProduct(Product newProduct) {
+  Future<void> addProduct(Product newProduct) async {
     ///Esse é um bom local para colocarmos as chamadas 
     ///HTTP, pois é o provider do produto, toda lógica 
     ///relacionada a produtos está aqui. Até poderíamos
@@ -62,6 +61,8 @@ class Products with ChangeNotifier {
     ///tiver erro, e se não tiver retornar null e depois
     ///tratar onde esperamos a resposta da request.
 
+    /*
+    ///Usando o then:
     ///Recebemos aqui a URL
     return http.post(
       url,
@@ -98,6 +99,31 @@ class Products with ChangeNotifier {
       ///é só capturar o erro na hora de chamar o método
       ///[addProduct].
     });
+    */
+
+    ///Com async e await:
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'title': newProduct.title,
+        'description': newProduct.description,
+        'price': newProduct.price,
+        'imageUrl': newProduct.imageUrl,
+        'isFavorite': newProduct.isFavorite,
+      }),
+    );
+
+    _items.add(
+      Product(
+        id: json.decode(response.body)['name'],
+        title: newProduct.title,
+        description: newProduct.description,
+        price: newProduct.price,
+        imageUrl: newProduct.imageUrl,
+      ),
+    );
+    notifyListeners();
+
     /*
       .catchError((error) {
         print(error);
