@@ -170,9 +170,14 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     */
 
     ///Com async e await
-    if (_formData['id'] == null) {
+    
       try {
-        await products.addProduct(newProduct);
+        if (_formData['id'] == null) {
+          await products.addProduct(newProduct);
+        }
+        else {
+          await products.updateProduct(newProduct);
+        }
         Navigator.of(context).pop();
       }
       catch (error) {
@@ -195,10 +200,6 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           _isLoading = false;
         });
       }
-    }
-    else {
-      products.updateProduct(newProduct);
-    }
   }
 
   @override

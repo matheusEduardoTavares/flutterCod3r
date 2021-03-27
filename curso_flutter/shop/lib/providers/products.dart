@@ -17,7 +17,7 @@ class Products with ChangeNotifier {
   ///de post será criado como itens de um atributo pai que 
   ///será esse [nome da entidade], que no nosso caso será
   ///products
-  final _url = '${UrlFirebase.urlFirebase}/products.json';
+  final _baseUrl = '${UrlFirebase.urlFirebase}/products';
 
   List<Product> _items = [];
 
@@ -102,7 +102,8 @@ class Products with ChangeNotifier {
 
     ///Com async e await:
     final response = await http.post(
-      _url,
+      ///No [post] precisamos usar o [.json] na URL.
+      '$_baseUrl.json',
       body: json.encode({
         'title': newProduct.title,
         'description': newProduct.description,
@@ -145,7 +146,8 @@ class Products with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await http.get(
-      _url,
+      ///No [get] precisamos colocar o [.json] na URL
+      '$_baseUrl.json',
     );
 
     Map<String, dynamic> data = json.decode(response.body);
@@ -189,7 +191,7 @@ class Products with ChangeNotifier {
     //return Future.value();
   }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     if (product == null || product.id == null) {
       return;
     }
@@ -197,6 +199,26 @@ class Products with ChangeNotifier {
     final index = _items.indexWhere((prod) => prod.id == product.id);
 
     if (index >= 0) {
+      ///Se encontrou o produto, vamos atualizá-lo. No [patch]
+      ///também precisamos do [.json], porém para atualizar um
+      ///item específico, precisamos da URL inteira, e através
+      ///de route params passamos qual é o ID do produto que 
+      ///será atualizado, e passamos como parâmetro nomeado o
+      ///[body] que irá receber um JSON com os novos dados daquele
+      ///produto. Aqui seria interessante usar o [toJson] que 
+      ///deveria ser colocado no model
+      await http.patch(
+        '$_baseUrl/${product.id}.json',
+        ///Nesse caso ao alterar um produto não queremos salvar
+        ///se ele é favorito ou não, fazemos isso em outras partes,
+        ///mas aqui não importa.
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+        }),
+      );
       _items[index] = product;
       notifyListeners();
     }
