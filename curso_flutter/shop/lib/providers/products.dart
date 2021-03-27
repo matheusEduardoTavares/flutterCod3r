@@ -101,26 +101,19 @@ class Products with ChangeNotifier {
     */
 
     ///Com async e await:
+    ///Aqui no [response.body] será retornado o ID do produto cadastrado
     final response = await http.post(
       ///No [post] precisamos usar o [.json] na URL.
       '${Application.productsUrl}.json',
-      body: json.encode({
-        'title': newProduct.title,
-        'description': newProduct.description,
-        'price': newProduct.price,
-        'imageUrl': newProduct.imageUrl,
-        'isFavorite': newProduct.isFavorite,
-      }),
+      body: newProduct.toJson(
+        hasId: false,
+      ),
     );
 
     _items.add(
-      Product(
-        id: json.decode(response.body)['name'],
-        title: newProduct.title,
-        description: newProduct.description,
-        price: newProduct.price,
-        imageUrl: newProduct.imageUrl,
-      ),
+      newProduct.copyWith(
+        id: json.decode(response.body)['name']
+      )
     );
     notifyListeners();
 
@@ -173,13 +166,10 @@ class Products with ChangeNotifier {
     if (data != null) {
       data.forEach((productId, productData) {
         _items.add(
-          Product(
-            id: productId,
-            title: productData['title'],
-            description: productData['description'],
-            price: productData['price'],
-            imageUrl: productData['imageUrl'],
-            isFavorite: productData['isFavorite'],
+          Product.fromJson(
+            json.encode(productData)
+          ).copyWith(
+            id: productId
           ),
         );
       });
@@ -212,12 +202,10 @@ class Products with ChangeNotifier {
         ///Nesse caso ao alterar um produto não queremos salvar
         ///se ele é favorito ou não, fazemos isso em outras partes,
         ///mas aqui não importa.
-        body: json.encode({
-          'title': product.title,
-          'description': product.description,
-          'price': product.price,
-          'imageUrl': product.imageUrl,
-        }),
+        body: product.toJson(
+          hasId: false,
+          hasFavorite: false
+        ),
       );
       _items[index] = product;
       notifyListeners();
