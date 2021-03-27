@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/application/application.dart';
 import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/providers/products.dart';
 import '../providers/product.dart';
@@ -13,7 +14,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scaffold = Scaffold.of(context);
+    // final _scaffold = Scaffold.of(context);
 
     return ListTile(
       leading: CircleAvatar(
@@ -91,12 +92,27 @@ class ProductItem extends StatelessWidget {
                     //       ),
                     //     ),
                     //   );
-                    _scaffold
-                      .showSnackBar(
-                        SnackBar(
-                          content: Text(error.toString()),
-                        ),
-                      );
+                    // _scaffold
+                    //   .showSnackBar(
+                    //     SnackBar(
+                    //       content: Text(error.toString()),
+                    //     ),
+                    //   );
+
+                    ///Outra forma é usando uma variável que pode ser 
+                    ///vista aqui e que é uma chave global do scaffold que
+                    ///queremos mostar o modal:
+                    Application.managerProductsScaffold.currentState.showSnackBar(
+                      SnackBar(
+                        content: Text(error.toString()),
+                      ),
+                    );
+
+                    ///Se tentarmos mostrar um modal dará erro pois até aqui o
+                    ///[context] já foi alterado e irá quebrar se tentarmos 
+                    ///mostrar o dialog. Porém, se usarmos como [context] o:
+                    ///[Application.navKey.currentState.overlay.context], aí
+                    ///irá funcionar
                   }
                 }
               },

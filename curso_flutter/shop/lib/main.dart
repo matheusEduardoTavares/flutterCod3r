@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/application/application.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'package:shop/views/cart_screen.dart';
 import 'package:shop/views/product_detail_screen.dart';
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.ORDERS: (ctx) => OrdersScreen(),
           AppRoutes.PRODUCTS: (ctx) => ProductsScreen(),
           AppRoutes.PRODUCT_FORM: (ctx) => ProductFormScreen(),
-        }
+        },
+        navigatorKey: Application.navKey,
       ),
     );
   }

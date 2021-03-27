@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/application/application.dart';
 import 'package:shop/providers/products.dart';
 import 'package:shop/utils/app_routes.dart';
 import 'package:shop/widgets/product_item.dart';
@@ -22,6 +23,7 @@ class ProductsScreen extends StatelessWidget {
     final products = productsData.items;
 
     return Scaffold(
+      key: Application.managerProductsScaffold,
       appBar: AppBar(
         title: Text('Gerenciar Produtos'),
         centerTitle: true,
