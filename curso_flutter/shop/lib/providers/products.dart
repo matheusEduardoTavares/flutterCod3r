@@ -150,6 +150,15 @@ class Products with ChangeNotifier {
 
     Map<String, dynamic> data = json.decode(response.body);
 
+    ///Esse [clear] evita a duplicação de produtos que 
+    ///acontece caso seja trocado de rota (ido para outra
+    ///página na [Drawer]) e volte para a rota com título 
+    ///Loja, pois aí acaba adicionando duas vezes e acaba
+    ///duplicando os produtos, e com o método [clear] 
+    ///evitamos que isso aconteça porquê sempre é limpado a 
+    ///loja para depois adicionar os produtos carregados
+    _items.clear();
+
     ///Não é interessante usar o método forEach pois ele custa
     ///mais processamento que um for in por exemplo. Além disso
     ///o ideal é que no nosso model coloquemos os métodos 
@@ -160,8 +169,6 @@ class Products with ChangeNotifier {
     ///como double lá e o [isFavorite] já está como boolean, 
     ///enquanto os demais são Strings.
     if (data != null) {
-      _items.clear();
-      
       data.forEach((productId, productData) {
         _items.add(
           Product(
