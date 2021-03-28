@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:shop/application/application.dart';
+import 'package:shop/utils/url_firebase.dart';
 import 'package:shop/views/cart_screen.dart';
 import 'package:shop/views/product_detail_screen.dart';
 import 'package:shop/views/product_form_screen.dart';
 import 'package:shop/views/products_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:provider/provider.dart';
 import './views/products_overview_screen.dart';
 import './utils/app_routes.dart';
-import 'package:provider/provider.dart';
 import './providers/products.dart';
 import './providers/cart.dart';
 import './providers/orders.dart';
 import 'views/orders_screen.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  await DotEnv.load(fileName: ".env");
+
+  UrlFirebase.urlFirebase = env['urlFirebase'];
+  Application.productsUrl = '${UrlFirebase.urlFirebase}/products';
+  Application.ordersUrl = '${UrlFirebase.urlFirebase}/orders';
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -43,7 +55,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.ORDERS: (ctx) => OrdersScreen(),
           AppRoutes.PRODUCTS: (ctx) => ProductsScreen(),
           AppRoutes.PRODUCT_FORM: (ctx) => ProductFormScreen(),
-        }
+        },
+        navigatorKey: Application.navKey,
       ),
     );
   }

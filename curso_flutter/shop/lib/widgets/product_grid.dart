@@ -18,7 +18,8 @@ class ProductGrid extends StatelessWidget {
     if (products.isEmpty)
       return Center(
         child: Text(
-          'Não há nenhum item favoritado !',
+          showFavoriteOnly ? 'Não há nenhum item favoritado !'
+            : 'Não há nenhum item !',
           style: TextStyle(
             fontSize: 38,
             shadows: <Shadow>[

@@ -22,6 +22,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
   final _imageUrlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _formData = Map<String, Object>();
+  var _isLoading = false;
 
   @override 
   void initState() {
@@ -81,7 +82,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     return isValidProtocol;
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     var isValid = _formKey.currentState.validate();
 
     if(!isValid) {
@@ -98,16 +99,41 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
       imageUrl: _formData['imageUrl'],
     );
 
+    setState(() {
+      _isLoading = true;
+    });
+
     final products = Provider.of<Products>(context, listen: false);
 
-    if (_formData['id'] == null) {
-      products.addProduct(newProduct);
+    try {
+      if (_formData['id'] == null) {
+        await products.addProduct(newProduct);
+      }
+      else {
+        await products.updateProduct(newProduct);
+      }
+      Navigator.of(context).pop();
     }
-    else {
-      products.updateProduct(newProduct);
+    catch (error) {
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!'),
+          content: Text('Ocorreu um erro durante o salvamento do produto!'),
+          actions: [
+            FlatButton(
+              child: Text('FECHAR'),
+              onPressed: () => Navigator.of(context).pop()
+            ),
+          ],
+        ),
+      );
     }
-
-    Navigator.of(context).pop();
+    finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -124,7 +150,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           ),
         ]
       ),
-      body: Padding(
+      body: _isLoading ? Center(
+        child: CircularProgressIndicator(),
+      ) : Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: _formKey,

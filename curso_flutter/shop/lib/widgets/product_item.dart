@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/application/application.dart';
+import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/providers/products.dart';
 import '../providers/product.dart';
 import '../utils/app_routes.dart';
@@ -61,7 +63,17 @@ class ProductItem extends StatelessWidget {
                 );
 
                 if (isDeleteProduct != null && isDeleteProduct) {
-                  Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+                  try {
+                    await Provider.of<Products>(context, listen: false)
+                      .deleteProduct(product.id);
+                  }
+                  on HttpException catch (error) {
+                    Application.managerProductsScaffold.currentState.showSnackBar(
+                      SnackBar(
+                        content: Text(error.toString()),
+                      ),
+                    );
+                  }
                 }
               },
               color: Theme.of(context).errorColor,
