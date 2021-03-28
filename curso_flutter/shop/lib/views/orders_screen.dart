@@ -73,6 +73,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
 ///Estratégia com o [FutureBuilder]:
 class OrdersScreen extends StatelessWidget {
+  Future<void> _getOrders(BuildContext context) async {
+    await Provider.of<Orders>(context, listen: false).loadOrders();
+  }
+
   @override 
   Widget build(BuildContext context) {
     ///Usando a estratégia do [FutureBuilder] não irá funcionar
@@ -87,7 +91,7 @@ class OrdersScreen extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: FutureBuilder(
-        future: Provider.of<Orders>(context, listen: false).loadOrders(),
+        future: _getOrders(context),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -101,10 +105,32 @@ class OrdersScreen extends StatelessWidget {
           }
           else {
             return Consumer<Orders>(
-              builder: (ctx, orders, _) => ListView.builder(
-                itemCount: orders.itemsCount,
-                itemBuilder: (ctx, index) => OrderWidget(orders.items[index])
-              )
+              builder: (ctx, orders, _) => RefreshIndicator(
+                onRefresh: () async {
+                  try {
+                    await _getOrders(context);
+                  }
+                  catch (e) {
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (_, __, ___) => AlertDialog(
+                        title: Text('Erro'),
+                        content: Text('Erro ao tentar atualizar os pedidos'),
+                        actions: [
+                          FlatButton(
+                            child: Text('OK'),
+                            onPressed: () => Navigator.of(context).pop()
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+                child: ListView.builder(
+                  itemCount: orders.itemsCount,
+                  itemBuilder: (ctx, index) => OrderWidget(orders.items[index]),
+                ),
+              ),
             );
           }
         },
