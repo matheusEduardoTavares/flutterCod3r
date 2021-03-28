@@ -1,8 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    ///Outro exemplo de uso do [cascade operator] é quando 
+    ///precisamos adicionar vários itens na lista, como o método
+    ///[add] retorna void, não conseguimos o chamar duas vezes
+    ///seguidas com o operador ponto, aí precisamos do cascade.
+    ///O dado que será retornado é quem está antes do cascade 
+    ///operator, no caso abaixo, a lista [a].
+    // List a = [1, 2, 3];
+    // var res = a..add(1)..add(2)..add(3);
+    // print('res = $res');
+
     return Scaffold(
       body: Stack(
         children: [
@@ -23,8 +36,58 @@ class AuthScreen extends StatelessWidget {
           Container(
             width: double.infinity,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 70,
+                  ),
+                  ///O método [rotationZ] do [Matrix4] é usado
+                  ///para rotacionar o elemento no eixo Z, e 
+                  ///com isso conseguimos deixá-lo inclinado.
+                  ///Mas nesse caso queremos fazer com que ele 
+                  ///seja transladado em -10 também, usando o 
+                  ///método [translate(-10)], porém, esse método
+                  ///[translate] retorna void, e não podemos passar
+                  ///void para o transform. Sendo assim, precisaremos
+                  ///usar o operador .. ao invés do . , é o operador
+                  ///chamado [cascade operator]. Com esse cascade, 
+                  ///conseguimos chamar e executar uma função, porém
+                  ///aquela função chamada com o .. não é retornada, 
+                  ///apenas é executada, sendo assim, chamando o 
+                  ///[rotationZ] com o operador ponto e depois o 
+                  ///[translate] com o cascade operator, quem será 
+                  ///retornado para o [transform] é o [rotationZ], e
+                  ///o [translate] apenas será executado fazendo a 
+                  ///translação que queremos
+                  transform: Matrix4.rotationZ(-8 * pi / 180)
+                  ///Se passarmos um inteiro para o [translate]
+                  ///irá quebrar, sempre devemos passar double
+                    ..translate(-10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    ///O [.shade900] serve para deixar a cor mais escura
+                    color: Colors.deepOrange.shade900,
+                    boxShadow: [
+                      BoxShadow(
+                        ///Para borrar a sombra
+                        blurRadius: 8,
+                        color: Colors.black26,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'Minha Loja',
+                    style: TextStyle(
+                      color: Theme.of(context).accentTextTheme.headline6.color,
+                      fontSize: 45,
+                      fontFamily: 'Anton'
+                    ),
+                  )
+                ),
               ],
             ),
           ),
