@@ -14,8 +14,6 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final _scaffold = Scaffold.of(context);
-
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
@@ -69,50 +67,12 @@ class ProductItem extends StatelessWidget {
                     await Provider.of<Products>(context, listen: false)
                       .deleteProduct(product.id);
                   }
-                  ///Podemos tratar exceções de forma específica com o [on],
-                  ///e passando qual tipo queremos tratar, aí o [catch]
-                  ///para esse caso é opcional e só o passamos caso queiramos
-                  ///pegar algum detalhe do erro
                   on HttpException catch (error) {
-                    ///Por ser um método assíncrono, não conseguimos 
-                    ///carregar o [context] aqui, portanto, não 
-                    ///conseguimos mostrar uma snackBar aqui diretamente
-                    ///com o [Scaffold.of(context)], então iremos
-                    ///armazenar o [Scaffold.of(context)] em uma 
-                    ///variável dentro do build, para apenas 
-                    ///acessá-la aqui usando o [showSnackBar]
-                    // Scaffold.of(context)
-                    //   .showSnackBar(
-                    //     SnackBar(
-                    //       duration: Duration(seconds: 3),
-                    //       content: Text('Erro ao excluir o produto'),
-                    //       action: SnackBarAction(
-                    //         onPressed: () {},
-                    //         label: 'OK'
-                    //       ),
-                    //     ),
-                    //   );
-                    // _scaffold
-                    //   .showSnackBar(
-                    //     SnackBar(
-                    //       content: Text(error.toString()),
-                    //     ),
-                    //   );
-
-                    ///Outra forma é usando uma variável que pode ser 
-                    ///vista aqui e que é uma chave global do scaffold que
-                    ///queremos mostar o modal:
                     Application.managerProductsScaffold.currentState.showSnackBar(
                       SnackBar(
                         content: Text(error.toString()),
                       ),
                     );
-
-                    ///Se tentarmos mostrar um modal dará erro pois até aqui o
-                    ///[context] já foi alterado e irá quebrar se tentarmos 
-                    ///mostrar o dialog. Porém, se usarmos como [context] o:
-                    ///[Application.navKey.currentState.overlay.context], aí
-                    ///irá funcionar
                   }
                 }
               },

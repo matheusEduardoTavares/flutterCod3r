@@ -7,12 +7,6 @@ import 'package:shop/widgets/product_item.dart';
 import '../widgets/app_drawer.dart';
 
 class ProductsScreen extends StatelessWidget {
-
-  ///Assim:
-  // Future<void> _refreshProducts(BuildContext context) async {
-  //   await Provider.of<Products>(context, listen: false).loadProducts();
-  // }
-  ///Ou:
   Future<void> _refreshProducts(BuildContext context) {
     return Provider.of<Products>(context, listen: false).loadProducts();
   }

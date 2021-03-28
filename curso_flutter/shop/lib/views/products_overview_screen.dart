@@ -29,9 +29,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   void initState() {
     super.initState();
 
-    /// aqui pegamos os produtos do backend, no caso, do firebase,
-    ///e como não estamos usando o [Provider.of] dentro do 
-    ///método build, temos que por seu [listen] para false.
     Provider.of<Products>(context, listen: false).loadProducts()
       .then((_) => setState(() {_isLoadingProducts = false;}));
     

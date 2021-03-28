@@ -16,12 +16,6 @@ import './providers/orders.dart';
 import 'views/orders_screen.dart';
 
 Future<void> main() async {
-  ///Agora que está sendo trabalhado com o package 
-  ///[DotEnv] - https://pub.dev/packages/flutter_dotenv
-  ///basta criar na pasta raíz (fora de lib) o arquivo
-  ///exatamente com nome [.env], e adicionar o conteúdo:
-  ///urlFirebase='[URL PARA ACESSO AO FIREBASE]'
-
   await DotEnv.load(fileName: ".env");
 
   UrlFirebase.urlFirebase = env['urlFirebase'];

@@ -105,101 +105,35 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
 
     final products = Provider.of<Products>(context, listen: false);
 
-    /*
-    ///Com then:
-    if (_formData['id'] == null) {
-      ///Poderíamos fazer a requisição HTTP de POST neste ponto, 
-      ///para na hora de adicionar o produto salvá-lo no 
-      ///firebase também.
-      ///Não é interessante colocar aqui porquê este 
-      ///componente tem como objetivo unicamente focar 
-      ///na definição da interface gráfica. Quanto mais limpo
-      ///for o componente. Não faz sentido adicionar uma 
-      ///complexidade adicional de uma chamada HTTP dentro do
-      ///componente visual.
-      products.addProduct(newProduct)
-        .catchError((error) {
-          ///É importante retornarmos o [showDialog] e tipá-lo
-          ///como null, pois o [then] será executado apenas 
-          ///após acabar o [Future] do [catchError], e como
-          ///dentro do [catchError] retornamos um 
-          ///[showDialog], então o [then] será executado apenas
-          ///após fechar o dialog.
-          return showDialog<Null>(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              title: Text('Ocorreu um erro!'),
-              ///Não faz sentido mostrar um erro não tratado ao
-              ///usuário, pois pode conter informações sensíveis
-              ///do negócio, além de que o usuário provavelmente
-              ///não irá entender o erro, então é melhor colocar
-              ///que aconteceu um erro inesperado, e para tratar
-              ///o erro ocorrido podemos usar de algumas técnicas
-              ///como o sentry, ou até colocar um hash gerado e 
-              ///cadastrar o erro em algum lugar, e podemos 
-              ///inclusive colocar um botão para reportar o 
-              ///erro para quando o usuário clicar a mensagem ser
-              ///enviada para o servidor ou fazer isso de 
-              ///forma automática.
-              // content: Text(error.toString()),
-              ///Ideal:
-              content: Text('Ocorreu um erro durante o salvamento do produto'),
-              actions: [
-                FlatButton(
-                  child: Text('OK'),
-                  onPressed: () => Navigator.of(context).pop()
-                ),
-              ],
-            ),
-          );
-        })
-        .then((_) {
-          setState(() {
-            _isLoading = false;
-          });
-          Navigator.of(context).pop();
-        });
+    try {
+      if (_formData['id'] == null) {
+        await products.addProduct(newProduct);
+      }
+      else {
+        await products.updateProduct(newProduct);
+      }
+      Navigator.of(context).pop();
     }
-    else {
-      products.updateProduct(newProduct);
+    catch (error) {
+      await showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro!'),
+          content: Text('Ocorreu um erro durante o salvamento do produto!'),
+          actions: [
+            FlatButton(
+              child: Text('FECHAR'),
+              onPressed: () => Navigator.of(context).pop()
+            ),
+          ],
+        ),
+      );
+    }
+    finally {
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pop();
     }
-    */
-
-    ///Com async e await
-    
-      try {
-        if (_formData['id'] == null) {
-          await products.addProduct(newProduct);
-        }
-        else {
-          await products.updateProduct(newProduct);
-        }
-        Navigator.of(context).pop();
-      }
-      catch (error) {
-        await showDialog<Null>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('Ocorreu um erro!'),
-            content: Text('Ocorreu um erro durante o salvamento do produto!'),
-            actions: [
-              FlatButton(
-                child: Text('FECHAR'),
-                onPressed: () => Navigator.of(context).pop()
-              ),
-            ],
-          ),
-        );
-      }
-      finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
   }
 
   @override

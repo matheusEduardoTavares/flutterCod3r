@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import './cart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shop/application/application.dart';
@@ -34,9 +33,6 @@ class Orders with ChangeNotifier {
       '${Application.ordersUrl}.json',
       body: json.encode({
         'total': cart.totalAmount,
-        ///Serve para colocar em um formato padronizado que é
-        ///fácil de reverter quando precisar carregar os dados
-        ///do firebase
         'date': date.toIso8601String(),
         'products': cart.items.values.map((cartItem) => {
           'id': cartItem.id,
@@ -86,8 +82,6 @@ class Orders with ChangeNotifier {
         );
       });
 
-      ///Fazemos isso para que os pedidos mais novos fiquem 
-      ///em cima e os mais antigos em baixo
       _items = loadedItems.reversed.toList();
 
       notifyListeners();
