@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import './cart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shop/application/application.dart';
