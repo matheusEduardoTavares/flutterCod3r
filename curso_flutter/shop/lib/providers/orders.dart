@@ -57,4 +57,40 @@ class Orders with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> loadOrders() async {
+    List<Order> loadedItems = [];
+
+    final response = await http.get(
+      '${Application.ordersUrl}.json',
+    );
+
+    Map<String, dynamic> data = json.decode(response.body);
+
+    if (data != null) {
+      data.forEach((orderId, orderData) {
+        loadedItems.add(
+          Order(
+            id: orderId,
+            total: orderData['total'],
+            date: DateTime.parse(orderData['date']),
+            products: (orderData['products'] as List<dynamic>)
+              .map((item) => CartItem(
+                id: item['id'],
+                price: item['price'],
+                productId: item['productId'],
+                quantity: item['quantity'],
+                title: item['title'],
+              )).toList()
+          ),
+        );
+      });
+
+      ///Fazemos isso para que os pedidos mais novos fiquem 
+      ///em cima e os mais antigos em baixo
+      _items = loadedItems.reversed.toList();
+
+      notifyListeners();
+    }
+  }
 }
