@@ -4,6 +4,12 @@ import 'package:shop/providers/orders.dart';
 import 'package:shop/widgets/app_drawer.dart';
 import '../widgets/order_widget.dart';
 
+///Outra estratégia para termos widgets que necessitam requisitar
+///algo para o servidor, é deixar eles como [StatelessWidget] e
+///usar o Widget [FutureBuilder].
+
+/*
+///Estratégia com o [StatefulWidget]:
 class OrdersScreen extends StatefulWidget {
   @override
   _OrdersScreenState createState() => _OrdersScreenState();
@@ -59,7 +65,50 @@ class _OrdersScreenState extends State<OrdersScreen> {
             itemCount: orders.itemsCount,
             itemBuilder: (ctx, index) => OrderWidget(orders.items[index])
           ),
-      )
+      ),
+    );
+  }
+}
+*/
+
+///Estratégia com o [FutureBuilder]:
+class OrdersScreen extends StatelessWidget {
+  @override 
+  Widget build(BuildContext context) {
+    ///Usando a estratégia do [FutureBuilder] não irá funcionar
+    ///termos o nosso [Provider] fornecendo dados no método 
+    ///[build] do widget. Aí usaremos por exemplo o [Consumer]
+    ///para isso
+    // final Orders orders = Provider.of(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Meus pedidos')
+      ),
+      drawer: AppDrawer(),
+      body: FutureBuilder(
+        future: Provider.of<Orders>(context, listen: false).loadOrders(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          else if (snapshot.error != null) {
+            return Center(
+              child: Text('Ocorreu um erro inesperado'),
+            );
+          }
+          else {
+            return Consumer<Orders>(
+              builder: (ctx, orders, _) => ListView.builder(
+                itemCount: orders.itemsCount,
+                itemBuilder: (ctx, index) => OrderWidget(orders.items[index])
+              )
+            );
+          }
+        },
+      ),
     );
   }
 }
