@@ -4,4 +4,5 @@ abstract class Application {
   static final navKey = GlobalKey<NavigatorState>();
   static final managerProductsScaffold = GlobalKey<ScaffoldState>();
   static String productsUrl;
+  static String ordersUrl;
 }

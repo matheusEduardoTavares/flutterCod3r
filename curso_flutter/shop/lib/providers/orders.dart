@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
-
-import 'package:flutter/foundation.dart';
-
 import './cart.dart';
+import 'package:flutter/foundation.dart';
+import 'package:shop/application/application.dart';
+import 'package:http/http.dart' as http;
 
 class Order {
   
@@ -26,11 +27,31 @@ class Orders with ChangeNotifier {
 
   int get itemsCount => _items.length;
 
-  void addOrder(Cart cart) {
+  Future<void> addOrder(Cart cart) async {
+    final date = DateTime.now();
+
+    final response = await http.post(
+      '${Application.ordersUrl}.json',
+      body: json.encode({
+        'total': cart.totalAmount,
+        ///Serve para colocar em um formato padronizado que é
+        ///fácil de reverter quando precisar carregar os dados
+        ///do firebase
+        'date': date.toIso8601String(),
+        'products': cart.items.values.map((cartItem) => {
+          'id': cartItem.id,
+          'productId': cartItem.productId,
+          'title': cartItem.title,
+          'quantity': cartItem.quantity,
+          'price': cartItem.price,
+        }).toList(),
+      }),
+    );
+
     _items.insert(0, Order(
-      id: Random().nextDouble().toString(),
+      id: json.decode(response.body)['name'],
       total: cart.totalAmount,
-      date: DateTime.now(),
+      date: date,
       products: cart.items.values.toList()
     ));
 
