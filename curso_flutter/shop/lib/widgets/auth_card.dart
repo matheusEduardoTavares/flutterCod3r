@@ -17,6 +17,8 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard> {
   final _passwordController = TextEditingController();
   var _authMode = AuthMode.Login;
+  var _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
 
   final _authData = <String, String>{
     'email': '',
@@ -24,7 +26,41 @@ class _AuthCardState extends State<AuthCard> {
   };
 
   void _submit() {
-    
+    if (!(_formKey?.currentState?.validate() ?? false)) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    ///Como já sabemos o método [save] irá chamar o [onSaved]
+    ///de todos os [TextFormField] dentro do [Form] relacionado,
+    ///que por sua vez setará os dados em [_authData]
+    _formKey.currentState.save();
+
+    if (_authMode == AuthMode.Login) {
+      // Login
+    } else {
+      // Registrar
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _switchAuthMode() {
+    if (_authMode == AuthMode.Login) {
+      setState(() {
+        _authMode =AuthMode.Signup;
+      });
+    }
+    else {
+      setState(() {
+        _authMode =AuthMode.Login;
+      });
+    }
   }
 
   @override
@@ -37,10 +73,11 @@ class _AuthCardState extends State<AuthCard> {
         borderRadius: BorderRadius.circular(10)
       ),
       child: Container(
-        height: 320,
+        height: _authMode == AuthMode.Login ? 290 : 371,
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16),
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -92,25 +129,39 @@ class _AuthCardState extends State<AuthCard> {
                     if (value != _passwordController.text) {
                       return 'Senhas são diferentes!';
                     }
+                    else if (value.isEmpty) {
+                      return 'Senha vazia!';
+                    }
 
                     return null;
                   } : null,
                 ),
-              const SizedBox(height: 20),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30)
+              const Spacer(),
+              if (_isLoading)
+                CircularProgressIndicator()
+              else
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).primaryTextTheme.button.color,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
+                  ),
+                  onPressed: _submit,
                 ),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).primaryTextTheme.button.color,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 8,
-                ),
+              FlatButton(
+                onPressed: _switchAuthMode,
                 child: Text(
-                  _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
+                  'ALTERNAR P/ '
+                  '${_authMode == AuthMode.Login ? 'REGISTRAR' : 'LOGIN'}'
                 ),
-                onPressed: _submit,
+                textColor: Theme.of(context).primaryColor,
               ),
             ],
           ),
