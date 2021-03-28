@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,8 +23,11 @@ class Auth with ChangeNotifier {
     );
 
     ///O token do firebase tem a data de validade de 1 hora.
-    print(json.decode(response.body));
-    
+    final responseBody = json.decode(response.body);
+
+    if (responseBody['error'] != null) {
+      throw AuthException(responseBody['error']['message']);
+    }
     ///É opcional deixar ou não:
     // return Future.value();
   }

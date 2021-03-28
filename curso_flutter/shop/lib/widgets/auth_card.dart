@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/providers/auth.dart';
 
 ///Se ela está em modo de criação de conta ou de login
@@ -27,6 +28,22 @@ class _AuthCardState extends State<AuthCard> {
     'password': ''
   };
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Ocorreu um erro!'),
+        content: Text(message),
+        actions: [
+          FlatButton(
+            child: Text('FECHAR'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _submit() async {
     if (!(_formKey?.currentState?.validate() ?? false)) {
       return;
@@ -43,16 +60,23 @@ class _AuthCardState extends State<AuthCard> {
 
     final auth = Provider.of<Auth>(context, listen: false);
 
-    if (_authMode == AuthMode.Login) {
-      await auth.login(
-        _authData['email'], 
-        _authData['password']
-      );
-    } else {
-      await auth.signup(
-        _authData['email'], 
-        _authData['password']
-      );
+    try {
+      if (_authMode == AuthMode.Login) {
+        await auth.login(
+          _authData['email'], 
+          _authData['password']
+        );
+      } else {
+        await auth.signup(
+          _authData['email'], 
+          _authData['password']
+        );
+      }
+    } on AuthException catch (error) {
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      ///Caso seja um erro de rede por exemplo
+      _showErrorDialog('Ocorreu um erro inesperado!');
     }
 
     setState(() {
