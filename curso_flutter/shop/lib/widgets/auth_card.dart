@@ -67,103 +67,120 @@ class _AuthCardState extends State<AuthCard> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    return Card(
-      elevation: 8.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10)
-      ),
-      child: Container(
-        height: _authMode == AuthMode.Login ? 290 : 371,
-        width: deviceSize.width * 0.75,
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'E-mail'
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  ///Poderíamos fazer essa validação usando 
-                  ///[RegExp] que ficaria melhor, e poderíamos
-                  ///até mesmo externalizar essas validações,
-                  ///criando dentro da pasta utils uma classe
-                  ///validator e que tem uma função que recebe
-                  ///um e-mail e eventualmente a mensagem de 
-                  ///erro caso o e-mail não seja válido.
-                  if (value.isEmpty || !value.contains('@')) {
-                    return 'Informe um e-mail válido!';
-                  }
+    ///Flexible para ocupar o menor tamanho possível na tela (do [Card], onde
+    ///estará o formulário)
+    return Flexible(
+      child: Card(
+        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
+        ///O [ClipRRect] serve para quando aparecer o teclado virtual e for
+        ///necessário fazer scroll, o scroll ficar com a mesma borda arredondada
+        ///do componente do [Card]
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          ///Por fim para deixar mesmo responsivo é usado o [SingleChildScrollView],
+          ///podendo assim retirar o [height] que foi setado na mão hard-coded
+          ///para o [Container]
+          child: SingleChildScrollView(
+            child: Container(
+              width: deviceSize.width * 0.75,
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'E-mail'
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        ///Poderíamos fazer essa validação usando 
+                        ///[RegExp] que ficaria melhor, e poderíamos
+                        ///até mesmo externalizar essas validações,
+                        ///criando dentro da pasta utils uma classe
+                        ///validator e que tem uma função que recebe
+                        ///um e-mail e eventualmente a mensagem de 
+                        ///erro caso o e-mail não seja válido.
+                        if (value.isEmpty || !value.contains('@')) {
+                          return 'Informe um e-mail válido!';
+                        }
 
-                  return null;
-                },
-                onSaved: (value) => _authData['email'] = value,
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Senha'
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value.isEmpty || value.length < 5) {
-                    return 'Informe uma senha válida!';
-                  }
+                        return null;
+                      },
+                      onSaved: (value) => _authData['email'] = value,
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Senha'
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value.isEmpty || value.length < 5) {
+                          return 'Informe uma senha válida!';
+                        }
 
-                  return null;
-                },
-                onSaved: (value) => _authData['password'] = value,
-              ),
-              if (_authMode == AuthMode.Signup)
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Confirmar Senha'
-                  ),
-                  obscureText: true,
-                  ///Para evitar que em modo [AuthMode.Login]
-                  ///seja usado o validator, iremos criar uma
-                  ///condicional aqui também
-                  validator: _authMode == AuthMode.Signup ? (value) {
-                    if (value != _passwordController.text) {
-                      return 'Senhas são diferentes!';
-                    }
-                    else if (value.isEmpty) {
-                      return 'Senha vazia!';
-                    }
+                        return null;
+                      },
+                      onSaved: (value) => _authData['password'] = value,
+                    ),
+                    if (_authMode == AuthMode.Signup)
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Confirmar Senha'
+                        ),
+                        obscureText: true,
+                        ///Para evitar que em modo [AuthMode.Login]
+                        ///seja usado o validator, iremos criar uma
+                        ///condicional aqui também
+                        validator: _authMode == AuthMode.Signup ? (value) {
+                          if (value != _passwordController.text) {
+                            return 'Senhas são diferentes!';
+                          }
+                          else if (value.isEmpty) {
+                            return 'Senha vazia!';
+                          }
 
-                    return null;
-                  } : null,
+                          return null;
+                        } : null,
+                      ),
+                    ///É necessário remover o [Spacer] se não o [Flexible] não
+                    ///irá funcionar como queremos, sempre irá acabar
+                    ///ocupando todo o espaço disponível
+                    if (_isLoading)
+                      CircularProgressIndicator()
+                    else
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30)
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Theme.of(context).primaryTextTheme.button.color,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 8,
+                        ),
+                        child: Text(
+                          _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
+                        ),
+                        onPressed: _submit,
+                      ),
+                    FlatButton(
+                      onPressed: _switchAuthMode,
+                      child: Text(
+                        'ALTERNAR P/ '
+                        '${_authMode == AuthMode.Login ? 'REGISTRAR' : 'LOGIN'}'
+                      ),
+                      textColor: Theme.of(context).primaryColor,
+                    ),
+                  ],
                 ),
-              const Spacer(),
-              if (_isLoading)
-                CircularProgressIndicator()
-              else
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Theme.of(context).primaryTextTheme.button.color,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30,
-                    vertical: 8,
-                  ),
-                  child: Text(
-                    _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
-                  ),
-                  onPressed: _submit,
-                ),
-              FlatButton(
-                onPressed: _switchAuthMode,
-                child: Text(
-                  'ALTERNAR P/ '
-                  '${_authMode == AuthMode.Login ? 'REGISTRAR' : 'LOGIN'}'
-                ),
-                textColor: Theme.of(context).primaryColor,
               ),
-            ],
+            ),
           ),
         ),
       ),
