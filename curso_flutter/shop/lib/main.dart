@@ -19,12 +19,16 @@ import 'views/orders_screen.dart';
 
 Future<void> main() async {
   ///Temos que ter um arquivo chamado [.env] na raíz do projeto
-  ///e dentro dele ter a variável [urlDatabase] e a variável
-  ///[urlAuth]
+  ///e dentro dele ter a variável [urlDatabase], a variável
+  ///[urlAuth] e a variável [apiKey]. Essa separação entre os 3
+  ///é feita devido ao fato que as URL's do firebase seguem um
+  ///padrão, mudando apenas uma parte do recurso e no fim usando
+  ///o key=[apiKey] como query param
   await DotEnv.load(fileName: ".env");
 
   UrlFirebase.urlDatabase = env['urlDatabase'];
   UrlFirebase.urlAuth = env['urlAuth'];
+  UrlFirebase.apiKey = env['apiKey'];
   Application.productsUrl = '${UrlFirebase.urlDatabase}/products';
   Application.ordersUrl = '${UrlFirebase.urlDatabase}/orders';
 

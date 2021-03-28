@@ -4,14 +4,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
-  ///A url para criação de um usuário será uma URL diferente
-  ///da usada para trabalhar com o realtime database do 
-  ///firebase
-  final _url = UrlFirebase.urlAuth;
+  Future<void> _authenticate(
+    String email, String password, String urlSegment
+  ) async {
+    ///A url para criação de um usuário será uma URL diferente
+    ///da usada para trabalhar com o realtime database do 
+    ///firebase
+    final url = UrlFirebase.getUrl(urlSegment);
 
-  Future<void> signup(String email, String password) async {
     final response = await http.post(
-      _url,
+      url,
       body: json.encode({
         'email': email,
         'password': password,
@@ -24,5 +26,13 @@ class Auth with ChangeNotifier {
     
     ///É opcional deixar ou não:
     // return Future.value();
+  }
+
+  Future<void> signup(String email, String password) async {
+    return _authenticate(email, password, 'signUp');
+  }
+
+  Future<void> login(String email, String password) async {
+    return _authenticate(email, password, 'signInWithPassword');
   }
 }
