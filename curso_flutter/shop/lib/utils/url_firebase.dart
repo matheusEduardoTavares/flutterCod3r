@@ -1,3 +1,4 @@
 class UrlFirebase {
-  static String urlFirebase = '';
+  static String urlDatabase = '';
+  static String urlAuth = '';
 }

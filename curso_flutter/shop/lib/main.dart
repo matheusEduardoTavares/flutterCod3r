@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/application/application.dart';
+import 'package:shop/providers/auth.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'package:shop/views/auth_screen.dart';
 import 'package:shop/views/cart_screen.dart';
@@ -17,11 +18,15 @@ import './providers/orders.dart';
 import 'views/orders_screen.dart';
 
 Future<void> main() async {
+  ///Temos que ter um arquivo chamado [.env] na raíz do projeto
+  ///e dentro dele ter a variável [urlDatabase] e a variável
+  ///[urlAuth]
   await DotEnv.load(fileName: ".env");
 
-  UrlFirebase.urlFirebase = env['urlFirebase'];
-  Application.productsUrl = '${UrlFirebase.urlFirebase}/products';
-  Application.ordersUrl = '${UrlFirebase.urlFirebase}/orders';
+  UrlFirebase.urlDatabase = env['urlDatabase'];
+  UrlFirebase.urlAuth = env['urlAuth'];
+  Application.productsUrl = '${UrlFirebase.urlDatabase}/products';
+  Application.ordersUrl = '${UrlFirebase.urlDatabase}/orders';
 
   runApp(MyApp());
 }
@@ -39,7 +44,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => Orders()
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Auth()
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
