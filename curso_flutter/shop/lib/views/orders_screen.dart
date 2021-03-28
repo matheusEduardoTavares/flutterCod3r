@@ -33,9 +33,32 @@ class _OrdersScreenState extends State<OrdersScreen> {
       drawer: AppDrawer(),
       body: _isLoading ? Center(
         child: CircularProgressIndicator(),
-      ) : ListView.builder(
-        itemCount: orders.itemsCount,
-        itemBuilder: (ctx, index) => OrderWidget(orders.items[index])
+      ) : 
+        RefreshIndicator(
+          onRefresh: () async {
+            try {
+              await orders.loadOrders();
+            }
+            catch (e) {
+              showGeneralDialog(
+                context: context,
+                pageBuilder: (_, __, ___) => AlertDialog(
+                  title: Text('Erro'),
+                  content: Text('Erro ao tentar atualizar os pedidos'),
+                  actions: [
+                    FlatButton(
+                      child: Text('OK'),
+                      onPressed: () => Navigator.of(context).pop()
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+          child: ListView.builder(
+            itemCount: orders.itemsCount,
+            itemBuilder: (ctx, index) => OrderWidget(orders.items[index])
+          ),
       )
     );
   }
