@@ -8,8 +8,9 @@ import 'dart:convert';
 class Products with ChangeNotifier {
   List<Product> _items = [];
   String _token;
+  String _userId;
 
-  Products(this._token, this._items);
+  Products([this._token, this._userId, this._items = const []]);
 
   List<Product> get items => List.from(_items);
 
@@ -60,15 +61,23 @@ class Products with ChangeNotifier {
 
     Map<String, dynamic> data = json.decode(response.body);
 
+    final favResponse = await http.get(
+      _getUrlWithToken('${UrlFirebase.urlDatabase}/userFavorites/$_userId.json')
+    );
+
+    final favMap = json.decode(favResponse.body);
+
     _items.clear();
 
     if (data != null) {
       data.forEach((productId, productData) {
+        final isFavorite = favMap == null ? false : favMap[productId] ?? false;
         _items.add(
           Product.fromJson(
             json.encode(productData)
           ).copyWith(
-            id: productId
+            id: productId,
+            isFavorite: isFavorite,
           ),
         );
       });

@@ -26,10 +26,10 @@ class Orders with ChangeNotifier {
 
   String _token;
 
-  Orders(
+  Orders([
     this._token,
-    this._items
-  );
+    this._items = const []
+  ]);
 
   String _getUrlWithToken(String url) {
     return '$url?auth=$_token';
