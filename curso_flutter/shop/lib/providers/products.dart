@@ -65,7 +65,8 @@ class Products with ChangeNotifier {
       _getUrlWithToken('${UrlFirebase.urlDatabase}/userFavorites/$_userId.json')
     );
 
-    final favMap = json.decode(favResponse.body);
+    final favMap = favResponse != null && favResponse.body != null ? 
+      json.decode(favResponse.body) : null;
 
     _items.clear();
 
