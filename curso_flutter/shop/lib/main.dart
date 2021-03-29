@@ -28,7 +28,7 @@ Future<void> main() async {
   UrlFirebase.urlDatabase = env['urlDatabase'];
   UrlFirebase.urlAuth = env['urlAuth'];
   UrlFirebase.apiKey = env['apiKey'];
-  Application.productsUrl = '${UrlFirebase.urlDatabase}/products';
+  Application.productsUrl = '${UrlFirebase.urlDatabase}/userFavorites';
   Application.ordersUrl = '${UrlFirebase.urlDatabase}/orders';
 
   runApp(MyApp());

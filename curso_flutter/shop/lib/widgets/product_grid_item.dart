@@ -67,7 +67,7 @@ class ProductGridItem extends StatelessWidget {
               icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () async {
                 try {
-                  await product.toggleFavorite(auth.token);
+                  await product.toggleFavorite(auth.token, auth.userId);
                 }
                 on HttpException catch (e) {
                   _showFavoriteChangeError(

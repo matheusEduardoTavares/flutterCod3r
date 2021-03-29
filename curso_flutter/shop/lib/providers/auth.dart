@@ -5,11 +5,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
+  String _userId;
   String _token;
   DateTime _expiryDate;
   ///Getter que retornar se o getter do [token] é valido, ou seja
   ///se o usuário está logado corretamente dentro da data válida
   bool get isAuth => token != null;
+
+  String get userId {
+    return isAuth ? _userId : null;
+  }
 
   String get token {
     ///Se há token, há data de expiração do token e essa data não
@@ -46,6 +51,8 @@ class Auth with ChangeNotifier {
     }
 
     _token = responseBody['idToken'];
+    ///O [localId] é o UUID do usuário que fez o login.
+    _userId = responseBody['localId'];
     _expiryDate = DateTime.now().add(
       Duration(
         seconds: int.parse(responseBody['expiresIn']),

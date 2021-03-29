@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop/application/application.dart';
 import 'package:shop/exceptions/http_exception.dart';
+import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -27,9 +27,10 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product newProduct) async {
     final response = await http.post(
-      _getUrlWithToken('${Application.productsUrl}.json'),
+      _getUrlWithToken('${UrlFirebase.urlDatabase}/products.json'),
       body: newProduct.toJson(
         hasId: false,
+        hasFavorite: false
       ),
     );
 
@@ -54,7 +55,7 @@ class Products with ChangeNotifier {
       ///momento não temos o token, temos apenas após ser feito o 
       ///login. Para isso, temos que trocar lá no [main.dart] o 
       ///[ChangeNotifierProvider] pelo [ChangeNotifierProxyProvider].
-      _getUrlWithToken('${Application.productsUrl}.json'),
+      _getUrlWithToken('${UrlFirebase.urlDatabase}/products.json'),
     );
 
     Map<String, dynamic> data = json.decode(response.body);
@@ -85,7 +86,7 @@ class Products with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        _getUrlWithToken('${Application.productsUrl}/${product.id}.json'),
+        _getUrlWithToken('${UrlFirebase.urlDatabase}/products/${product.id}.json'),
         body: product.toJson(
           hasId: false,
           hasFavorite: false
@@ -105,7 +106,7 @@ class Products with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        _getUrlWithToken('${Application.productsUrl}/${product.id}.json')
+        _getUrlWithToken('${UrlFirebase.urlDatabase}/products/${product.id}.json')
       );
 
       if (response.statusCode >= 400) {
