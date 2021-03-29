@@ -13,6 +13,10 @@ class Products with ChangeNotifier {
 
   List<Product> get items => List.from(_items);
 
+  String _getUrlWithToken(String url) {
+    return '$url?auth=$_token';
+  }
+
   int get itemsCount {
     return _items.length;
   }
@@ -23,7 +27,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product newProduct) async {
     final response = await http.post(
-      '${Application.productsUrl}.json',
+      _getUrlWithToken('${Application.productsUrl}.json'),
       body: newProduct.toJson(
         hasId: false,
       ),
@@ -50,7 +54,7 @@ class Products with ChangeNotifier {
       ///momento não temos o token, temos apenas após ser feito o 
       ///login. Para isso, temos que trocar lá no [main.dart] o 
       ///[ChangeNotifierProvider] pelo [ChangeNotifierProxyProvider].
-      '${Application.productsUrl}.json?auth=$_token',
+      _getUrlWithToken('${Application.productsUrl}.json'),
     );
 
     Map<String, dynamic> data = json.decode(response.body);
@@ -81,7 +85,7 @@ class Products with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        '${Application.productsUrl}/${product.id}.json',
+        _getUrlWithToken('${Application.productsUrl}/${product.id}.json'),
         body: product.toJson(
           hasId: false,
           hasFavorite: false
@@ -101,7 +105,7 @@ class Products with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        '${Application.productsUrl}/${product.id}.json'
+        _getUrlWithToken('${Application.productsUrl}/${product.id}.json')
       );
 
       if (response.statusCode >= 400) {
