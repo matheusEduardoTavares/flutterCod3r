@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/utils/url_firebase.dart';
@@ -5,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
+  ///Precisamos importar o dart:async para usar o 
+  ///[Timer]
+  Timer _logoutTimer;
   String _userId;
   String _token;
   DateTime _expiryDate;
@@ -59,6 +64,7 @@ class Auth with ChangeNotifier {
       )
     );
 
+    _autoLogout();
     notifyListeners();
     ///É opcional deixar ou não:
     // return Future.value();
@@ -77,6 +83,26 @@ class Auth with ChangeNotifier {
     _userId = null;
     _expiryDate = null;
 
+    if (_logoutTimer != null) {
+      _logoutTimer.cancel();
+      _logoutTimer = null;
+    }
+
     notifyListeners();
+  }
+
+  void _autoLogout() {
+    if (_logoutTimer != null) {
+      _logoutTimer.cancel();
+    }
+    
+    final timeToLogout = _expiryDate.difference(DateTime.now()).inSeconds;
+    
+    _logoutTimer = Timer(
+      Duration(
+        seconds: timeToLogout,
+      ),
+      logout
+    );
   }
 }
