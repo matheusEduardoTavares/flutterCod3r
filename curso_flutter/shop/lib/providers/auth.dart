@@ -5,6 +5,22 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
+  String _token;
+  DateTime _expiryDate;
+  ///Getter que retornar se o getter do [token] é valido, ou seja
+  ///se o usuário está logado corretamente dentro da data válida
+  bool get isAuth => token != null;
+
+  String get token {
+    ///Se há token, há data de expiração do token e essa data não
+    ///expirou ainda retornamos o token se não retornamos nulo.
+    if (_token != null && _expiryDate != null && _expiryDate.isAfter(DateTime.now())) {
+      return _token;
+    }
+    
+    return null;
+  }
+
   Future<void> _authenticate(
     String email, String password, String urlSegment
   ) async {
@@ -28,6 +44,15 @@ class Auth with ChangeNotifier {
     if (responseBody['error'] != null) {
       throw AuthException(responseBody['error']['message']);
     }
+
+    _token = responseBody['idToken'];
+    _expiryDate = DateTime.now().add(
+      Duration(
+        seconds: int.parse(responseBody['expiresIn']),
+      )
+    );
+
+    notifyListeners();
     ///É opcional deixar ou não:
     // return Future.value();
   }

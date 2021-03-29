@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/application/application.dart';
 import 'package:shop/providers/auth.dart';
 import 'package:shop/utils/url_firebase.dart';
-import 'package:shop/views/auth_screen.dart';
+import 'package:shop/views/auth_home_screen.dart';
 import 'package:shop/views/cart_screen.dart';
 import 'package:shop/views/product_detail_screen.dart';
 import 'package:shop/views/product_form_screen.dart';
@@ -10,7 +10,6 @@ import 'package:shop/views/products_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:provider/provider.dart';
-import './views/products_overview_screen.dart';
 import './utils/app_routes.dart';
 import './providers/products.dart';
 import './providers/cart.dart';
@@ -62,8 +61,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Lato'
         ),
         routes: {
-          AppRoutes.AUTH: (ctx) => AuthScreen(),
-          AppRoutes.HOME: (ctx) => ProductOverviewScreen(),
+          AppRoutes.AUTH_HOME: (ctx) => AuthOrHomeScreen(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
           AppRoutes.CART: (ctx) => CartScreen(),
           AppRoutes.ORDERS: (ctx) => OrdersScreen(),

@@ -185,6 +185,7 @@ class _AuthCardState extends State<AuthCard> {
                     ///É necessário remover o [Spacer] se não o [Flexible] não
                     ///irá funcionar como queremos, sempre irá acabar
                     ///ocupando todo o espaço disponível
+                    const SizedBox(height: 40),
                     if (_isLoading)
                       CircularProgressIndicator()
                     else
