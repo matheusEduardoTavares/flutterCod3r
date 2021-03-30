@@ -46,16 +46,6 @@ class Products with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await http.get(
-      ///Agora toda requisição ao firebase que fizermos precisamos
-      ///do [token] do usuário já que editamos as regras lá no banco e 
-      ///colocamos que era necessário o token. Então, para isso basta
-      ///após a url passar como query param a chave [auth] com o 
-      ///valor do token. O problema é que não temos esse token aqui,
-      ///até podíamos criar uma variável e receber via construtor,
-      ///porém, o [Products] é instanciado no [main.dart], e nesse
-      ///momento não temos o token, temos apenas após ser feito o 
-      ///login. Para isso, temos que trocar lá no [main.dart] o 
-      ///[ChangeNotifierProvider] pelo [ChangeNotifierProxyProvider].
       _getUrlWithToken('${UrlFirebase.urlDatabase}/products.json'),
     );
 

@@ -1,8 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-///Classe que irá centralizar todo e qualquer acesso à parte
-///de persistência de dados usando o [shared_preferences]
 abstract class Store {
   static SharedPreferences _sharedPreferences;
 

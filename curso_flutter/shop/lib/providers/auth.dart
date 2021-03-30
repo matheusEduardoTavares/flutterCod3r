@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shop/data/store.dart';
 import 'package:shop/exceptions/auth_exception.dart';
@@ -8,14 +7,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Auth with ChangeNotifier {
-  ///Precisamos importar o dart:async para usar o 
-  ///[Timer]
   Timer _logoutTimer;
   String _userId;
   String _token;
   DateTime _expiryDate;
-  ///Getter que retornar se o getter do [token] é valido, ou seja
-  ///se o usuário está logado corretamente dentro da data válida
   bool get isAuth => token != null;
 
   String get userId {
@@ -23,8 +18,6 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    ///Se há token, há data de expiração do token e essa data não
-    ///expirou ainda retornamos o token se não retornamos nulo.
     if (_token != null && _expiryDate != null && _expiryDate.isAfter(DateTime.now())) {
       return _token;
     }
@@ -35,9 +28,6 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
     String email, String password, String urlSegment
   ) async {
-    ///A url para criação de um usuário será uma URL diferente
-    ///da usada para trabalhar com o realtime database do 
-    ///firebase
     final url = UrlFirebase.getUrl(urlSegment);
 
     final response = await http.post(
@@ -49,7 +39,6 @@ class Auth with ChangeNotifier {
       })
     );
 
-    ///O token do firebase tem a data de validade de 1 hora.
     final responseBody = json.decode(response.body);
 
     if (responseBody['error'] != null) {
@@ -57,7 +46,6 @@ class Auth with ChangeNotifier {
     }
 
     _token = responseBody['idToken'];
-    ///O [localId] é o UUID do usuário que fez o login.
     _userId = responseBody['localId'];
     _expiryDate = DateTime.now().add(
       Duration(
@@ -73,8 +61,6 @@ class Auth with ChangeNotifier {
 
     _autoLogout();
     notifyListeners();
-    ///É opcional deixar ou não:
-    // return Future.value();
   }
 
   Future<void> signup(String email, String password) async {
