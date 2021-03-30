@@ -5,6 +5,15 @@ import 'package:shop/widgets/auth_card.dart';
 class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ///Para fazer o login automático, precisaremos persistir
+    ///os dados do token, data de expiração e o ID do usuário,
+    ///para depois quando sairmos da aplicação e voltarmos ela
+    ///permanecer logada sem precisar fazer login novamente.
+    ///Temos várias libs para fazer isso, como o [shared_preferences],
+    ///o [flutter_secure_storage], o [hive] que é um banco 
+    ///no-sql e roda dentro do dispositivo em armazenamento 
+    ///local. No caso usaremos o [shared_preferences] pois ele 
+    ///é mais simples.
 
     ///Outro exemplo de uso do [cascade operator] é quando 
     ///precisamos adicionar vários itens na lista, como o método
