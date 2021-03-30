@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/application/application.dart';
+import 'package:shop/data/store.dart';
 import 'package:shop/providers/auth.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'package:shop/views/auth_home_screen.dart';
@@ -24,6 +25,9 @@ Future<void> main() async {
   ///padrão, mudando apenas uma parte do recurso e no fim usando
   ///o key=[apiKey] como query param
   await DotEnv.load(fileName: ".env");
+
+  ///Incializa o [SharedPreferences]
+  await Store.initStore();
 
   UrlFirebase.urlDatabase = env['urlDatabase'];
   UrlFirebase.urlAuth = env['urlAuth'];
