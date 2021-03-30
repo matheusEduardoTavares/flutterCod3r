@@ -320,6 +320,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
 
   @override 
   void dispose() {
+    _heightAnimation.removeListener(() {});
     _controller.dispose();
 
     super.dispose();
