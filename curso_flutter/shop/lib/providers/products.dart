@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:shop/application/application.dart';
 import 'package:shop/exceptions/http_exception.dart';
+import 'package:shop/utils/url_firebase.dart';
 import 'product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
+  String _token;
+  String _userId;
+
+  Products([this._token, this._userId, this._items = const []]);
 
   List<Product> get items => List.from(_items);
+
+  String _getUrlWithToken(String url) {
+    return '$url?auth=$_token';
+  }
 
   int get itemsCount {
     return _items.length;
@@ -20,9 +28,10 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product newProduct) async {
     final response = await http.post(
-      '${Application.productsUrl}.json',
+      _getUrlWithToken('${UrlFirebase.urlDatabase}/products.json'),
       body: newProduct.toJson(
         hasId: false,
+        hasFavorite: false
       ),
     );
 
@@ -37,20 +46,29 @@ class Products with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await http.get(
-      '${Application.productsUrl}.json',
+      _getUrlWithToken('${UrlFirebase.urlDatabase}/products.json'),
     );
 
     Map<String, dynamic> data = json.decode(response.body);
+
+    final favResponse = await http.get(
+      _getUrlWithToken('${UrlFirebase.urlDatabase}/userFavorites/$_userId.json')
+    );
+
+    final favMap = favResponse != null && favResponse.body != null ? 
+      json.decode(favResponse.body) : null;
 
     _items.clear();
 
     if (data != null) {
       data.forEach((productId, productData) {
+        final isFavorite = favMap == null ? false : favMap[productId] ?? false;
         _items.add(
           Product.fromJson(
             json.encode(productData)
           ).copyWith(
-            id: productId
+            id: productId,
+            isFavorite: isFavorite,
           ),
         );
       });
@@ -68,7 +86,7 @@ class Products with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        '${Application.productsUrl}/${product.id}.json',
+        _getUrlWithToken('${UrlFirebase.urlDatabase}/products/${product.id}.json'),
         body: product.toJson(
           hasId: false,
           hasFavorite: false
@@ -88,7 +106,7 @@ class Products with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        '${Application.productsUrl}/${product.id}.json'
+        _getUrlWithToken('${UrlFirebase.urlDatabase}/products/${product.id}.json')
       );
 
       if (response.statusCode >= 400) {

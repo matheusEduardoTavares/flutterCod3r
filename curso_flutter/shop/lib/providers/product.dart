@@ -100,15 +100,13 @@ class Product with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> toggleFavorite([bool isRethrowException = true]) async {
+  Future<void> toggleFavorite(String token, String userId, [bool isRethrowException = true]) async {
     _changeFavorite();
 
     try {
-      final response = await http.patch(
-        '${Application.productsUrl}/$id.json',
-        body: json.encode({
-          'isFavorite': isFavorite
-        })
+      final response = await http.put(
+        '${Application.productsUrl}/$userId/$id.json?auth=$token',
+        body: json.encode(isFavorite)
       );
 
       if (response.statusCode >= 400) {

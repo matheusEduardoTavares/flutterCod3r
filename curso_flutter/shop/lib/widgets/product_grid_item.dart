@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/exceptions/http_exception.dart';
+import 'package:shop/providers/auth.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/utils/app_routes.dart';
 import '../providers/product.dart';
@@ -42,6 +43,7 @@ class ProductGridItem extends StatelessWidget {
     final Product product = Provider.of<Product>(context, listen: false);
     final Cart cart = Provider.of<Cart>(context, listen: false);
     final _scaffoldState = Scaffold.of(context);
+    final auth = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -65,7 +67,7 @@ class ProductGridItem extends StatelessWidget {
               icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () async {
                 try {
-                  await product.toggleFavorite();
+                  await product.toggleFavorite(auth.token, auth.userId);
                 }
                 on HttpException catch (e) {
                   _showFavoriteChangeError(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shop/application/application.dart';
+import 'package:shop/data/store.dart';
+import 'package:shop/providers/auth.dart';
 import 'package:shop/utils/url_firebase.dart';
+import 'package:shop/views/auth_home_screen.dart';
 import 'package:shop/views/cart_screen.dart';
 import 'package:shop/views/product_detail_screen.dart';
 import 'package:shop/views/product_form_screen.dart';
@@ -8,7 +11,6 @@ import 'package:shop/views/products_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:provider/provider.dart';
-import './views/products_overview_screen.dart';
 import './utils/app_routes.dart';
 import './providers/products.dart';
 import './providers/cart.dart';
@@ -17,10 +19,13 @@ import 'views/orders_screen.dart';
 
 Future<void> main() async {
   await DotEnv.load(fileName: ".env");
+  await Store.initStore();
 
-  UrlFirebase.urlFirebase = env['urlFirebase'];
-  Application.productsUrl = '${UrlFirebase.urlFirebase}/products';
-  Application.ordersUrl = '${UrlFirebase.urlFirebase}/orders';
+  UrlFirebase.urlDatabase = env['urlDatabase'];
+  UrlFirebase.urlAuth = env['urlAuth'];
+  UrlFirebase.apiKey = env['apiKey'];
+  Application.productsUrl = '${UrlFirebase.urlDatabase}/userFavorites';
+  Application.ordersUrl = '${UrlFirebase.urlDatabase}/orders';
 
   runApp(MyApp());
 }
@@ -31,14 +36,27 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => Products()
+          create: (_) => Auth()
+        ),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (_) => Products(),
+          update: (_, auth, previousProducts) => Products(
+            auth.token, 
+            auth.userId,
+            previousProducts.items
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => Cart()
         ),
-        ChangeNotifierProvider(
-          create: (_) => Orders()
-        )
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (_) => Orders(),
+          update: (_, auth, previousOrders) => Orders(
+            auth.token, 
+            auth.userId,
+            previousOrders.items,
+          )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -48,8 +66,8 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato'
         ),
-        home: ProductOverviewScreen(),
         routes: {
+          AppRoutes.AUTH_HOME: (ctx) => AuthOrHomeScreen(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
           AppRoutes.CART: (ctx) => CartScreen(),
           AppRoutes.ORDERS: (ctx) => OrdersScreen(),
