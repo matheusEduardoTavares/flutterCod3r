@@ -109,9 +109,11 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     ///para que seja chamado o [setState] para que o seu 
     ///valor do [Size] seja atualizado de forma a refletir 
     ///na UI.
-    _heightAnimation.addListener(() {
-      setState(() {});
-    });
+    ///A partir do momento que usamos o [AnimatedBuilder]
+    ///não precisamos mais do [setState]
+    // _heightAnimation.addListener(() {
+    //   setState(() {});
+    // });
   }
 
   final _authData = <String, String>{
@@ -206,20 +208,30 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: SingleChildScrollView(
-            child: Container(
-              ///Agora aqui para nos usufruirmos da 
-              ///animação criada, temos que usar o [height]
-              ///do [Animation] aqui, pegando o [height] que
-              ///é provido do seu [value]. É isso que é 
-              ///responsável por alterar o valor da altura
-              ///de forma animada. Porém só isso não é o 
-              ///suficiente, pois estamos dentro de um 
-              ///componente [StatefulWidget] e precisamos 
-              ///chamar o [setState] para que seja detectado
-              ///as mudanças.
-              height: _heightAnimation.value.height,
-              width: deviceSize.width * 0.75,
-              padding: const EdgeInsets.all(16),
+            ///Como só queremos animar o [Container], 
+            ///mas não animar seu child que é o [Form],
+            ///passamos o que não será animado como
+            ///[child] e podemos recupar isso na
+            ///função do [builder]. Sua animação
+            ///seŕa o [_heightAnimation]
+            child: AnimatedBuilder(
+              builder: (ctx, child) => Container(
+                ///Agora aqui para nos usufruirmos da 
+                ///animação criada, temos que usar o [height]
+                ///do [Animation] aqui, pegando o [height] que
+                ///é provido do seu [value]. É isso que é 
+                ///responsável por alterar o valor da altura
+                ///de forma animada. Porém só isso não é o 
+                ///suficiente, pois estamos dentro de um 
+                ///componente [StatefulWidget] e precisamos 
+                ///chamar o [setState] para que seja detectado
+                ///as mudanças.
+                height: _heightAnimation.value.height,
+                width: deviceSize.width * 0.75,
+                padding: const EdgeInsets.all(16),
+                child: child
+              ),
+              animation: _heightAnimation,
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -320,7 +332,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
 
   @override 
   void dispose() {
-    _heightAnimation.removeListener(() {});
+    // _heightAnimation.removeListener(() {});
     _controller.dispose();
 
     super.dispose();
