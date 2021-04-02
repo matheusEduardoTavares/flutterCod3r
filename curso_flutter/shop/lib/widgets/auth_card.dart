@@ -18,6 +18,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   var _authMode = AuthMode.Login;
   var _isLoading = false;
   final _formKey = GlobalKey<FormState>();
+  var _minHeight = 290.0;
+  var _maxHeight = 371.0;
 
   ///Faremos a animação de forma manual nessa aula, e nas
   ///próximas aulas usaremos alguns Widgets para facilitar 
@@ -163,11 +165,17 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
 
   Future<void> _submit() async {
     if (!(_formKey?.currentState?.validate() ?? false)) {
+      setState(() {
+        _minHeight = 330;
+        _maxHeight = 411;
+      });
       return;
     }
 
     setState(() {
       _isLoading = true;
+      _minHeight = 290;
+      _maxHeight = 371;
     });
 
     _formKey.currentState.save();
@@ -228,164 +236,161 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeIn,
-          width: deviceSize.width * 0.75,
-          padding: const EdgeInsets.all(16),
-          height: _authMode == AuthMode.Login ? 290 : 371,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'E-mail'
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Informe um e-mail válido!';
-                    }
-
-                    return null;
-                  },
-                  onSaved: (value) => _authData['email'] = value,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+        width: deviceSize.width * 0.75,
+        padding: const EdgeInsets.all(16),
+        height: _authMode == AuthMode.Login ? _minHeight : _maxHeight,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'E-mail'
                 ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Senha'
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'Informe uma senha válida!';
-                    }
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value.isEmpty || !value.contains('@')) {
+                    return 'Informe um e-mail válido!';
+                  }
 
-                    return null;
-                  },
-                  onSaved: (value) => _authData['password'] = value,
+                  return null;
+                },
+                onSaved: (value) => _authData['email'] = value,
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Senha'
                 ),
-                ///No momento este campo de confirmar senha
-                ///aparece de uma vez, seco, sem ter animação,
-                ///embora agora já tenha uma animação aumentando
-                ///o [Card]. Faremos algumas animações dentro
-                ///desse campo. Faremos uma animação de 
-                ///opacidade. Com isso não precisamos mais
-                ///da renderização condicional do
-                ///`if (_authMode == AuthMode.Signup)` aqui
-                ///pois a opacidade estará em 0 e o campo
-                ///não irá aparecer. Para essa animação,
-                ///usamos o [FadeTransition] que é um widget
-                ///que recebe uma [opacity] que deve ser uma
-                ///[Animation<double>] que no caso é a animação
-                ///que criamos de opacidade, e seu [child] será
-                ///o nosso [TextFormField], ou seja, quem 
-                ///queremos animar. Já que não temos mais
-                ///a renderização condicional, agora 
-                ///fazemos um wrap do [FadeTransition] com
-                ///um [AnimatedContainer]. Sobre o 
-                ///[AnimatedContainer] precisamos definir
-                ///alguma coisa que irá modificar para que 
-                ///seja detectado e faça a animação em cima
-                ///dessa modificação, e no caso será em cima
-                ///das [constraints]. Sem esse [AnimatedContainer],
-                ///iria ficar quebrando o tamanho - altura do [Card]
-                ///pois embora estava invisível o componente estava
-                ///lá, e através das [constraints] do [AnimatedContainer],
-                ///conseguimos fazer o campo ficar com altura 0 ou uma 
-                ///altura maior de acordo com o necessário. No momento na
-                ///verdade temos 2 animações ocorrendo em conjunto, que é
-                ///o campo aumentando - com o [AnimatedContainer] quanto 
-                ///o campo aparecendo - com o [FadeTransition]. E agora
-                ///adicionaremos mais uma transição que é de slide, ou 
-                ///seja, dentro da [FadeTransition] colocaremos o 
-                ///[SlideTransition]. Precisamos ter cuidado com relação
-                ///a questão de usarmos muitas transições ou usar de mais
-                ///a questão das animações, já que obviamente se usarmos
-                ///muito irá acabar pesando de alguma forma a aplicação,
-                ///e também temos que ter cuidado para não usar em todos 
-                ///os locais e deixar a aplicação carregada demais. O 
-                ///[SlideTransition] deve receber a propriedade 
-                ///[position] que espera uma [Animation<Offset>]. O 
-                ///[Offset] é um deslocamento que iremos passar e iremos
-                ///querer que comece um pouco mais em cima e desça até a 
-                ///posição que irá ficar, portanto o começaremos com um 
-                ///[Offset] negativo até chegar na posição que queremos
-                ///chegar
-                AnimatedContainer(
-                  constraints: BoxConstraints(
-                    minHeight: _authMode == AuthMode.Signup ? 60 : 0,
-                    maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
-                  ),
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear,
-                  child: FadeTransition(
-                    opacity: _opacityAnimation,
-                    child: SlideTransition(
-                      position: _slideAnimation,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Confirmar Senha'
-                        ),
-                        obscureText: true,
-                        validator: _authMode == AuthMode.Signup ? (value) {
-                          if (value != _passwordController.text) {
-                            return 'Senhas são diferentes!';
-                          }
-                          else if (value.isEmpty) {
-                            return 'Senha vazia!';
-                          }
+                obscureText: true,
+                validator: (value) {
+                  if (value.isEmpty || value.length < 5) {
+                    return 'Informe uma senha válida!';
+                  }
 
-                          return null;
-                        } : null,
+                  return null;
+                },
+                onSaved: (value) => _authData['password'] = value,
+              ),
+              ///No momento este campo de confirmar senha
+              ///aparece de uma vez, seco, sem ter animação,
+              ///embora agora já tenha uma animação aumentando
+              ///o [Card]. Faremos algumas animações dentro
+              ///desse campo. Faremos uma animação de 
+              ///opacidade. Com isso não precisamos mais
+              ///da renderização condicional do
+              ///`if (_authMode == AuthMode.Signup)` aqui
+              ///pois a opacidade estará em 0 e o campo
+              ///não irá aparecer. Para essa animação,
+              ///usamos o [FadeTransition] que é um widget
+              ///que recebe uma [opacity] que deve ser uma
+              ///[Animation<double>] que no caso é a animação
+              ///que criamos de opacidade, e seu [child] será
+              ///o nosso [TextFormField], ou seja, quem 
+              ///queremos animar. Já que não temos mais
+              ///a renderização condicional, agora 
+              ///fazemos um wrap do [FadeTransition] com
+              ///um [AnimatedContainer]. Sobre o 
+              ///[AnimatedContainer] precisamos definir
+              ///alguma coisa que irá modificar para que 
+              ///seja detectado e faça a animação em cima
+              ///dessa modificação, e no caso será em cima
+              ///das [constraints]. Sem esse [AnimatedContainer],
+              ///iria ficar quebrando o tamanho - altura do [Card]
+              ///pois embora estava invisível o componente estava
+              ///lá, e através das [constraints] do [AnimatedContainer],
+              ///conseguimos fazer o campo ficar com altura 0 ou uma 
+              ///altura maior de acordo com o necessário. No momento na
+              ///verdade temos 2 animações ocorrendo em conjunto, que é
+              ///o campo aumentando - com o [AnimatedContainer] quanto 
+              ///o campo aparecendo - com o [FadeTransition]. E agora
+              ///adicionaremos mais uma transição que é de slide, ou 
+              ///seja, dentro da [FadeTransition] colocaremos o 
+              ///[SlideTransition]. Precisamos ter cuidado com relação
+              ///a questão de usarmos muitas transições ou usar de mais
+              ///a questão das animações, já que obviamente se usarmos
+              ///muito irá acabar pesando de alguma forma a aplicação,
+              ///e também temos que ter cuidado para não usar em todos 
+              ///os locais e deixar a aplicação carregada demais. O 
+              ///[SlideTransition] deve receber a propriedade 
+              ///[position] que espera uma [Animation<Offset>]. O 
+              ///[Offset] é um deslocamento que iremos passar e iremos
+              ///querer que comece um pouco mais em cima e desça até a 
+              ///posição que irá ficar, portanto o começaremos com um 
+              ///[Offset] negativo até chegar na posição que queremos
+              ///chegar
+              AnimatedContainer(
+                constraints: BoxConstraints(
+                  minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                  maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
+                ),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                child: FadeTransition(
+                  opacity: _opacityAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Confirmar Senha'
                       ),
+                      obscureText: true,
+                      validator: _authMode == AuthMode.Signup ? (value) {
+                        if (value != _passwordController.text) {
+                          return 'Senhas são diferentes!';
+                        }
+                        else if (value.isEmpty) {
+                          return 'Senha vazia!';
+                        }
+
+                        return null;
+                      } : null,
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
-                if (_isLoading)
-                  CircularProgressIndicator()
-                else
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)
-                    ),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryTextTheme.button.color,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
-                    ),
-                    onPressed: _submit,
+              ),
+              const SizedBox(height: 40),
+              if (_isLoading)
+                CircularProgressIndicator()
+              else
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)
                   ),
-                ///Adicionaremos uma animação para quando o 
-                ///usuário clicar nesse [FlatButton] aparecer o 
-                ///novo [TextFormField] de forma mais suave, e 
-                ///não de forma bruta.
-                ///No momento a animação dá um bug que ao
-                ///clicar em ALTERNAR P/ REGISTRAR é mostrado
-                ///o erro de tamanho overflow, mas isso ocorre
-                ///pois é mostrado o terceiro campo e estava
-                ///fazendo o processo de animação ainda. Mas
-                ///em produção isso não irá ocorrer.
-                FlatButton(
-                  onPressed: _switchAuthMode,
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).primaryTextTheme.button.color,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 8,
+                  ),
                   child: Text(
-                    'ALTERNAR P/ '
-                    '${_authMode == AuthMode.Login ? 'REGISTRAR' : 'LOGIN'}'
+                    _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR',
                   ),
-                  textColor: Theme.of(context).primaryColor,
+                  onPressed: _submit,
                 ),
-              ],
-            ),
+              ///Adicionaremos uma animação para quando o 
+              ///usuário clicar nesse [FlatButton] aparecer o 
+              ///novo [TextFormField] de forma mais suave, e 
+              ///não de forma bruta.
+              ///No momento a animação dá um bug que ao
+              ///clicar em ALTERNAR P/ REGISTRAR é mostrado
+              ///o erro de tamanho overflow, mas isso ocorre
+              ///pois é mostrado o terceiro campo e estava
+              ///fazendo o processo de animação ainda. Mas
+              ///em produção isso não irá ocorrer.
+              FlatButton(
+                onPressed: _switchAuthMode,
+                child: Text(
+                  'ALTERNAR P/ '
+                  '${_authMode == AuthMode.Login ? 'REGISTRAR' : 'LOGIN'}'
+                ),
+                textColor: Theme.of(context).primaryColor,
+              ),
+            ],
           ),
         ),
       ),
