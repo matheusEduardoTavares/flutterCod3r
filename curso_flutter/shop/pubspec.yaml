@@ -28,6 +28,7 @@ dependencies:
   intl: ^0.16.1
   provider: ^4.0.5
   shared_preferences: ^0.5.7+3
+  transparent_image: 1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,6 +56,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - .env
+    - assets/images/product-placeholder.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -168,6 +168,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
       setState(() {
         _minHeight = 330;
         _maxHeight = 411;
+        _formKey?.currentState?.validate();
       });
       return;
     }
