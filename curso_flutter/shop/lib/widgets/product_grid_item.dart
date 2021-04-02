@@ -92,6 +92,28 @@ class ProductGridItem extends StatelessWidget {
               product.imageUrl,
             ),
             fit: BoxFit.cover,
+            imageErrorBuilder: (_, __, ___) => Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'ERRO', style: TextStyle(
+                          color: Theme.of(context).errorColor,
+                          fontSize: 20,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ao carregar a imagem',
+                        style: TextStyle(color: Colors.black, fontSize: 15),
+                      ),
+                    ]
+                  ),
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
         footer: GridTileBar(
