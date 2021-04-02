@@ -214,6 +214,7 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
             ///[child] e podemos recupar isso na
             ///função do [builder]. Sua animação
             ///seŕa o [_heightAnimation]
+            /*
             child: AnimatedBuilder(
               builder: (ctx, child) => Container(
                 ///Agora aqui para nos usufruirmos da 
@@ -231,7 +232,30 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                 padding: const EdgeInsets.all(16),
                 child: child
               ),
-              animation: _heightAnimation,
+            */
+            ///Como queremos animar um [Container], temos um
+            ///Widget específico para isso, que é o 
+            ///[AnimatedContainer], então não precisamos do
+            ///[AnimatedBuilder]. O [AnimatedContainer] tem
+            ///o [Duration], o [Curves]. ALém disso o 
+            ///[AnimatedContainer] sabe detectar quem está
+            ///mudando, então não precisamos mais usar o 
+            ///[_heightAnimation] e nem a animação 
+            ///[_heightAnimation] que criamos, ele faz todo
+            ///o processo de animação sem que precisemos criar
+            ///um [AnimationController] e nem um [Animation],
+            ///por isso voltamos o [height] que podemos passar
+            ///no [AnimatedContainer] como estava antes
+            ///já que não temos que pegar o 
+            ///[.value.height]. Ele mesmo detecta o que muda
+            ///e faz a animação de acordo com sua [Duration] e 
+            ///[curve]
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeIn,
+              width: deviceSize.width * 0.75,
+              padding: const EdgeInsets.all(16),
+              height: _authMode == AuthMode.Login ? 290 : 371,
               child: Form(
                 key: _formKey,
                 child: Column(
