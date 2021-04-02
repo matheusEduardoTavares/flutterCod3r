@@ -17,9 +17,17 @@ class ProductDetailScreen extends StatelessWidget {
             Container(
               height: 300,
               width: double.infinity,
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
+              ///Aqui que é o destino da animação Hero, que é
+              ///quem queremos que aumente ao clicar até ocupar
+              ///seu espaço, basta envolvermos esse widget que
+              ///queremos que no caso é o [Image.network] com 
+              ///o [Hero] possuindo a mesma tag
+              child: Hero(
+                tag: product.id,
+                child: Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               )
             ),
             SizedBox(height: 10),

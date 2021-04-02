@@ -3,7 +3,6 @@ import 'package:shop/exceptions/http_exception.dart';
 import 'package:shop/providers/auth.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/utils/app_routes.dart';
-import 'package:transparent_image/transparent_image.dart';
 import '../providers/product.dart';
 import 'package:provider/provider.dart';
 
@@ -78,41 +77,56 @@ class ProductGridItem extends StatelessWidget {
           //   ),
           // ),
           ///Outra forma de fazer isso:
-          child: FadeInImage(
-            ///Passamos para o [placeholder] um [ImageProvider],
-            ///então não pode ser o [Image.asset], temos que usar
-            ///o [NetworkImage], ou no caso o [AssetImage]
-            placeholder: AssetImage(
-              'assets/images/product-placeholder.png'
-            ),
-            ///O [image] também recebe um [ImageProvider]. Aqui
-            ///ao invés de usar o [Image.network], usaremos o 
-            ///[NetworkImage]
-            image: NetworkImage(
-              product.imageUrl,
-            ),
-            fit: BoxFit.cover,
-            imageErrorBuilder: (_, __, ___) => Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'ERRO', style: TextStyle(
-                          color: Theme.of(context).errorColor,
-                          fontSize: 20,
+          ///Usaremos a animação chamada Hero para que ao clicar
+          ///em uma imagem, a mesma cresça até ocupar a tela 
+          ///inteira, é uma animação de transição, e já temos 
+          ///um widget para isso chamado [Hero], e então basta 
+          ///fazer um wrap do [FadeInImage] com este [Hero]. 
+          ///Esse widget [Hero] pede uma [tag] que é um 
+          ///identificador. Agora no destino, onde a imagem 
+          ///será mostrada, também teremos outro widget
+          ///[Hero] que deve ter a mesma [tag], de forma que 
+          ///o Flutter entender que a animação começa aqui e 
+          ///finaliza lá devido ao fato da [tag] ser igual nos
+          ///dois widgets.
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              ///Passamos para o [placeholder] um [ImageProvider],
+              ///então não pode ser o [Image.asset], temos que usar
+              ///o [NetworkImage], ou no caso o [AssetImage]
+              placeholder: AssetImage(
+                'assets/images/product-placeholder.png'
+              ),
+              ///O [image] também recebe um [ImageProvider]. Aqui
+              ///ao invés de usar o [Image.network], usaremos o 
+              ///[NetworkImage]
+              image: NetworkImage(
+                product.imageUrl,
+              ),
+              fit: BoxFit.cover,
+              imageErrorBuilder: (_, __, ___) => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'ERRO', style: TextStyle(
+                            color: Theme.of(context).errorColor,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: ' ao carregar a imagem',
-                        style: TextStyle(color: Colors.black, fontSize: 15),
-                      ),
-                    ]
+                        TextSpan(
+                          text: ' ao carregar a imagem',
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
+                      ]
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-              ],
+                  const SizedBox(height: 30),
+                ],
+              ),
             ),
           ),
         ),
