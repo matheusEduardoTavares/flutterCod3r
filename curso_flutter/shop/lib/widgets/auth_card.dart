@@ -25,7 +25,9 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   AnimationController _controller;
   ///Iremos fazer uma animação de tamanho, baseado na altura
   ///do [Card]
-  Animation<Size> _heightAnimation;
+  // Animation<Size> _heightAnimation;
+  Animation<double> _opacityAnimation;
+  Animation<Offset> _slideAnimation;
 
   @override 
   void initState() {
@@ -91,18 +93,20 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     ///diferente para fazer a animação. No caso usaremos um
     ///que a velocidade é constante do começo até o fim, 
     ///que é o [Curves.linear]
-    _heightAnimation = Tween(
-      ///Passamos a largura e a altura para o [Size], mas 
-      ///como não estamos interessados na largura, passamos
-      ///simplesmente um [double.infinity] para largura
-      begin: Size(double.infinity, 290),
-      end: Size(double.infinity, 371)
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.linear,
-      ),
-    );
+    /*
+      _heightAnimation = Tween(
+        ///Passamos a largura e a altura para o [Size], mas 
+        ///como não estamos interessados na largura, passamos
+        ///simplesmente um [double.infinity] para largura
+        begin: Size(double.infinity, 290),
+        end: Size(double.infinity, 371)
+      ).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Curves.linear,
+        ),
+      );
+    */
 
     ///Mais para frente tiraremos isso, mas precisamos 
     ///registrar a partir do [_heightAnimation] um listener
@@ -114,6 +118,26 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
     // _heightAnimation.addListener(() {
     //   setState(() {});
     // });
+    
+    _opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        curve: Curves.linear,
+        parent: _controller,
+      ),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, -1.5),
+      end: Offset(0, 0),
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeIn,
+      ),
+    );
   }
 
   final _authData = <String, String>{
@@ -290,23 +314,83 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                       },
                       onSaved: (value) => _authData['password'] = value,
                     ),
-                    if (_authMode == AuthMode.Signup)
-                      TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Confirmar Senha'
-                        ),
-                        obscureText: true,
-                        validator: _authMode == AuthMode.Signup ? (value) {
-                          if (value != _passwordController.text) {
-                            return 'Senhas são diferentes!';
-                          }
-                          else if (value.isEmpty) {
-                            return 'Senha vazia!';
-                          }
-
-                          return null;
-                        } : null,
+                    ///No momento este campo de confirmar senha
+                    ///aparece de uma vez, seco, sem ter animação,
+                    ///embora agora já tenha uma animação aumentando
+                    ///o [Card]. Faremos algumas animações dentro
+                    ///desse campo. Faremos uma animação de 
+                    ///opacidade. Com isso não precisamos mais
+                    ///da renderização condicional do
+                    ///`if (_authMode == AuthMode.Signup)` aqui
+                    ///pois a opacidade estará em 0 e o campo
+                    ///não irá aparecer. Para essa animação,
+                    ///usamos o [FadeTransition] que é um widget
+                    ///que recebe uma [opacity] que deve ser uma
+                    ///[Animation<double>] que no caso é a animação
+                    ///que criamos de opacidade, e seu [child] será
+                    ///o nosso [TextFormField], ou seja, quem 
+                    ///queremos animar. Já que não temos mais
+                    ///a renderização condicional, agora 
+                    ///fazemos um wrap do [FadeTransition] com
+                    ///um [AnimatedContainer]. Sobre o 
+                    ///[AnimatedContainer] precisamos definir
+                    ///alguma coisa que irá modificar para que 
+                    ///seja detectado e faça a animação em cima
+                    ///dessa modificação, e no caso será em cima
+                    ///das [constraints]. Sem esse [AnimatedContainer],
+                    ///iria ficar quebrando o tamanho - altura do [Card]
+                    ///pois embora estava invisível o componente estava
+                    ///lá, e através das [constraints] do [AnimatedContainer],
+                    ///conseguimos fazer o campo ficar com altura 0 ou uma 
+                    ///altura maior de acordo com o necessário. No momento na
+                    ///verdade temos 2 animações ocorrendo em conjunto, que é
+                    ///o campo aumentando - com o [AnimatedContainer] quanto 
+                    ///o campo aparecendo - com o [FadeTransition]. E agora
+                    ///adicionaremos mais uma transição que é de slide, ou 
+                    ///seja, dentro da [FadeTransition] colocaremos o 
+                    ///[SlideTransition]. Precisamos ter cuidado com relação
+                    ///a questão de usarmos muitas transições ou usar de mais
+                    ///a questão das animações, já que obviamente se usarmos
+                    ///muito irá acabar pesando de alguma forma a aplicação,
+                    ///e também temos que ter cuidado para não usar em todos 
+                    ///os locais e deixar a aplicação carregada demais. O 
+                    ///[SlideTransition] deve receber a propriedade 
+                    ///[position] que espera uma [Animation<Offset>]. O 
+                    ///[Offset] é um deslocamento que iremos passar e iremos
+                    ///querer que comece um pouco mais em cima e desça até a 
+                    ///posição que irá ficar, portanto o começaremos com um 
+                    ///[Offset] negativo até chegar na posição que queremos
+                    ///chegar
+                    AnimatedContainer(
+                      constraints: BoxConstraints(
+                        minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                        maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
                       ),
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.linear,
+                      child: FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: SlideTransition(
+                          position: _slideAnimation,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Confirmar Senha'
+                            ),
+                            obscureText: true,
+                            validator: _authMode == AuthMode.Signup ? (value) {
+                              if (value != _passwordController.text) {
+                                return 'Senhas são diferentes!';
+                              }
+                              else if (value.isEmpty) {
+                                return 'Senha vazia!';
+                              }
+
+                              return null;
+                            } : null,
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 40),
                     if (_isLoading)
                       CircularProgressIndicator()
