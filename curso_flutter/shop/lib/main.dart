@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/application/application.dart';
 import 'package:shop/data/store.dart';
 import 'package:shop/providers/auth.dart';
+import 'package:shop/utils/custom_page_transition_builder.dart';
 import 'package:shop/utils/url_firebase.dart';
 import 'package:shop/views/auth_home_screen.dart';
 import 'package:shop/views/cart_screen.dart';
@@ -64,7 +65,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.purple,
           accentColor: Colors.deepOrange,
-          fontFamily: 'Lato'
+          fontFamily: 'Lato',
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: CustomPageTransitionBuilder(),
+              TargetPlatform.iOS: CustomPageTransitionBuilder(),
+            }
+          ),
         ),
         routes: {
           AppRoutes.AUTH_HOME: (ctx) => AuthOrHomeScreen(),
