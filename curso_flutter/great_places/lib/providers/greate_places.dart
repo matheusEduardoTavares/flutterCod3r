@@ -9,4 +9,13 @@ class GreatPlaces with ChangeNotifier {
   int get itemsCount => _items.length;
 
   Place itemByIndex(int index) => _items[index];
+
+  Place itemById(String id) {
+    final filteredItem = _items.singleWhere(
+      (place) => place.id == id,
+      orElse: () => null
+    );
+
+    return filteredItem;
+  }
 }
