@@ -38,24 +38,9 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.edit),
             title: Text('Gerenciar Produtos'),
             onTap: () {
-              ///Ao invés de usar o [pushReplacementNamed],
-              ///podemos usar o [pushReplacement] e aí temos
-              ///que trabalhar com o [MaterialPageRoute].
-              ///Criaremos uma classe que irá extender o 
-              ///[MaterialPageRoute] para podermos
-              ///personalizar nossas rotas.
               Navigator.of(context).pushReplacementNamed(
                 AppRoutes.PRODUCTS,
               );
-              /// E aí a forma de usar seria assim:
-              // Navigator.of(context).pushReplacement(
-              //   CustomRoute(
-              //     builder: (ctx) => ProductsScreen(),
-              //     settings: RouteSettings(
-              //       name: AppRoutes.PRODUCTS
-              //     ),
-              //   )
-              // );
             }
           ),
           Divider(),

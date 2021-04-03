@@ -20,14 +20,6 @@ class AuthScreen extends StatelessWidget {
               ),
             ),
           ),
-          ///Caso alguma hora ao fazermos um wrap do 
-          ///[SingleChildScrollView] com um [Center], acabar
-          ///algum elemento aparecendo só uma parte sua, sendo
-          ///que a outra acaba sendo cortada, para resolver 
-          ///de forma simples isso é só por um [SizedBox] com 
-          ///alguma propriedade que leve o elemento mais para
-          ///baixo ou mais para o lado segundo o que está 
-          ///ficando de fora
           Center(
             child: SingleChildScrollView(
               child: Container(

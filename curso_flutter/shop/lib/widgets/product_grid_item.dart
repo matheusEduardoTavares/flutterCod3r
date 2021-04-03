@@ -55,52 +55,12 @@ class ProductGridItem extends StatelessWidget {
             arguments: product
           );
           },
-          ///Essa é uma forma de buscar imagens da internet e
-          ///tratar enquanto está carregando usando a lib
-          ///[transparent_image] para usar o [kTransparentImage],
-          ///como [placegolder] do [FadeInImage.memoryNetwork], e
-          ///esse [FadeInImage] faz uma animação que inicialmente
-          ///é mostrado a imagem do [placeholder] que no caso é 
-          ///uma imagem com opacidade 1, ou seja, transparente, e
-          ///aí assim que carrega a imagem da URL, é feito um 
-          ///efeito de escurecimento até a imagem aparecer por
-          ///completo. Aqui conseguimos definir as características
-          ///do efeito e também tratar para quando der erro de 
-          ///buscar a imagem da internet, podendo mostrar outro 
-          ///widget
-          // child: FadeInImage.memoryNetwork(
-          //   image: product.imageUrl,
-          //   fit: BoxFit.cover,
-          //   placeholder: kTransparentImage,
-          //   imageErrorBuilder: (_, __, ___) => Center(
-          //     child: Text('Erro ao carregar a imagem'),
-          //   ),
-          // ),
-          ///Outra forma de fazer isso:
-          ///Usaremos a animação chamada Hero para que ao clicar
-          ///em uma imagem, a mesma cresça até ocupar a tela 
-          ///inteira, é uma animação de transição, e já temos 
-          ///um widget para isso chamado [Hero], e então basta 
-          ///fazer um wrap do [FadeInImage] com este [Hero]. 
-          ///Esse widget [Hero] pede uma [tag] que é um 
-          ///identificador. Agora no destino, onde a imagem 
-          ///será mostrada, também teremos outro widget
-          ///[Hero] que deve ter a mesma [tag], de forma que 
-          ///o Flutter entender que a animação começa aqui e 
-          ///finaliza lá devido ao fato da [tag] ser igual nos
-          ///dois widgets.
           child: Hero(
             tag: product.id,
             child: FadeInImage(
-              ///Passamos para o [placeholder] um [ImageProvider],
-              ///então não pode ser o [Image.asset], temos que usar
-              ///o [NetworkImage], ou no caso o [AssetImage]
               placeholder: AssetImage(
                 'assets/images/product-placeholder.png'
               ),
-              ///O [image] também recebe um [ImageProvider]. Aqui
-              ///ao invés de usar o [Image.network], usaremos o 
-              ///[NetworkImage]
               image: NetworkImage(
                 product.imageUrl,
               ),
