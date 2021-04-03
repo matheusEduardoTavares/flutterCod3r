@@ -58,12 +58,41 @@ class ProductDetailScreen extends StatelessWidget {
               ///seu espaço, basta envolvermos esse widget que
               ///queremos que no caso é o [Image.network] com 
               ///o [Hero] possuindo a mesma tag
-              background: Hero(
-                tag: product.id,
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+              ///Afim de melhorar a visualização, pois dependendo
+              ///da imagem fica ruim ler o [title], iremos usar
+              ///um [Stack] para só depois colocar o [Hero]
+              background: Stack(
+                ///Sem esse [fit] com valor [StackFit.expand]
+                ///a [AppBar] volta a se separar do background
+                fit: StackFit.expand,
+                children: [
+                  Hero(
+                    tag: product.id,
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  ///Usaremos um [DecoratedBox] para por um 
+                  ///gradiente, afim de fazer um sombreamento
+                  ///para ficar melhor de enxergar essa parte
+                  ///onde ficará o título, escurecendo-a mais,
+                  ///de forma que inicia um pouco mais claro e 
+                  ///vai escurecendo até no fim ficar totalmente
+                  ///escuro
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(0, 0.8),
+                        end: Alignment(0, 0),
+                        colors: [
+                          Color.fromRGBO(0, 0, 0, 0.6),
+                          Color.fromRGBO(0, 0, 0, 0),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -90,7 +119,6 @@ class ProductDetailScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   )
                 ),
-                SizedBox(height: 1000),
               ],
             ),
           ),
