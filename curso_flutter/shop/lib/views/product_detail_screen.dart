@@ -48,6 +48,17 @@ class ProductDetailScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            leading: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).primaryColor,
+              ),
+              child: IconButton(
+                highlightColor: Colors.red,
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -117,8 +128,9 @@ class ProductDetailScreen extends StatelessWidget {
                   child: Text(
                     product.description,
                     textAlign: TextAlign.center,
-                  )
+                  ),
                 ),
+                SizedBox(height: 1000)
               ],
             ),
           ),
