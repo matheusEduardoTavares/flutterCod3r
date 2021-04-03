@@ -2,7 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+typedef UpdateImage = void Function(File);
+
 class ImageInput extends StatefulWidget {
+  ImageInput(
+    this.onSelectImage
+  );
+
+  final UpdateImage onSelectImage;
+
   @override
   _ImageInputState createState() => _ImageInputState();
 }
@@ -37,6 +45,25 @@ class _ImageInputState extends State<ImageInput> {
       setState(() {
         _storedImage = File(_imageFile.path);
       });
+
+      ///Precisaremos armazenar essa imagem em 
+      ///algum lugar persistente dentro da aplicação
+      ///antes de chamar o método [onSelectImage].
+      ///Para isso precisaremos de + 2 dependências:
+      ///[path_provider] e do [path]. Ao importar a
+      ///dependência [path] pode ser que dê erro 
+      ///dizendo que o [flutter_test] depende de uma
+      ///versão mais atualizada desse [path] e nós
+      ///estamos usando uma versão mais antiga. Nesse
+      ///momento, só funcionou importanto a seguinte
+      ///versão do [path]:
+      ///path: 1.8.0-nullsafety.1
+      ///Essa versão era a pedida na mensagem de erro
+      ///do próprio pubspec ao dar um flutter clean
+      ///A ideia é salvar essa imagem dentro de um 
+      ///diretório da nossa aplicação a partir dessas
+      ///2 dependências que instalamos
+      // widget.onSelectImage();
     }
   }
 
