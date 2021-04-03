@@ -18,8 +18,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   var _authMode = AuthMode.Login;
   var _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  var _minHeight = 290.0;
-  var _maxHeight = 371.0;
+  var _minHeight = 291.0;
+  var _maxHeight = 372.0;
 
   ///Faremos a animação de forma manual nessa aula, e nas
   ///próximas aulas usaremos alguns Widgets para facilitar 
@@ -166,8 +166,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
   Future<void> _submit() async {
     if (!(_formKey?.currentState?.validate() ?? false)) {
       setState(() {
-        _minHeight = 330;
-        _maxHeight = 411;
+        _minHeight = 331;
+        _maxHeight = 412;
         _formKey?.currentState?.validate();
       });
       return;
@@ -175,8 +175,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
 
     setState(() {
       _isLoading = true;
-      _minHeight = 290;
-      _maxHeight = 371;
+      _minHeight = 291;
+      _maxHeight = 372;
     });
 
     _formKey.currentState.save();
@@ -238,8 +238,8 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         borderRadius: BorderRadius.circular(10)
       ),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
+        duration: Duration(milliseconds: _authMode == AuthMode.Login ? 470 : 200),
+        curve: Curves.linear,
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16),
         height: _authMode == AuthMode.Login ? _minHeight : _maxHeight,
