@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 typedef UpdateImage = void Function(File);
 
@@ -63,7 +65,17 @@ class _ImageInputState extends State<ImageInput> {
       ///A ideia é salvar essa imagem dentro de um 
       ///diretório da nossa aplicação a partir dessas
       ///2 dependências que instalamos
-      // widget.onSelectImage();
+      
+      ///Pegando a pasta que podemos armazenar 
+      ///documentos dentro da nossa aplicação:
+      final appDir = await syspaths.getApplicationDocumentsDirectory();
+      ///Pegando apenas o nome da imagem para colocá-la
+      ///dentro do diretório da nossa aplicação
+      var fileName = path.basename(_storedImage.path);
+      final savedImage = await _storedImage.copy(
+        '${appDir.path}/$fileName'
+      );
+      widget.onSelectImage(savedImage);
     }
   }
 
