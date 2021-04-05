@@ -1,0 +1,25 @@
+Na aula 332 - Testando DIspositivo 
+Real: iOS #02, é ensinado como buildar o 
+APP no iOS. Basta abrirmos a pasta 
+ios, e dentro dela temos a pasta Runner,
+então abrimos essa pasta Runner e dentro 
+dela temos um arquivo chamado 
+Runner.xcodeproj que é o projeto em si,
+então o abrimos no XCode. 
+Na barra superior esquerda teremos o 
+projeto e as subpastas dele, então 
+selecionamos a pasta maior na hierarquia
+que é o projeto em si, aí vamos em 
+Signing & Capabilities e lá teremos a 
+opção team onde iremos adicionar 
+uma conta. Se não tiver é só criar uma 
+conta, daí seleciona a conta. Ao ter 
+a conta selecionada irá aparecer 1 botão 
+escrito Revoke Certificate, ou seja, 
+vai ser feito 1 certificado para poder 
+fazer o deploy dentro do dispositivo.
+Com isso nosso projeto está pronto para 
+fazer o deploy, e com a alteração do 
+arquivo info.plist para suportar os 
+recursos do image_picker, basta apenas 
+rodar o APP normalmente.
