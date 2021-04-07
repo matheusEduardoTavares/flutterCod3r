@@ -1,13 +1,15 @@
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
-class DbUtil {
+abstract class DbUtil {
+
+  static sql.Database _sqflite;
 
   static const databaseName = 'places.db';
 
   static const tableName = 'places';
 
-  static Future<sql.Database> database() async {
+  static Future<void> initializeDatabase() async {
     ///Caminho onde é armazenado o caminho do 
     ///banco de dados
     final dbPath = await sql.getDatabasesPath();
@@ -30,7 +32,7 @@ class DbUtil {
     ///será salvo o caminho da imagem, o ID do local e 
     ///o seu título. Salvamos a imagem no path usando
     ///o [path_provider].
-    return sql.openDatabase(
+    _sqflite = await sql.openDatabase(
       path.join(dbPath, databaseName),
       onCreate: (db, version) {
         return db.execute(
@@ -44,8 +46,6 @@ class DbUtil {
   ///recebe a tabela e um [Map] com o nome da coluna como
   ///key e o valor como value.
   static Future<void> insert(String table, Map<String, dynamic> data) async {
-    final db = await DbUtil.database();
-    
     ///Pegamos a instância do banco e usamos o método
     ///[insert] passando para ele o nome da tabela, 
     ///os dados que queremos inserir e temos mais alguns
@@ -56,7 +56,7 @@ class DbUtil {
     ///e no caso usaremos para ele o valor 
     ///[ConflictAlgorithm.replace] para que o dado seja
     ///substituído
-    await db.insert(
+    await _sqflite.insert(
       table,
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
