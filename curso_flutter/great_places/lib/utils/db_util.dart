@@ -45,7 +45,7 @@ abstract class DbUtil {
 
   ///recebe a tabela e um [Map] com o nome da coluna como
   ///key e o valor como value.
-  static Future<void> insert(String table, Map<String, dynamic> data) async {
+  static Future<void> insert(Map<String, dynamic> data, {String table = tableName}) async {
     ///Pegamos a instância do banco e usamos o método
     ///[insert] passando para ele o nome da tabela, 
     ///os dados que queremos inserir e temos mais alguns
@@ -61,5 +61,9 @@ abstract class DbUtil {
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
+  }
+
+  static Future<List<Map<String, dynamic>>> getData({String table = tableName}) async {
+    return _sqflite.query(table);
   }
 }
