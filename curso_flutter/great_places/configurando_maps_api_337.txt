@@ -1,0 +1,14 @@
+Na aula 337 com nome Configurando Maps API veremos
+como configurar no google cloud para obtermos uma
+chave que nos permita acessar a API de mapa do 
+google. 
+
+Basta abrir o google cloud e ir no console.
+Na aba superior, logo à direita do logo, temos 
+o projeto que está selecionado, e então selecionamos 
+o que já estávamos usando do firebase, chamado 
+flutter-cod3r.
+
+Então é necessário criar uma conta de faturamento.
+Após finalizar a criação da conta, obteremos a chave 
+de API e é ela que será utilizada.
