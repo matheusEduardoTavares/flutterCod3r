@@ -16,25 +16,18 @@ class _LocationInputState extends State<LocationInput> {
   ///ela estará na rede.
   String _previewImageUrl;
 
-  Future<void> _getCurrentUserLocation([bool useGoogleMap]) async {
+  Future<void> _getCurrentUserLocation([bool useGoogleMap = false]) async {
     final locData = await Location().getLocation();
     
-    if (useGoogleMap ?? false) {
-      ///Uso com o GoogleMaps.
-      final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
-        latitude: locData.latitude,
-        longitude: locData.longitude,
-      );
+    final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
+      latitude: locData.latitude,
+      longitude: locData.longitude,
+      useGoogleMap: useGoogleMap ?? false,
+    );
 
-      setState(() {
-        _previewImageUrl = staticMapImageUrl;
-      });
-    }
-    else {
-      //TODO! Implementar.
-      ///Uso com Mapbox.
-      print('Ainda não implementado');
-    }
+    setState(() {
+      _previewImageUrl = staticMapImageUrl;
+    });
   }
 
   Future<void> _selectOnMap() async {
