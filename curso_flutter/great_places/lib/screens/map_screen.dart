@@ -12,7 +12,7 @@ class MapScreen extends StatefulWidget {
       googleHeardquartersLatitude, 
       googleHeardquartersLongitude
     ),
-    this.isReadOnly,
+    this.isReadOnly = false,
   }) : assert(
     !(!useGoogleMap && initialLocation == null),
     'Se não for usado o mapa do google, então o '
@@ -105,7 +105,18 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selecione...')
+        title: Text('Selecione...'),
+        actions: [
+          if (!(widget.isReadOnly ?? true))
+            IconButton(
+              icon: Icon(Icons.check),
+              onPressed: _pickedPosition != null ? () {
+                Navigator.of(context).pop(
+                  _pickedPosition
+                );
+              } : null,
+            ),
+        ],
       ),
       body: _useGoogleMap ? GoogleMap(
         initialCameraPosition: CameraPosition(

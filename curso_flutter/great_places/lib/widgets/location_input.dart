@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:great_places/models/place.dart';
 import 'package:great_places/screens/map_screen.dart';
 import 'package:great_places/utils/location_util.dart';
 import 'package:location/location.dart';
@@ -31,7 +32,7 @@ class _LocationInputState extends State<LocationInput> {
   }
 
   Future<void> _selectOnMap() async {
-    final selectedLocation = await Navigator.of(context).push(
+    final selectedPosition = await Navigator.of(context).push<PlaceLocation>(
       MaterialPageRoute(
         ///Se passarmos o [fullscreenDialog] como true,
         ///continuará exibindo com a tela inteira pois
@@ -43,9 +44,11 @@ class _LocationInputState extends State<LocationInput> {
       ),
     );
 
-    if (selectedLocation == null) return;
+    if (selectedPosition == null) return;
 
     // ...
+    print(selectedPosition.latitude);
+    print(selectedPosition.longitude);
   }
 
   @override
