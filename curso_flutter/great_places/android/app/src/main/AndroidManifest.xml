@@ -9,10 +9,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="great_places"
         android:icon="@mipmap/ic_launcher">
-        <!-- Caso fosse usado o google_maps_flutter,
-        as 2 linhas comentadas abaixo seriam necessárias -->
-         <!-- <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR KEY HERE"/> -->
+         <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value=""/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

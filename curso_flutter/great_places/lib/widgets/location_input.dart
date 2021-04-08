@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:great_places/screens/map_screen.dart';
+import 'package:great_places/utils/location_util.dart';
 import 'package:location/location.dart';
 
 class LocationInput extends StatefulWidget {
@@ -14,18 +16,43 @@ class _LocationInputState extends State<LocationInput> {
   ///ela estará na rede.
   String _previewImageUrl;
 
-  Future<void> _getCurrentUserLocation() async {
+  Future<void> _getCurrentUserLocation([bool useGoogleMap]) async {
     final locData = await Location().getLocation();
     
-    ///Uso com o GoogleMaps.
-    // final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
-    //   latitude: locData.latitude,
-    //   longitude: locData.longitude,
-    // );
+    if (useGoogleMap ?? false) {
+      ///Uso com o GoogleMaps.
+      final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
+        latitude: locData.latitude,
+        longitude: locData.longitude,
+      );
 
-    // setState(() {
-    //   _previewImageUrl = staticMapImageUrl;
-    // });
+      setState(() {
+        _previewImageUrl = staticMapImageUrl;
+      });
+    }
+    else {
+      //TODO! Implementar.
+      ///Uso com Mapbox.
+      print('Ainda não implementado');
+    }
+  }
+
+  Future<void> _selectOnMap() async {
+    final selectedLocation = await Navigator.of(context).push(
+      MaterialPageRoute(
+        ///Se passarmos o [fullscreenDialog] como true,
+        ///continuará exibindo com a tela inteira pois
+        ///é o que já fazemos, porém muda um pouco pois
+        ///o ícone da [AppBar] será um X ao invés de 
+        ///uma seta para voltar
+        fullscreenDialog: true,
+        builder: (ctx) => MapScreen()
+      ),
+    );
+
+    if (selectedLocation == null) return;
+
+    // ...
   }
 
   @override
@@ -59,7 +86,7 @@ class _LocationInputState extends State<LocationInput> {
               icon: Icon(Icons.map),
               label: Text('Selecione no Mapa'),
               textColor: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: _selectOnMap,
             ),
           ],
         ),
