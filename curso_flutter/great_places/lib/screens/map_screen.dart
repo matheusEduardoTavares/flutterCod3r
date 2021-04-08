@@ -12,6 +12,7 @@ class MapScreen extends StatefulWidget {
       googleHeardquartersLatitude, 
       googleHeardquartersLongitude
     ),
+    this.isReadOnly,
   }) : assert(
     !(!useGoogleMap && initialLocation == null),
     'Se não for usado o mapa do google, então o '
@@ -33,6 +34,9 @@ class MapScreen extends StatefulWidget {
   final PlaceLocation googleMapLocation;
   final mapBox.LatLng initialLocation;
 
+  ///Define se quer criar um mapa que seja somente de leitura
+  final bool isReadOnly;
+
   static const googleHeardquartersLatitude = 37.422;
   static const googleHeardquartersLongitude = -122.084;
   static const initialZoom = 13.0;
@@ -42,21 +46,59 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  PlaceLocation _placeLocation;
+  PlaceLocation _pickedPosition;
+  PlaceLocation _currentPosition;
   bool _useGoogleMap;
+  mapBox.MapboxMapController _mapBoxMapController;
+  var _hasMarkerGoogleMap = false;
 
   @override 
   void initState() {
     super.initState();
 
     if (widget.useGoogleMap != null && widget.useGoogleMap) {
-      _placeLocation = widget.googleMapLocation ?? PlaceLocation(
-        latitude: MapScreen.googleHeardquartersLatitude,
-        longitude: MapScreen.googleHeardquartersLongitude,
-      );
+      _currentPosition = widget.googleMapLocation;
+    }
+    else {
+      _currentPosition = widget.initialLocation == null ||
+        widget.initialLocation.latitude == null || 
+        widget.initialLocation.longitude == null ? null :
+        PlaceLocation(
+          latitude: widget.initialLocation.latitude,
+          longitude: widget.initialLocation.longitude,
+        );
     }
 
+    _currentPosition ??= PlaceLocation(
+      latitude: MapScreen.googleHeardquartersLatitude,
+      longitude: MapScreen.googleHeardquartersLongitude,
+    );
+
     _useGoogleMap = widget.useGoogleMap ?? false;
+  }
+
+  void _selectPosition(double latitude, double longitude) {
+    setState(() {
+      _pickedPosition = PlaceLocation(
+        latitude: latitude,
+        longitude: longitude,
+      );
+
+      if (_useGoogleMap ?? false) {
+        _hasMarkerGoogleMap = true;
+      }
+      else {
+        _mapBoxMapController.clearSymbols();
+        _mapBoxMapController.addSymbol(mapBox.SymbolOptions(
+          geometry: mapBox.LatLng(
+            _pickedPosition.latitude,
+            _pickedPosition.longitude,
+          ),
+          iconImage: 'embassy-11',
+          iconSize: 3.0,
+        ));
+      }
+    });
   }
 
   @override
@@ -68,19 +110,42 @@ class _MapScreenState extends State<MapScreen> {
       body: _useGoogleMap ? GoogleMap(
         initialCameraPosition: CameraPosition(
           target: LatLng(
-            _placeLocation.latitude,
-            _placeLocation.longitude,
+            _currentPosition.latitude,
+            _currentPosition.longitude,
           ),
           zoom: MapScreen.initialZoom,
         ),
+        onTap: widget.isReadOnly ?? true ? null :
+          (latLng) => _selectPosition(
+            latLng.latitude,
+            latLng.longitude
+          ),
+        markers: _hasMarkerGoogleMap ?? false ? null : {
+          Marker(
+            markerId: MarkerId('p1'),
+            position: LatLng(
+              _pickedPosition.latitude,
+              _pickedPosition.longitude,
+            ),
+          ),
+        },
       ) : mapBox.MapboxMap(
         accessToken: MapboxUtil.mapboxApiKey,
         initialCameraPosition: mapBox.CameraPosition(
-          target: widget.initialLocation,
+          target: mapBox.LatLng(
+            _currentPosition.latitude,
+            _currentPosition.longitude,
+          ),
           zoom: MapScreen.initialZoom,
         ),
         onStyleLoadedCallback: () {},
-        onMapCreated: (mapboxMapController) {},
+        onMapCreated: (mapboxMapController) {
+          _mapBoxMapController = mapboxMapController;
+        },
+        onMapClick: (_, latLng) => _selectPosition(
+          latLng.latitude,
+          latLng.longitude
+        ),
       )
     );
   }
