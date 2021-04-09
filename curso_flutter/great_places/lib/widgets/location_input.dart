@@ -8,10 +8,12 @@ typedef UpdatePosition = void Function(PlaceLocation);
 
 class LocationInput extends StatefulWidget {
   const LocationInput(
-    this.onSelectPosition
+    this.onSelectPosition,
+    this.titleFocusNode,
   );
 
   final UpdatePosition onSelectPosition;
+  final FocusNode titleFocusNode;
 
   @override
   _LocationInputState createState() => _LocationInputState();
@@ -39,6 +41,7 @@ class _LocationInputState extends State<LocationInput> {
 
   Future<void> _getCurrentUserLocation([bool useGoogleMap = false]) async {
     try {
+      widget.titleFocusNode?.unfocus();
       final locData = await Location().getLocation();
 
       _showPreview(locData.latitude, locData.longitude);
@@ -53,6 +56,7 @@ class _LocationInputState extends State<LocationInput> {
   }
 
   Future<void> _selectOnMap({bool useGoogleMap = false}) async {
+    widget.titleFocusNode?.unfocus();
     final selectedPosition = await Navigator.of(context).push<PlaceLocation>(
       MaterialPageRoute(
         ///Se passarmos o [fullscreenDialog] como true,

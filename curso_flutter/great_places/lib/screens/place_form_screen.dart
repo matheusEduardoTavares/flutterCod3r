@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:great_places/models/place.dart';
-import 'package:great_places/providers/greate_places.dart';
+import 'package:great_places/providers/great_places.dart';
 import 'package:great_places/widgets/image_input.dart';
 import 'package:great_places/widgets/location_input.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +15,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
   TextEditingController _titleController;
   File _pickedImage;
   PlaceLocation _pickedPosition;
+  FocusNode _titleFocusNode;
 
   void _selectImage(File pickedImage) {
     setState(() {
@@ -38,6 +39,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
   void initState() {
     super.initState();
 
+    _titleFocusNode = FocusNode();
     _titleController = TextEditingController();
   }
 
@@ -100,13 +102,18 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                       decoration: InputDecoration(
                         labelText: 'Título',
                       ),
+                      focusNode: _titleFocusNode,
                     ),
                     const SizedBox(height: 10),
                     ImageInput(
                       this._selectImage,
+                      _titleFocusNode,
                     ),
                     const SizedBox(height: 10),
-                    LocationInput(_selectPosition),
+                    LocationInput(
+                      _selectPosition,
+                      _titleFocusNode,
+                    ),
                   ],
                 ),
               ),
@@ -140,6 +147,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
   @override 
   void dispose() {
     _titleController?.dispose();
+    _titleFocusNode?.dispose();
 
     super.dispose();
   }

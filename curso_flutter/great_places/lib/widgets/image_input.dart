@@ -8,10 +8,12 @@ typedef UpdateImage = void Function(File);
 
 class ImageInput extends StatefulWidget {
   ImageInput(
-    this.onSelectImage
+    this.onSelectImage,
+    this.titleFocusNode,
   );
 
   final UpdateImage onSelectImage;
+  final FocusNode titleFocusNode;
 
   @override
   _ImageInputState createState() => _ImageInputState();
@@ -21,6 +23,7 @@ class _ImageInputState extends State<ImageInput> {
   File _storedImage;
 
   Future<void> _takePicture() async {
+    widget.titleFocusNode?.unfocus();
     ///Primeiro importamos a lib [image_picker], aí
     ///aqui para tirar uma foto instanciamos o 
     ///[ImagePicker] e usamos o método [getImage] 
