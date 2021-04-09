@@ -20,11 +20,6 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  ///Será gerado uma imagem de preview de acordo com a 
-  ///localização setada. Quem irá fornecer isso para nós
-  ///será a pŕopria API do maps do google. Na verdade
-  ///nessa variável ficará a URL da imagem pois 
-  ///ela estará na rede.
   String _previewImageUrl;
 
   void _showPreview(double latitude, double longitude, {bool useGoogleMap = false}) {
@@ -59,11 +54,6 @@ class _LocationInputState extends State<LocationInput> {
     widget.titleFocusNode?.unfocus();
     final selectedPosition = await Navigator.of(context).push<PlaceLocation>(
       MaterialPageRoute(
-        ///Se passarmos o [fullscreenDialog] como true,
-        ///continuará exibindo com a tela inteira pois
-        ///é o que já fazemos, porém muda um pouco pois
-        ///o ícone da [AppBar] será um X ao invés de 
-        ///uma seta para voltar
         fullscreenDialog: true,
         builder: (ctx) => MapScreen()
       ),

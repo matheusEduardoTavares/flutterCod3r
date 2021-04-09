@@ -11,13 +11,9 @@ class MapScreen extends StatefulWidget {
     this.isReadOnly = false,
   });
   
-  ///Define for [true], será utilizado como mapa o
-  ///[GoogleMap], se não, será utilizado o 
-  ///[MapboxMapGl]
   final bool useGoogleMap;
   final PlaceLocation initialLocation;
 
-  ///Define se quer criar um mapa que seja somente de leitura
   final bool isReadOnly;
 
   static const googleHeardquartersLatitude = 37.422;

@@ -15,10 +15,6 @@ Future<void> main() async {
 
   MapboxUtil.mapboxApiKey = env['mapboxApiKey'];
 
-  ///Com essa nova arquitetura de inicializar o [sqflite] antes de inicializar
-  ///a aplicação, é necessário usar o 
-  ///[WidgetsFlutterBinding.ensureInitialized()] para que seja inicializado
-  ///a ligação com o Flutter antes do [runApp]
   WidgetsFlutterBinding.ensureInitialized();
   await DbUtil.initializeDatabase();
 

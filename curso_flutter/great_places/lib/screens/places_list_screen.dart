@@ -20,9 +20,6 @@ class PlacesListScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        ///Aqui deixamos o [listen] false pois é o [FutureBuilder]
-        ///que irá saber quando precisa atualizar a árvore de
-        ///componentes
         future: Provider.of<GreatPlaces>(context, listen: false)
           .loadPlaces(),
         builder: (ctx, snapshot) => snapshot.connectionState 

@@ -26,9 +26,6 @@ abstract class LocationUtil {
       'access_token=${MapboxUtil.mapboxApiKey}';
   }
 
-  ///Método em que iremos passar uma posição em latitude e 
-  ///longitude, e em cima da posição será feito uma pesquisa 
-  ///e retornado seu endereço
   static Future<String> getAddressFrom(PlaceLocation position, {bool useGoogleMap = false}) async {
     if (useGoogleMap ?? false) {
       final googlePosition = LatLng(
@@ -39,30 +36,9 @@ abstract class LocationUtil {
         'geocode/json?latlng=${googlePosition.latitude},'
         '${googlePosition.longitude}&key=$GOOGLE_API_KEY';
       final response = await http.get(url);
-      ///O retorno dessa requisição convertemos para ter
-      ///um [Map], e o endereço estará dentro da chave 
-      ///'results', porém, como pode acabar vindo mais de 
-      ///um endereço, iremos pegar o endereço na primeira 
-      ///posição que é o mais relevante, e dele, iremos pegar
-      ///o endereço formatado
       return json.decode(response.body)['results'][0]['formatted_address'];
     }
     else {
-      // final mapboxPosition = mapBox.LatLng(
-      //   position.latitude,
-      //   position.longitude,
-      // );
-
-      ///Como a API do mapbox não permite salvar permanentemente 
-      ///o resultado dessa query de geocoding, então apenas deixarei comentado
-      ///essa parte e usarei um pequeno delay. Só é possível salvar permanentemente
-      ///se for usado o [mapbox.places-permanent] no lugar do [mapbox.places] da
-      ///URL, mas aí é para contas pagas.
-      // final url = 'https://api.mapbox.com/geocoding/'
-      //   'v5/mapbox.places/${mapboxPosition.latitude},'
-      //   '${mapboxPosition.longitude}.json?'
-      //   'access_token=${MapboxUtil.mapboxApiKey}';
-      // final response = await http.get(url);
       await Future.delayed(const Duration(seconds: 2));
       return 'Local-${DateTime.now()}';
     }

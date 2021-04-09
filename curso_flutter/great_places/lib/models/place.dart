@@ -1,7 +1,4 @@
 import 'dart:io';
-///Além do [meta] que podemos importar, temos o 
-///[foundation] para poder usar o annotation do 
-///[@required]
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mapbox_gl/mapbox_gl.dart' as mapBox;
