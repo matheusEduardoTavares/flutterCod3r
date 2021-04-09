@@ -7,32 +7,15 @@ import 'package:mapbox_gl/mapbox_gl.dart' as mapBox;
 class MapScreen extends StatefulWidget {
   const MapScreen({
     this.useGoogleMap = false,
-    this.googleMapLocation,
-    this.initialLocation = const mapBox.LatLng(
-      googleHeardquartersLatitude, 
-      googleHeardquartersLongitude
-    ),
+    this.initialLocation,
     this.isReadOnly = false,
-  }) : assert(
-    !(!useGoogleMap && initialLocation == null),
-    'Se não for usado o mapa do google, então o '
-    'initialLocation deve ser passado para ser usado '
-    'no mapbox'
-  );
-  // , assert(
-  //   useGoogleMap == null || !useGoogleMap ||
-  //   (useGoogleMap && googleMapLocation != null),
-  //   'Se o useGoogleMap for true, o googleMapLocation'
-  //   ' não pode ser nulo'
-  // );
+  });
   
-
   ///Define for [true], será utilizado como mapa o
   ///[GoogleMap], se não, será utilizado o 
   ///[MapboxMapGl]
   final bool useGoogleMap;
-  final PlaceLocation googleMapLocation;
-  final mapBox.LatLng initialLocation;
+  final PlaceLocation initialLocation;
 
   ///Define se quer criar um mapa que seja somente de leitura
   final bool isReadOnly;
@@ -56,18 +39,7 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
 
-    if (widget.useGoogleMap != null && widget.useGoogleMap) {
-      _currentPosition = widget.googleMapLocation;
-    }
-    else {
-      _currentPosition = widget.initialLocation == null ||
-        widget.initialLocation.latitude == null || 
-        widget.initialLocation.longitude == null ? null :
-        PlaceLocation(
-          latitude: widget.initialLocation.latitude,
-          longitude: widget.initialLocation.longitude,
-        );
-    }
+    _currentPosition = widget.initialLocation;
 
     _currentPosition ??= PlaceLocation(
       latitude: MapScreen.googleHeardquartersLatitude,
@@ -75,6 +47,20 @@ class _MapScreenState extends State<MapScreen> {
     );
 
     _useGoogleMap = widget.useGoogleMap ?? false;
+  }
+
+  void _addSymbol(double latitude, double longitude, {bool clearOtherSymbols = true, double iconSize, String iconImage}) {
+    if (clearOtherSymbols ?? false) {
+      _mapBoxMapController.clearSymbols();
+    }
+    _mapBoxMapController.addSymbol(mapBox.SymbolOptions(
+      geometry: mapBox.LatLng(
+        latitude,
+        longitude,
+      ),
+      iconImage: iconImage ?? 'embassy-11',
+      iconSize: iconSize ?? 3.0,
+    ));
   }
 
   void _selectPosition(double latitude, double longitude) {
@@ -88,17 +74,22 @@ class _MapScreenState extends State<MapScreen> {
         _hasMarkerGoogleMap = true;
       }
       else {
-        _mapBoxMapController.clearSymbols();
-        _mapBoxMapController.addSymbol(mapBox.SymbolOptions(
-          geometry: mapBox.LatLng(
-            _pickedPosition.latitude,
-            _pickedPosition.longitude,
-          ),
-          iconImage: 'embassy-11',
-          iconSize: 3.0,
-        ));
+        _addSymbol(
+          latitude,
+          longitude,
+        );
       }
     });
+  }
+
+  void _addDefaultSymbol(double latitude, double longitude, {bool clearOtherSymbols = true, double iconSize, String iconImage}) {
+    _addSymbol(
+      latitude,
+      longitude,
+      clearOtherSymbols: clearOtherSymbols,
+      iconSize: iconSize,
+      iconImage: iconImage,
+    );
   }
 
   @override
@@ -107,7 +98,7 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         title: Text('Selecione...'),
         actions: [
-          if (!(widget.isReadOnly ?? true))
+          if (!(widget.isReadOnly ?? false))
             IconButton(
               icon: Icon(Icons.check),
               onPressed: _pickedPosition != null ? () {
@@ -126,20 +117,21 @@ class _MapScreenState extends State<MapScreen> {
           ),
           zoom: MapScreen.initialZoom,
         ),
-        onTap: widget.isReadOnly ?? true ? null :
+        onTap: widget.isReadOnly ?? false ? null :
           (latLng) => _selectPosition(
             latLng.latitude,
             latLng.longitude
           ),
-        markers: _hasMarkerGoogleMap ?? false ? null : {
-          Marker(
-            markerId: MarkerId('p1'),
-            position: LatLng(
-              _pickedPosition.latitude,
-              _pickedPosition.longitude,
+        markers: ((_hasMarkerGoogleMap ?? false) && (!widget.isReadOnly ?? false)) 
+          ? null : {
+            Marker(
+              markerId: MarkerId('p1'),
+              position: LatLng(
+                _pickedPosition.latitude ?? widget.initialLocation.latitude,
+                _pickedPosition.longitude ?? widget.initialLocation.longitude,
+              ),
             ),
-          ),
-        },
+          },
       ) : mapBox.MapboxMap(
         accessToken: MapboxUtil.mapboxApiKey,
         initialCameraPosition: mapBox.CameraPosition(
@@ -149,14 +141,19 @@ class _MapScreenState extends State<MapScreen> {
           ),
           zoom: MapScreen.initialZoom,
         ),
-        onStyleLoadedCallback: () {},
+        onStyleLoadedCallback: (!widget.isReadOnly ?? false) ? () {} :
+          () => _addDefaultSymbol(
+            widget.initialLocation.latitude,
+            widget.initialLocation.longitude,
+          ),
         onMapCreated: (mapboxMapController) {
           _mapBoxMapController = mapboxMapController;
         },
-        onMapClick: (_, latLng) => _selectPosition(
-          latLng.latitude,
-          latLng.longitude
-        ),
+        onMapClick: widget.isReadOnly ?? false ? null :
+          (_, latLng) => _selectPosition(
+            latLng.latitude,
+            latLng.longitude
+          ),
       )
     );
   }
