@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:great_places/models/place.dart';
 import 'package:great_places/providers/greate_places.dart';
 import 'package:great_places/widgets/image_input.dart';
 import 'package:great_places/widgets/location_input.dart';
@@ -12,13 +13,25 @@ class PlaceFormScreen extends StatefulWidget {
 
 class _PlaceFormScreenState extends State<PlaceFormScreen> {
   TextEditingController _titleController;
-
   File _pickedImage;
+  PlaceLocation _pickedPosition;
 
   void _selectImage(File pickedImage) {
     setState(() {
       _pickedImage = pickedImage;
     });
+  }
+
+  void _selectPosition(PlaceLocation location) {
+    setState(() {
+      _pickedPosition = location;
+    });
+  }
+
+  bool _isValidForm() {
+    return _titleController.text.isNotEmpty 
+      && _pickedImage != null 
+      && _pickedPosition != null;
   }
 
   @override 
@@ -29,7 +42,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
   }
 
   void _submitForm() {
-    if (_titleController.text.isEmpty || _pickedImage == null) {
+    if (!_isValidForm()) {
       return;
     }
 
@@ -38,7 +51,8 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
       listen: false
     ).addPlace(
       _titleController.text,
-      _pickedImage
+      _pickedImage,
+      _pickedPosition
     );
 
     Navigator.of(context).pop();
@@ -92,7 +106,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
                       this._selectImage,
                     ),
                     const SizedBox(height: 10),
-                    LocationInput(),
+                    LocationInput(_selectPosition),
                   ],
                 ),
               ),
@@ -103,7 +117,7 @@ class _PlaceFormScreenState extends State<PlaceFormScreen> {
             icon: Icon(Icons.add),
             label: Text('Adicionar'),
             color: Theme.of(context).accentColor,
-            onPressed: _submitForm,
+            onPressed: _isValidForm() ? _submitForm : null,
             elevation: 0,
             ///Para fazer esse [RaisedButton.icon] 
             ///encostar no fim da tela de fato sem ter

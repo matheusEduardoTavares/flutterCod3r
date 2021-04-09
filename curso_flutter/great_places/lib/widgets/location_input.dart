@@ -4,7 +4,15 @@ import 'package:great_places/screens/map_screen.dart';
 import 'package:great_places/utils/location_util.dart';
 import 'package:location/location.dart';
 
+typedef UpdatePosition = void Function(PlaceLocation);
+
 class LocationInput extends StatefulWidget {
+  const LocationInput(
+    this.onSelectPosition
+  );
+
+  final UpdatePosition onSelectPosition;
+
   @override
   _LocationInputState createState() => _LocationInputState();
 }
@@ -17,12 +25,10 @@ class _LocationInputState extends State<LocationInput> {
   ///ela estará na rede.
   String _previewImageUrl;
 
-  Future<void> _getCurrentUserLocation([bool useGoogleMap = false]) async {
-    final locData = await Location().getLocation();
-    
+  void _showPreview(double latitude, double longitude, {bool useGoogleMap = false}) {
     final staticMapImageUrl = LocationUtil.generateLocationPreviewImage(
-      latitude: locData.latitude,
-      longitude: locData.longitude,
+      latitude: latitude,
+      longitude: longitude,
       useGoogleMap: useGoogleMap ?? false,
     );
 
@@ -31,7 +37,22 @@ class _LocationInputState extends State<LocationInput> {
     });
   }
 
-  Future<void> _selectOnMap() async {
+  Future<void> _getCurrentUserLocation([bool useGoogleMap = false]) async {
+    try {
+      final locData = await Location().getLocation();
+
+      _showPreview(locData.latitude, locData.longitude);
+      widget.onSelectPosition(PlaceLocation(
+        latitude: locData.latitude,
+        longitude: locData.longitude,
+      ));
+    }
+    catch (e) {
+      return;
+    }
+  }
+
+  Future<void> _selectOnMap({bool useGoogleMap = false}) async {
     final selectedPosition = await Navigator.of(context).push<PlaceLocation>(
       MaterialPageRoute(
         ///Se passarmos o [fullscreenDialog] como true,
@@ -46,9 +67,8 @@ class _LocationInputState extends State<LocationInput> {
 
     if (selectedPosition == null) return;
 
-    // ...
-    print(selectedPosition.latitude);
-    print(selectedPosition.longitude);
+    _showPreview(selectedPosition.latitude, selectedPosition.longitude);
+    widget.onSelectPosition(selectedPosition);
   }
 
   @override
