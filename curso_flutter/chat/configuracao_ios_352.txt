@@ -1,0 +1,38 @@
+Na aula 352 - Configuração do iOS, foi feito a 
+configuração agora do firebase para um aplicativo 
+iOS.
+
+Basicamente clicamos agora no botão do iOS para 
+configurar um APP iOS, e assim como no android 
+irá aparecer um formulário para preenchermos.
+
+Para encontrar o identificador do projeto, teremos 
+que abrir a pasta Runner.xcodeproj que está dentro da 
+pasta ios deste projeto dentro do XCode.
+Ao clicar na raíz do projeto no XCode e ir em 
+general, teremos o Bundle Identifier que será o 
+identificador do projeto, e que podemos alterá-lo.
+
+Os campos do formulário são iguais, só o último que 
+no android era a questão de criptografia com o 
+SHA1, e aqui podemos por o código da App Store no 
+caso do iOS. Aí avançamos e 
+baixamos o arquivo GoogleService-info.plist e colamos 
+dentro da pasta do projeto em /ios/Runner, ficando :
+/ios/Runner/GoogleService-info.plist . Feito isso, temos 
+que adicionar este arquivo ao projeto, e para fazer isso,
+no xCode basta dar botão direito em Runner - na raíz 
+do projeto que abrimos, daí selecionar Add File to 
+"Runner", aí selecionamos o arquivo GoogleService-info.plist
+que agora está dentro da pasta Runner também.
+Precisamos adicionar para ele funcionar corretamente.
+
+A parte de configurar o SDK do Firebase no iOS iremos 
+ver mais para frente, então por enquanto só avançamos,
+depois terá uma etapa de Adicionar código de inicialização,
+que iremos pular também por enquanto, selecionando próxima
+e assim já temos também configurado no Firebase um 
+app para iOS.
+
+Na prática acabei não fazendo este processo devido ao 
+fato de não possuir um MacOS.
