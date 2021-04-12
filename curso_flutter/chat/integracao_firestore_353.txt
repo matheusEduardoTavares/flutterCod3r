@@ -1,0 +1,24 @@
+Criaremos o banco de dados no Firebase e 
+instalaremos a dependência cloud_firestore.
+
+Para criar o banco de dados, vamos no Firebase 
+e vemos que temos as opções de Realtime Database e 
+Firestore Database. Iremos acessar Firestore Database.
+No capítulo de HTTP usamos o Realtime Database pois 
+ele expõe uma API Rest de uma forma muito simples, 
+sem necessariamente precisar instalar nada do 
+Firebase na nossa aplicação, já que obtemos as 
+endpoints, as URLs que precisamos para fazer o 
+CRUD, tal como é uma API Rest. Já o Firestore que é 
+um banco de dados mais moderno do Firebase e que é 
+a solução preferida, ele não disponibiliza uma API Rest,
+e sim usamos a dependência do cloud_firestore. 
+Na opção de Cloud Firestore clicamos na opção para 
+criar o banco de dados. Inicialmente colocaremos para 
+iniciar no modo de teste e o modo de teste ficará aberto,
+pois existe uma série de regras que podemos aplicar para 
+aplicar segurança em cima do banco de dados, e iremos 
+aplicar essas regras um pouco mais na frente.
+Depois selecionamos o local que queremos armazenar o 
+banco de dados, e deixaremos o padrão, daí é só 
+concluir e o banco de dados será criado.
