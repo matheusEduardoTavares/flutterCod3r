@@ -5,12 +5,31 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (ctx, index) => Container(
-          padding: const EdgeInsets.all(10),
-          child: Text('Funcionou!'),
-        ),
+      body: StreamBuilder<QuerySnapshot>(
+        ///Sempre que chegar novos dados no [stream], será 
+        ///chamado o método [builder], sendo que o [builder] 
+        ///recebe uma função que recebe o contexto e o 
+        ///[AsyncSnapshot] que é o snapshot dos dados, e assim
+        ///como o [FutureBuilder], temos que trabalhar com o 
+        ///seu [connectionState]
+        stream: Firestore.instance.collection('chat').snapshots(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final documents = snapshot.data.documents;
+
+          return ListView.builder(
+            itemCount: documents.length,
+            itemBuilder: (ctx, index) => Container(
+              padding: const EdgeInsets.all(8),
+              child: Text(documents[index]['text']),
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -59,18 +78,31 @@ class ChatScreen extends StatelessWidget {
           ///já que foi registrado uma função para ficar 
           ///escutando as eventuais mudanças dentro da collection
           ///chat, o que é muito interessante.
-          Firestore.instance.collection('chat')
-            .snapshots().listen((querySnapshot) {
-              print(querySnapshot); ///Instance of 'QuerySnapshot'
-              print(querySnapshot.documents); ///[Instance of 'DocumentSnapshot', Instance of 'DocumentSnapshot']
-              print(querySnapshot.documents[0]); ///Instance of 'DocumentSnapshot'
-              print(querySnapshot.documents[0]['text']); ///Bom dia
-              querySnapshot.documents.forEach((element) {
-                print(element['text']);
-                ///Bom dia
-                ///Tudo bem?
-              });
-            });
+          ///Verificamos que o [snapshots] é um 
+          ///[Stream<QuerySnapshot>]. Uma Stream é uma 
+          ///sequência de dados e que não necessariamente
+          ///é passada toda de uma vez. Por exemplo, no 
+          ///momento que carregamos a tela, vai lá e 
+          ///carrega uma sequência de dados. A partir do 
+          ///momento que definimos para essa Stream um 
+          ///[listen], significa que esse interessado irá
+          ///ficar ouvindo uma sequência de dados. Então
+          ///por exemplo caso adicionemos um novo documento
+          ///lá no [Firestore], sem precisar clicar no botão
+          ///veremos que o método passado para o [listen] é
+          ///executado justamente por isso. No flutter temos
+          ///um componente para trabalhar com stream de 
+          ///dados, que é o [StreamBuilder]
+          // Firestore.instance.collection('chat')
+          //   .snapshots().listen((querySnapshot) {
+          //     print(querySnapshot); ///Instance of 'QuerySnapshot'
+          //     print(querySnapshot.documents); ///[Instance of 'DocumentSnapshot', Instance of 'DocumentSnapshot']
+          //     print(querySnapshot.documents[0]); ///Instance of 'DocumentSnapshot'
+          //     print(querySnapshot.documents[0]['text']);
+          //     querySnapshot.documents.forEach((element) {
+          //       print(element['text']);
+          //     });
+          //   });
         },
       ),
     );
