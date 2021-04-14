@@ -38,7 +38,8 @@ class _AuthFormState extends State<AuthForm> {
                           Icons.visibility : Icons.visibility_off
                         ),
                         onPressed: () => setState(() { _isVisiblePassword = !_isVisiblePassword; }),
-                        color: _isVisiblePassword ? Colors.blue : Colors.black,
+                        color: _isVisiblePassword ? 
+                          Theme.of(context).accentColor : Colors.grey,
                       ),
                     ),
                   ),
@@ -48,6 +49,7 @@ class _AuthFormState extends State<AuthForm> {
                     onPressed: () {},
                   ),
                   FlatButton(
+                    textColor: Theme.of(context).primaryColor,
                     child: Text('Criar uma nova conta?'),
                     onPressed: () {},
                   ),
