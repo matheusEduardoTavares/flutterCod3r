@@ -103,6 +103,15 @@ class ChatScreen extends StatelessWidget {
           //       print(element['text']);
           //     });
           //   });
+          
+          ///Para adicionar um novo dado no [Firestore] 
+          ///usamos o método [add] a partir da collection,
+          ///e passamos para ele um [Map<String, dynamic>]
+          Firestore.instance.collection('chat')
+            .add({
+              'text': 'Adicionado manualmente!',
+              'flutter': true,
+            });
         },
       ),
     );
