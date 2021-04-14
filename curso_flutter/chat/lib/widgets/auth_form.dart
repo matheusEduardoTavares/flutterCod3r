@@ -6,6 +6,8 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
+  var _isVisiblePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -28,9 +30,16 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   ),
                   TextFormField(
-                    obscureText: true,
+                    obscureText: _isVisiblePassword,
                     decoration: InputDecoration(
                       labelText: 'Senha',
+                      suffixIcon: IconButton(
+                        icon: Icon(_isVisiblePassword ? 
+                          Icons.visibility : Icons.visibility_off
+                        ),
+                        onPressed: () => setState(() { _isVisiblePassword = !_isVisiblePassword; }),
+                        color: _isVisiblePassword ? Colors.blue : Colors.black,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
