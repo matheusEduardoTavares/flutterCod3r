@@ -2,6 +2,12 @@ import 'package:chat/models/auth_data.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
+  const AuthForm(
+    this.onSubmit,
+  );
+
+  final void Function(AuthData) onSubmit;
+
   @override
   _AuthFormState createState() => _AuthFormState();
 }
@@ -15,8 +21,7 @@ class _AuthFormState extends State<AuthForm> {
     final isValid = _formKey?.currentState?.validate() ?? false;
     if (isValid) {
       FocusScope.of(context).unfocus();
-      print(_authData.name);
-      print(_authData.email);
+      widget.onSubmit(_authData);
     }
     else {
       print('inválido');
