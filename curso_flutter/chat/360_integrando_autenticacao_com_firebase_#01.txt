@@ -1,0 +1,10 @@
+Na aula 360 com nome de "Integrando Autenticação com
+Firebase #01", primeiramente entramos no projeto do 
+Chat lá no Firebase, e logo após fomos em Authentication,
+clicamos em primeiros passos, e fomos para uma página
+com 4 abas superiores. Vamos para opção Sign-in method 
+para configurar a questão de autenticação ao fazer 
+login, e ativamos a opção de E-mail/senha. Por enquanto
+nessa aula usaremos apenas o e-mail e senha, não 
+persistiremos por enquanto o Nome mas faremos isso 
+no futuro.
