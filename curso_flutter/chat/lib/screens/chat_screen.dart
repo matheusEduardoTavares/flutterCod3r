@@ -1,10 +1,55 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter Chat'),
+        actions: [
+          ///O [DropdownButtonHideUnderline] serve 
+          ///apenas para remover uma pequena linha
+          ///que aparece abaixo do [DropdownButton]
+          ///por padrão que é branca e se estiver com
+          ///um fundo de outra cor pode ser percebida.
+          ///Porém nas versões mais recentes do 
+          ///Flutter isso já não acontece mais
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              onChanged: (item) {
+                if (item == 'logout') {
+                  ///Aqui usamos o método [signOut]
+                  ///para fazer o logout da aplicação
+                  FirebaseAuth.instance.signOut();
+                }
+              },
+              icon: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              items: [
+                DropdownMenuItem(
+                  value: 'logout',
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.exit_to_app,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(width: 8),
+                        Text('Sair'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
       body: StreamBuilder<QuerySnapshot>(
         ///Sempre que chegar novos dados no [stream], será 
         ///chamado o método [builder], sendo que o [builder] 
