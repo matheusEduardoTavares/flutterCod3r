@@ -3,9 +3,20 @@ import 'package:flutter/material.dart';
 class MessageBubble extends StatelessWidget {
   const MessageBubble(
     this.message,
-  );
+    this.belongsToMe,
+    {
+      this.key,
+    }
+  ): super(key: key);
 
+  ///Como iremos trabalhar com vários elementos dentro
+  ///de um [ListView] é interessantes usarmos a [key],
+  ///pois com isso conseguimos ter a atualização dos 
+  ///valores de forma correta e evitamos problemas de 
+  ///excluir elementos, de estado.
+  final Key key;
   final String message;
+  final bool belongsToMe;
 
   @override
   Widget build(BuildContext context) {
