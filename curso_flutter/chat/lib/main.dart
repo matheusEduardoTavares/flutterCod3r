@@ -7,6 +7,30 @@ void main() {
   runApp(MyApp());
 }
 
+///No momento nosso banco de dados está 
+///aberto, ou seja, qualquer pessoa mesmo
+///não estando autenticada consegue por 
+///exemplo salvar um registro.
+///As regras do Firebase ficaram assim:
+/*
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+  	match /users/{uid} {
+    	allow write: if request.auth != null && request.auth.uid == uid;
+    }
+  
+  	match /users/{uid} {
+    	allow read: if request.auth != null;
+    }
+  
+    match /chat/{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+*/
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
