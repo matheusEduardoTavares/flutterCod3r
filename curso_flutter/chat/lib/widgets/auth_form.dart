@@ -123,7 +123,7 @@ class _AuthFormState extends State<AuthForm> {
                     onChanged: (value) => _authData.password = value,
                   ),
                   const SizedBox(height: 12),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text(_authData.isLogin ? 'Entrar' : 'Cadastrar'),
                     onPressed: _submit,
                   ),
@@ -144,8 +144,7 @@ class _AuthFormState extends State<AuthForm> {
                   ///renderizado de novo então ele aparece vazio. Para fazer
                   ///continuar com o nome que estava inserido, é só adicionar
                   ///um [initialValue] sendo o [_authData.name]
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
+                  TextButton(
                     child: Text(_authData.isLogin ? 'Criar uma nova conta?' :
                       'Já possui uma conta?'),
                     onPressed: () {

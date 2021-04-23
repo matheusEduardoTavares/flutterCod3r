@@ -40,6 +40,26 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.pink,
         backgroundColor: Colors.pink,
         accentColor: Colors.deepPurple,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              Colors.pink,
+            ),
+            foregroundColor: MaterialStateProperty.all(
+              Colors.white,
+            ),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            padding: MaterialStateProperty.all(
+              EdgeInsets.symmetric(
+                horizontal: 25,
+              ),
+            ),
+          ),
+        ),
         buttonTheme: ButtonTheme.of(context).copyWith(
           buttonColor: Colors.pink,
           textTheme: ButtonTextTheme.primary,
