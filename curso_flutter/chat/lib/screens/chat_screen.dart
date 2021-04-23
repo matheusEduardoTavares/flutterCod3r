@@ -1,3 +1,4 @@
+import 'package:chat/widgets/messages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -50,31 +51,20 @@ class ChatScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
         ///Sempre que chegar novos dados no [stream], será 
         ///chamado o método [builder], sendo que o [builder] 
         ///recebe uma função que recebe o contexto e o 
         ///[AsyncSnapshot] que é o snapshot dos dados, e assim
         ///como o [FutureBuilder], temos que trabalhar com o 
         ///seu [connectionState]
-        stream: Firestore.instance.collection('chat').snapshots(),
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final documents = snapshot.data.documents;
-
-          return ListView.builder(
-            itemCount: documents.length,
-            itemBuilder: (ctx, index) => Container(
-              padding: const EdgeInsets.all(8),
-              child: Text(documents[index]['text']),
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              child: Messages()
             ),
-          );
-        },
+          ],
+        )
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
