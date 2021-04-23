@@ -1,5 +1,5 @@
 import 'package:chat/widgets/messages.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chat/widgets/new_messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -63,12 +63,13 @@ class ChatScreen extends StatelessWidget {
             Expanded(
               child: Messages()
             ),
+            NewMessage(),
           ],
         )
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {
           ///Agora que já instalamos a dependência do 
           ///[Firestore], usamos a classe [Firestore] para 
           ///conseguirmos acessar o banco, em que a 
@@ -142,13 +143,13 @@ class ChatScreen extends StatelessWidget {
           ///Para adicionar um novo dado no [Firestore] 
           ///usamos o método [add] a partir da collection,
           ///e passamos para ele um [Map<String, dynamic>]
-          Firestore.instance.collection('chat')
-            .add({
-              'text': 'Adicionado manualmente!',
-              'flutter': true,
-            });
-        },
-      ),
+      //     Firestore.instance.collection('chat')
+      //       .add({
+      //         'text': 'Adicionado manualmente!',
+      //         'flutter': true,
+      //       });
+      //   },
+      // ),
     );
   }
 }
