@@ -22,7 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
     });
 
     try {
-      AuthResult _authResult;
+      UserCredential _authResult;
       if (newAuthData.isLogin) {
         _authResult = await _auth.signInWithEmailAndPassword(
           email: newAuthData.email.trim(),
@@ -94,9 +94,9 @@ class _AuthScreenState extends State<AuthScreen> {
         ///para que na criação de um usuário, já salvemos
         ///seu [uid] na collection `users`, cujo documento
         ///terá como chave tal [uid]
-        await Firestore.instance.collection('users')
-          .document(_authResult.user.uid)
-          .setData(userData);
+        await FirebaseFirestore.instance.collection('users')
+          .doc(_authResult.user.uid)
+          .set(userData);
       }
       ///Caso ocorra algum erro no Firebase, será 
       ///gerado a [Exception] [PlatformException]

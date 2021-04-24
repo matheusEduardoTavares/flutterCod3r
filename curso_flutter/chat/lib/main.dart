@@ -1,6 +1,7 @@
 import 'package:chat/screens/auth_screen.dart';
 import 'package:chat/screens/chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,69 +33,82 @@ service cloud.firestore {
 }
 */
 class MyApp extends StatelessWidget {
+  final Future<FirebaseApp> _init = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Chat',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-        backgroundColor: Colors.pink,
-        accentColor: Colors.deepPurple,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              Colors.pink,
+    return FutureBuilder(
+      future: _init,
+      builder: (context, appSnapshot) {
+        if (appSnapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return MaterialApp(
+          title: 'Flutter Chat',
+          theme: ThemeData(
+            primarySwatch: Colors.pink,
+            backgroundColor: Colors.pink,
+            accentColor: Colors.deepPurple,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  Colors.pink,
+                ),
+                foregroundColor: MaterialStateProperty.all(
+                  Colors.white,
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(
+                    horizontal: 25,
+                  ),
+                ),
+              ),
             ),
-            foregroundColor: MaterialStateProperty.all(
-              Colors.white,
-            ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
+            buttonTheme: ButtonTheme.of(context).copyWith(
+              buttonColor: Colors.pink,
+              textTheme: ButtonTextTheme.primary,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
-            padding: MaterialStateProperty.all(
-              EdgeInsets.symmetric(
-                horizontal: 25,
-              ),
-            ),
+            ///Com o [accentColorBrightness] podemos explicitar
+            ///para o Flutter se a cor que escolhemos do 
+            ///[accentColor] é uma cor escura ou uma cor clara,
+            ///para que seja contrastado outras cores 
+            ///dependendo do que for colocado nesse 
+            ///[accentColorBrightness]. Passamos para ele ou
+            ///[rightness.dark] ou [rightness.light]. Não é 
+            ///necessário fazer isso com a cor primária, mas com
+            ///o [accentColor] é importante fazer
+            accentColorBrightness: Brightness.dark,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-        ),
-        buttonTheme: ButtonTheme.of(context).copyWith(
-          buttonColor: Colors.pink,
-          textTheme: ButtonTextTheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+          home: StreamBuilder(
+            ///Sempre que modificar o status se está logado
+            ///ou não, automaticamente será chamado novamente
+            ///o método [builder]. Mudou o estado do [onAuthStateChanged]
+            ///, então o [builder] é chamado
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, userSnapshot) {
+              ///Se tiver os dados do usuário, vai direto para 
+              ///o [ChatScreen]
+              if (userSnapshot.hasData) {
+                return ChatScreen();
+              }
+              
+              return AuthScreen();
+            }
           ),
-        ),
-        ///Com o [accentColorBrightness] podemos explicitar
-        ///para o Flutter se a cor que escolhemos do 
-        ///[accentColor] é uma cor escura ou uma cor clara,
-        ///para que seja contrastado outras cores 
-        ///dependendo do que for colocado nesse 
-        ///[accentColorBrightness]. Passamos para ele ou
-        ///[rightness.dark] ou [rightness.light]. Não é 
-        ///necessário fazer isso com a cor primária, mas com
-        ///o [accentColor] é importante fazer
-        accentColorBrightness: Brightness.dark,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: StreamBuilder(
-        ///Sempre que modificar o status se está logado
-        ///ou não, automaticamente será chamado novamente
-        ///o método [builder]. Mudou o estado do [onAuthStateChanged]
-        ///, então o [builder] é chamado
-        stream: FirebaseAuth.instance.onAuthStateChanged,
-        builder: (ctx, userSnapshot) {
-          ///Se tiver os dados do usuário, vai direto para 
-          ///o [ChatScreen]
-          if (userSnapshot.hasData) {
-            return ChatScreen();
-          }
-          
-          return AuthScreen();
-        }
-      ),
+        );
+      }
     );
   }
 }

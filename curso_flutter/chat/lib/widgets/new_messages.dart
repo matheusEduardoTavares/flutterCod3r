@@ -17,19 +17,19 @@ class _NewMessageState extends State<NewMessage> {
     ///Conseguimos pegar qual é o usuário logado na 
     ///aplicação usando o método [currentUser] do 
     ///[FirebaseAuth.instance]
-    final user = await FirebaseAuth.instance.currentUser();
-    final userData = await Firestore.instance.collection('users')
-      .document(user.uid).get();
-
-    Firestore.instance.collection('chat')
+    final user = FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance.collection('users')
+      .doc(user.uid).get();
+    
+    FirebaseFirestore.instance.collection('chat')
       .add({
         'text': _enteredMessage,
         'createdAt': Timestamp.now(),
         ///Usamos seu [uid] pois esse é o identificador
         ///único de usuário no [Firebase]
         'userId': user.uid,
-        'userName': userData['name'],
-        'userImage': userData['imageUrl'],
+        'userName': userData.get('name'),
+        'userImage': userData.get('imageUrl'),
       });
 
     _controller.clear();
