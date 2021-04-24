@@ -29,6 +29,7 @@ class _NewMessageState extends State<NewMessage> {
         ///único de usuário no [Firebase]
         'userId': user.uid,
         'userName': userData['name'],
+        'userImage': userData['imageUrl'],
       });
 
     _controller.clear();
