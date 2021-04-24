@@ -2,6 +2,7 @@ import 'package:chat/models/auth_data.dart';
 import 'package:chat/widgets/auth_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -36,6 +37,37 @@ class _AuthScreenState extends State<AuthScreen> {
           email: newAuthData.email.trim(),
           password: newAuthData.password,
         );
+
+        ///Para fazer upload de uma imagem para o 
+        ///[Bucket] do [Firebase], usamos a instância
+        ///do [FirebaseStorage], e desse objeto usamos o
+        ///método [ref] para pegar a referência para o 
+        ///[Bucket] padrão; que é como se fosse um espaço
+        ///de armazenamento padrão. Inclusive conseguimos
+        ///criar novos [Buckets]. Do resultado disso 
+        ///usamos o método [child] passando como parâmetro
+        ///o nome da pasta que queremos que seja salvo a 
+        ///imagem lá no [Bucket], e do resultado disso usamos
+        ///de novo o método [child] que irá representar o 
+        ///nome do arquivo. No nosso caso, o nome do arquivo
+        ///será o identificador único de cada usuário, no
+        ///formato que a imagem será salva com o uid do 
+        ///usuário e no fim terá .jpg
+        final ref = FirebaseStorage.instance
+          .ref()
+          .child('user_images')
+          .child(_authResult.user.uid + '.jpg');
+
+        ///Agora o ref será um [StorageReference] que 
+        ///aponta para a referência da imagem com o uid
+        ///do usuário, dentro da pasta user_images, e 
+        ///a partir dele podemos usar o método [putFile]
+        ///para fazer o upload de um arquivo. Precisamos
+        ///disso passar o atributo [onComplete] pois ele 
+        ///é quem retorna [Future] e assim podemos usar 
+        ///um [await] para esperar e garantir que a imagem
+        ///já foi upada para o [Bucket]
+        await ref.putFile(newAuthData.image).onComplete;
 
         final userData = {
           'name': newAuthData.name,
@@ -95,6 +127,10 @@ class _AuthScreenState extends State<AuthScreen> {
             backgroundColor: Theme.of(context).errorColor,
           ),
         );
+      
+      setState(() {
+        _isLoading = false;
+      });
     }
     catch (err) {
       print(err);
