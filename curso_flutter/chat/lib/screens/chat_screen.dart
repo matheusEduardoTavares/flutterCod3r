@@ -57,15 +57,17 @@ class ChatScreen extends StatelessWidget {
         ///[AsyncSnapshot] que é o snapshot dos dados, e assim
         ///como o [FutureBuilder], temos que trabalhar com o 
         ///seu [connectionState]
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Messages()
-            ),
-            NewMessage(),
-          ],
-        )
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            children: [
+              Expanded(
+                child: Messages()
+              ),
+              NewMessage(),
+            ],
+          )
+        ),
       ),
       // floatingActionButton: FloatingActionButton(
       //   child: Icon(Icons.add),

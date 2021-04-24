@@ -98,8 +98,16 @@ class _AuthScreenState extends State<AuthScreen> {
     }
     catch (err) {
       print(err);
-    }
-    finally {
+
+      ///Caso o login tenha dado sucesso, agora o usuário
+      ///já vai para página do chat devido ao fato da 
+      ///[StreamBuilder] ter o [builder] executado de novo,
+      ///uma vez que o [FirebaseAuth.instance.onAuthStateChanged]
+      /// irá mudar; e dá erro colocar esse
+      ///[setState] no [finally] pois dá 
+      ///um [setState] depois de ter executado o [dispose],
+      ///logo, só iremos setar para false em caso de 
+      ///erro
       setState(() {
         _isLoading = false;
       });
