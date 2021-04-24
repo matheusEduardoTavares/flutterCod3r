@@ -68,10 +68,14 @@ class _AuthScreenState extends State<AuthScreen> {
         ///um [await] para esperar e garantir que a imagem
         ///já foi upada para o [Bucket]
         await ref.putFile(newAuthData.image).onComplete;
+        ///Agora pegamos qual URL onde foi salvo as imagens, usando o método
+        ///[getDownloadUrl]
+        final url = await ref.getDownloadURL();
 
         final userData = {
           'name': newAuthData.name,
           'email': newAuthData.email,
+          'imageUrl': url,
         };
 
         ///Aqui caso a collection `users` não exista
