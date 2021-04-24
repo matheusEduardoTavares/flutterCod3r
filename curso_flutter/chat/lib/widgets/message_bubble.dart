@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble(
     this.message,
-    this.userId,
+    this.userName,
     this.belongsToMe,
     {
       this.key,
@@ -17,7 +16,7 @@ class MessageBubble extends StatelessWidget {
   ///valores de forma correta e evitamos problemas de 
   ///excluir elementos, de estado.
   final Key key;
-  final String userId;
+  final String userName;
   final String message;
   final bool belongsToMe;
 
@@ -83,24 +82,34 @@ class MessageBubble extends StatelessWidget {
               ///maior que em um banco relacional,
               ///mas tem os lados negativos como
               ///esse de replicação dos dados
-              FutureBuilder(
-                ///Pegamos os dados de um certo usuário
-                ///assim:
-                future: Firestore.instance.collection('users')
-                  .document(userId).get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Loading...');
-                  }
+              // FutureBuilder(
+              //   future: Firestore.instance.collection('users')
+              //     .document(userName).get(),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return Text('Loading...');
+              //     }
 
-                  return Text(
-                    snapshot.data['name'],
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: _defaultTextColor,
-                    ),
-                  );
-                }
+              //     return Text(
+              //       snapshot.data['name'],
+              //       style: TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         color: _defaultTextColor,
+              //       ),
+              //     );
+              //   }
+              // ),
+              ///Agora passamos a persistir o nome do 
+              ///usuário ao criar uma nova mensagem, e 
+              ///fica muito mais fácil obter o nome do 
+              ///usuário aqui, pois o pegamos junto da 
+              ///mensagem e é só passar por parâmetro
+              Text(
+                userName,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _defaultTextColor,
+                ),
               ),
               Text(
                 message,

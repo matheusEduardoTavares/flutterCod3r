@@ -18,6 +18,8 @@ class _NewMessageState extends State<NewMessage> {
     ///aplicação usando o método [currentUser] do 
     ///[FirebaseAuth.instance]
     final user = await FirebaseAuth.instance.currentUser();
+    final userData = await Firestore.instance.collection('users')
+      .document(user.uid).get();
 
     Firestore.instance.collection('chat')
       .add({
@@ -26,6 +28,7 @@ class _NewMessageState extends State<NewMessage> {
         ///Usamos seu [uid] pois esse é o identificador
         ///único de usuário no [Firebase]
         'userId': user.uid,
+        'userName': userData['name'],
       });
 
     _controller.clear();
