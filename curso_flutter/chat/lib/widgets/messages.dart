@@ -49,6 +49,7 @@ class Messages extends StatelessWidget {
               itemBuilder: (ctx, index) => MessageBubble(
                 chatDocs[index]['text'],
                 chatDocs[index]['userName'],
+                chatDocs[index]['userImage'],
                 chatDocs[index]['userId'] == userSnapshot.data.uid,
                 ///Aqui conseguimos o ID do documento, que será 
                 ///uma chave única
