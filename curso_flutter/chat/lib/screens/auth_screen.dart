@@ -127,35 +127,37 @@ class _AuthScreenState extends State<AuthScreen> {
       ///ocupe apenas o centro, temos que definir seu
       ///[mainAxisSize] como [MainAxisSize.min]
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ///E aqui será feito um Widget de forma que
-            ///durante a requisição fique escurecido o
-            ///formulário e com o [CircularProgressIndicator]
-            ///bem no centro
-            Stack(
-              children: [
-                AuthForm(
-                  _handleSubmit
-                ),
-                ///O [Positioned.fill] preenche toda 
-                ///a área que é ocupada da tela
-                if (_isLoading)
-                  Positioned.fill(
-                    child: Container(
-                      margin: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(0, 0, 0, 0.5)
-                      ),
-                      child: Center(
-                        child: CircularProgressIndicator(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ///E aqui será feito um Widget de forma que
+              ///durante a requisição fique escurecido o
+              ///formulário e com o [CircularProgressIndicator]
+              ///bem no centro
+              Stack(
+                children: [
+                  AuthForm(
+                    _handleSubmit
+                  ),
+                  ///O [Positioned.fill] preenche toda 
+                  ///a área que é ocupada da tela
+                  if (_isLoading)
+                    Positioned.fill(
+                      child: Container(
+                        margin: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 0.5)
+                        ),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
