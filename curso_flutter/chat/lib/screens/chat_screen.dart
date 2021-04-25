@@ -16,6 +16,34 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
 
     final fbm = FirebaseMessaging();
+    fbm.configure(
+      onMessage: (msg) {
+        print('onMessage...');
+        print(msg);
+        return;
+      },
+      onResume: (msg) {
+        print('onResume...');
+        print(msg);
+        return;
+      },
+      ///Não conseguimos printar aqui a mensagem,
+      ///pois como vimos o [onMessage] é em 
+      ///foreground, o [onResume] em brackground,
+      ///e em ambos os casos estamos buildando o
+      ///APP, estamos tendo acesso ao debug 
+      ///console. Já o [onLaunch] é o 
+      ///[AppTerminated], o APP estará fechado,
+      ///por isso não conseguimos ter acesso ao 
+      ///debug console e consequentemente não 
+      ///conseguimos printar a mensagem
+      onLaunch: (msg) {
+        print('onLaunch...');
+        print(msg);
+        return;
+      },
+    );
+
     ///O [requestNotificationPermissions] serve
     ///para pedir permissão para receber 
     ///[Push Notifications] no device, mas só 
