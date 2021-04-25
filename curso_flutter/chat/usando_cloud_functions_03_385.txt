@@ -1,0 +1,34 @@
+Na Aula 385 - Usando Cloud Functions #03, terminamos de configurar a 
+function para tornar possível o uso dos Push Notifications. 
+
+Portanto, alteramos o código do arquivo index.js dentro da pasta functions para :
+
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+
+admin.initializeApp();
+
+exports.createMsg = functions.firestore
+	.document('chat/{msgId}')
+	.onCreate((snap, context) => {
+		admin.messaging().sendToTopic('chat', {
+			notification: {
+				title: snap.data().userName,
+				body: snap.data().text,
+				clickAction: 'FLUTTER_NOTIFICATION_CLICK'
+			}
+		})
+	})
+	
+Após fazer isso, é necessário adicionar um subscriber para 
+ficar ouvindo o tópico do chat, e isso foi feito no arquivo 
+chat_screen.dart, adicionando logo após o método configure 
+usado no FirebaseMessaging, a seguinte linha:
+fbm.subscribeToTopic('chat');
+
+Em seguida, deve-se usar o comando firebase deploy 
+para poder fazer o deploy da atualização feita na 
+Function createMsg lá no servidor. 
+
+Com isso o APP está finalizado, e ao realizar os 
+testes tudo deve estar funcionando.

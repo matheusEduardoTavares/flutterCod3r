@@ -44,6 +44,12 @@ class _ChatScreenState extends State<ChatScreen> {
       },
     );
 
+    ///Aqui marcamos que estamos querendo que nosso
+    ///[FirebaseMessaging] fique ouvindo toda mensagem
+    ///enviada à esse tópico chat. Assim sempre que chegar
+    ///uma mensagem no tópico chat, seremos notificados
+    fbm.subscribeToTopic('chat');
+
     ///O [requestNotificationPermissions] serve
     ///para pedir permissão para receber 
     ///[Push Notifications] no device, mas só 
