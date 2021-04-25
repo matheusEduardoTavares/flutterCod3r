@@ -8,14 +8,6 @@ class Messages extends StatelessWidget {
   Widget build(BuildContext context) {
     final User user = FirebaseAuth.instance.currentUser;
     return StreamBuilder<QuerySnapshot>(
-      ///Para ordenarmos a mensagem, passaremos a salvar 
-      ///o [Timestamp.now()] delas para saber qual mensagem
-      ///foi mandada primeiro, aí usamos o método [.orderBy()]
-      ///que é provido da [collection], e escolhemos por
-      ///qual documento do [Firestore] queremos ordenar,
-      ///que no caso é a chave onde estamos guardando 
-      ///esses [Timestamp.now()], no caso, 
-      ///`createdAt`
       stream: FirebaseFirestore.instance.collection('chat')
         .orderBy('createdAt', descending: true).snapshots(),
       builder: (ctx, chatSnapshot) {
@@ -28,14 +20,6 @@ class Messages extends StatelessWidget {
         final chatDocs = chatSnapshot.data.docs;
         
         return ListView.builder(
-          ///Usaremos o atributo [reverse] como
-          ///true para simular um chat, uma vez
-          ///que geralmente as mensagens vem de 
-          ///baixo para cima. Além disso, aqui 
-          ///acabamos invertendo a ordem das 
-          ///mensagens, por isso na hora de usar 
-          ///o [orderBy], passamos o 
-          ///[desceding] como true
           reverse: true,
           itemCount: chatDocs.length,
           itemBuilder: (ctx, index) => MessageBubble(
@@ -43,8 +27,6 @@ class Messages extends StatelessWidget {
             chatDocs[index].get('userName'),
             chatDocs[index].get('userImage'),
             chatDocs[index].get('userId') == user.uid,
-            ///Aqui conseguimos o ID do documento, que será 
-            ///uma chave única
             key: ValueKey(chatDocs[index].id),
           ),
         );

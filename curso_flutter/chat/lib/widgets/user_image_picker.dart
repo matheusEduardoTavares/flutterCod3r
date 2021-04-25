@@ -21,10 +21,6 @@ class _UserImagePickerState extends State<UserImagePicker> {
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    ///Objetivando diminuir o tamanho da imagem para não salvarmos imagens muito
-    ///pesadas, iremos passar um [imageQuality] de 50 e um [maxWidth] de 150,
-    ///assim diminuímos a qualidade da imagem padrão, e limitamos a largura da
-    ///imagem.
     final pickedImage = await picker
       .getImage(
         source: ImageSource.camera,

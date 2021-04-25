@@ -14,9 +14,6 @@ class _NewMessageState extends State<NewMessage> {
   Future<void> _sendMessage() async {
     FocusScope.of(context).unfocus();
 
-    ///Conseguimos pegar qual é o usuário logado na 
-    ///aplicação usando o método [currentUser] do 
-    ///[FirebaseAuth.instance]
     final user = FirebaseAuth.instance.currentUser;
     final userData = await FirebaseFirestore.instance.collection('users')
       .doc(user.uid).get();
@@ -25,8 +22,6 @@ class _NewMessageState extends State<NewMessage> {
       .add({
         'text': _enteredMessage,
         'createdAt': Timestamp.now(),
-        ///Usamos seu [uid] pois esse é o identificador
-        ///único de usuário no [Firebase]
         'userId': user.uid,
         'userName': userData.get('name'),
         'userImage': userData.get('imageUrl'),
@@ -43,12 +38,6 @@ class _NewMessageState extends State<NewMessage> {
           Expanded(
             child: TextField(
               autocorrect: true,
-              ///Com o [textCapitalization] definimos como 
-              ///o teclado será aberto, por exemplo,
-              ///com todas as letras minúsculas, etc. No caso,
-              ///será aberto com todas as letras que iniciam 
-              ///sentenças em maiúsculo, por isso o 
-              ///[TextCapitalization.sentences]
               textCapitalization: TextCapitalization.sentences,
               controller: _controller,
               decoration: InputDecoration(
