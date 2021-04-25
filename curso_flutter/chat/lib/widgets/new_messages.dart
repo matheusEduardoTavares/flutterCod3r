@@ -42,6 +42,14 @@ class _NewMessageState extends State<NewMessage> {
         children: [
           Expanded(
             child: TextField(
+              autocorrect: true,
+              ///Com o [textCapitalization] definimos como 
+              ///o teclado será aberto, por exemplo,
+              ///com todas as letras minúsculas, etc. No caso,
+              ///será aberto com todas as letras que iniciam 
+              ///sentenças em maiúsculo, por isso o 
+              ///[TextCapitalization.sentences]
+              textCapitalization: TextCapitalization.sentences,
               controller: _controller,
               decoration: InputDecoration(
                 labelText: 'Enviar mensagem...',

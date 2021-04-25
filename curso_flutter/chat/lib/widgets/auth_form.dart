@@ -63,7 +63,19 @@ class _AuthFormState extends State<AuthForm> {
                     UserImagePicker(_handlePickedImage),
                   if (_authData.isSignup)
                     TextFormField(
+                      ///Se o [autocorrect] está true, é 
+                      ///sugerido correções em relação 
+                      ///ao texto colocado na mensagem
+                      autocorrect: true,
+                      ///Para cada palavra, irá aparecer a letra
+                      ///maiúscula com o [TextCapitalization.words]
+                      textCapitalization: TextCapitalization.words,
                       key: ValueKey('name'),
+                      ///O [enableSuggestions] se estiver 
+                      ///true, sugere correções em 
+                      ///relação ao texto que é 
+                      ///colocado na mensagem
+                      enableSuggestions: false,
                       initialValue: _authData.name,
                       decoration: InputDecoration(
                         labelText: 'Nome',
@@ -105,6 +117,10 @@ class _AuthFormState extends State<AuthForm> {
                       }
                     ),
                   TextFormField(
+                    autocorrect: false,
+                    ///Nenhuma letra maiúscula no campo de e-mail
+                    textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     key: ValueKey('email'),
                     decoration: InputDecoration(
                       labelText: 'Email',
