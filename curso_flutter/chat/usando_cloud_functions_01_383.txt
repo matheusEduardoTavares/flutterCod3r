@@ -1,0 +1,78 @@
+Na aula 383 nomeada como Usando Cloud Functions #01, foi explicado como programar 
+para quando certo usuário mandar uma mensagem, seja enviado um Push Notification, 
+ou seja, quando o usuário A interagir com a aplicação e mandar uma mensagem, 
+o usuário B ser notificado que tem uma nova mensagem no chat. 
+E para isso usaremos os disparos de mensagem quando acontecer uma 
+interação dentro da aplicação. Podemos criar um backend próprio para poder 
+gerenciar a questão dos envios da mensagem; mas será muito mais fácil trabalhar 
+com a infra do firebase que já tem muita coisa pronta disso, 
+para disparar essas triggers. No Firebase, na aba de Criação, temos a opção 
+Functions, que são os Cloud Functions, para que possamos implementar um backend 
+da nossa aplicação, e a partir desse backend conseguimos disparar os 
+gatilhos de acordo com a ação do usuário. Porém, para fazer uso 
+dessa parte de Function, é necessário ter uma conta paga, e devido a esta 
+questão não conseguirei fazer a parte prática da aula, mas deixarei anotado o 
+passo a passo.
+
+Vamos nas Functions lá no Firebase, dentro do projeto, e clicamos em começar e 
+vamos passando, será dado um tutorial do que deve ser feito, que basicamente é:
+
+1°: Instalar o Node na máquina, e configurar as variáveis de ambiente se 
+necessário para ter acesso ao comando npm.
+2°: npm install -g firebase-tools
+OBS: Para o passo 3 em diante, prestar atenção a questão:
+É exigido termos um cartão de crédito cadastrado para poder usar esses comandos 
+como firebase init. Antes o free tier permitia subir functions, 
+então era necessário ter o cartão mas não seria debitado nada; 
+já hoje é pago essa parte de functions.
+3°: firebase init
+Ao executar o passo 3, será dado uma série de questionários para escolher uma
+dentre as opções possíveis, ou para escolher sim (Y) ou não (N):
+
+Escolha 1:
+- Database;
+- Firestore;
+- Functions;
+- Hosting;
+- Storage;
+- Emulators;
+Já configuramos o Firestore na nossa aplicação, então tudo que 
+precisamos são as Functions, então devemos selecionar as 
+Functions. As Functions é a única coisa que ficará fora da aplicação Flutter. 
+
+Escolha 2:
+- Use an existing project;
+- Create a new Project;
+- Add Firebase to an existing Google Cloud Platform project
+- Don't set up a default project;
+Escolhemos para usar um projeto já existente.
+
+Escolha 3:
+Aparecerá listado todos os projetos que temos cadastrados na conta que estamos 
+logados do Firebase. Caso estiver na conta errada é só usar o comando 
+firebase logout, e para logar firebase login e preencher os dados. 
+Escolhemos o projeto referente ao chat.
+
+Escolha 4:
+- Javascript;
+- Typescript;
+As Functions no Firebase usam javascript. Escolheremos o Javascript por ser 
+mais fácil (Typescript é um superset do JS).
+
+Escolha 5:
+- Deseja usar o ESLint (Y/N): Não (n)
+
+Escolha 6:
+- Deseja instalar as dependências com npm (Y/N): Sim (y)
+
+Ao fazer todo o processo, no nosso projeto Flutter, 
+será adicionado uma pasta chamada functions na mesma hierarquia da pasta android 
+e da pasta ios. Dentro dessa pasta functions, temos um projeto node, 
+onde já tem a pasta node_modules, o package.json, o package-lock.json, o 
+index.js e o .gitignore. Então mexeremos no index.js para podermos 
+publicar uma função e essa função nos ajudará a fazer essa interação; 
+e depois faremos um deploy dessa função no Firebase, para que tenhamos 
+essa função lá nos servidores do Firebase, intermediando essa comunicação e 
+gerando o disparo das mensagens de acordo com as interações da nossa aplicação. 
+Monitoraremos lá o banco de dados para quando algum evento ocorrer, 
+seja disparado as notificações do tipo push, as push notifications.
