@@ -21,8 +21,8 @@ vamos passando, será dado um tutorial do que deve ser feito, que basicamente é
 necessário para ter acesso ao comando npm.
 2°: npm install -g firebase-tools
 OBS: Para o passo 3 em diante, prestar atenção a questão:
-É exigido termos um cartão de crédito cadastrado para poder usar esses comandos 
-como firebase init. Antes o free tier permitia subir functions, 
+É exigido termos um cartão de crédito cadastrado para poder usar alguns comandos 
+como firebase deploy. Antes o free tier permitia subir functions, 
 então era necessário ter o cartão mas não seria debitado nada; 
 já hoje é pago essa parte de functions.
 3°: firebase init
