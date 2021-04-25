@@ -1,0 +1,34 @@
+Na aula 351 - Projeto Firebase & Configuração no 
+Android, primeiramente criamos uma nova conta no 
+Firebase deixando dessa vez o Google Analytics 
+marcado, e para tal selecionamos a opção default do 
+Google Analytics, mas não necessariamente precisaria 
+estar ativado o Google Analytics.
+
+Depois disso configuramos a integração entre o Firebase 
+e o Android e entre o Firebase e o iOS. 
+Agora de fato iremos realmente usar o Firebase, o que 
+foi feito no capítulo de HTTP foi usar o Firebase 
+apenas como uma API rest qualquer; já agora iremos 
+de fato usar as dependências do Firebase e usar 
+seus recursos ao invés de fazer as coisas manualmente,
+em que iremos usar os serviços de Push Notifications, 
+segurança, autenticação, upload de arquivos. Suas 
+próprias dependências ajudam muito nesse processo.
+
+Depois disso clicamos em android lá no firebase para
+cadastrarmos um APP para o projeto no firebase, 
+preenchemos o formulário, e ao confirmar será gerado 
+um arquivo chamado google-services.json que o 
+baixamos e jogamos dentro de /android/app/ . Para o
+preenchimento do formulário precisamos do 
+applicationId que podemos pegá-lo no build.gradle 
+que está dentro da pasta APP.
+
+Depois de fazer tudo e clicar em próximo, temos que 
+configurar o arquivo build.gradle que está fora da 
+pasta APP. No próprio firebase é dado o passo a passo 
+da configuração restante, então devemos seguí-la.
+
+Ao clicar em próximo já temos nosso projeto do firebase 
+com o aplicativo android configurado.

@@ -1,0 +1,36 @@
+Na aula 384 - Usando Cloud Functions #02, alteramos o código do index.js 
+dentro da nova pasta criada (functions) para :
+
+----------------------------------------------------
+const functions = require('firebase-functions');
+
+exports.createMsg = functions.firestore
+    .document('chat/{msgId}')
+    .onCreate((snap, context) => {
+        console.log(snap.data())
+    })
+----------------------------------------------------
+
+Depois, deve-se habilitar lá no Firebase o Billing 
+para poder fazer o deploy dessa mudança que foi feita para que isso vá para o 
+servidor (o Billing é o que foi comentado na aula passada que 
+era necessário adicionar os dados do cartão e etc), para que assim possa 
+ser feito o deploy dessas alterações e consequentemente 
+os testes no APP para ver seu funcionamento. 
+Uma vez alterado o código do index.js, e já tendo configurado o Billing, 
+deve-se usar o comando firebase deploy para fazer o deploy dessas modificações 
+e assim criar uma Function lá no Firebase. Caso ocorra um erro, pode ser 
+erro de autorização e se for o caso, 
+deve-se executar o comando 
+firebase login, e logo após isso, o 
+firebase deploy novamente; com isso é esperado que funcione.
+
+Tendo funcionado, foi criado a Function lá no servidor, 
+e se formos no Firebase em Functions veremos a função criada 
+lá cujo nome é createMsg. Feito isso, ao enviar uma mensagem no chat, 
+deve-se ir na função criada que temos acesso à ela no Firebase na 
+parte de Functions, e deve-se clicar nos 3 pontinhos na direita e 
+marcar para "Ver Registro". Lá, teremos acesso ao conteúdo 
+do console.log, que
+foi todos os dados da criação do novo documento dentro da 
+collection de chat, como o text, o userId, e etc.

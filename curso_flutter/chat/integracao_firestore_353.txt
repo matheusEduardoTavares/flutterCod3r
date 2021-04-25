@@ -1,0 +1,66 @@
+Criaremos o banco de dados no Firebase e 
+instalaremos a dependência cloud_firestore.
+
+Para criar o banco de dados, vamos no Firebase 
+e vemos que temos as opções de Realtime Database e 
+Firestore Database. Iremos acessar Firestore Database.
+No capítulo de HTTP usamos o Realtime Database pois 
+ele expõe uma API Rest de uma forma muito simples, 
+sem necessariamente precisar instalar nada do 
+Firebase na nossa aplicação, já que obtemos as 
+endpoints, as URLs que precisamos para fazer o 
+CRUD, tal como é uma API Rest. Já o Firestore que é 
+um banco de dados mais moderno do Firebase e que é 
+a solução preferida, ele não disponibiliza uma API Rest,
+e sim usamos a dependência do cloud_firestore. 
+Na opção de Cloud Firestore clicamos na opção para 
+criar o banco de dados. Inicialmente colocaremos para 
+iniciar no modo de teste e o modo de teste ficará aberto,
+pois existe uma série de regras que podemos aplicar para 
+aplicar segurança em cima do banco de dados, e iremos 
+aplicar essas regras um pouco mais na frente.
+Depois selecionamos o local que queremos armazenar o 
+banco de dados, e deixaremos o padrão, daí é só 
+concluir e o banco de dados será criado.
+
+Agora acessamos o banco recém-criado, e clicamos em 
+Iniciar Coleção (uma coleção é como se fosse uma 
+tabela, e dentro dela teremos uma série de documentos 
+como se fossem os registros). Aí colocaremos chats 
+que seria o nome da coleção, depois mudaremos esse nome,
+daí daremos próxima, e dentro dessa nova coleção, 
+irá aparecer um formulário para se queremos criar 
+algum documento. Clicaremos em código 
+automático para gerar um nome de documento aleatório, aí 
+em baixo temos uma linha que contém campo, tipo e 
+valor e que podemos ir preenchendo conforme precisamos.
+Dentro de um documento, podemos criar outra coleção ou 
+adicionar mais campos, ou remover ou editar campos.
+Com isso vamos aninhando e estruturando os dados da 
+tabela. Temos a opção de remover as coleções também.
+Apagaremos a coleção criada de teste, e adicionaremos 
+uma nova coleção chamada chat, geraremos um código 
+aleatório para seu documento, e como campo criaremos 
+text do tipo String com o valor Bom dia. Depois, 
+dentro da coleção de chat, criaremos outro documento 
+gerando seu código automático e também terá um campo 
+chamado text do tipo String com o valor Tudo bem?, 
+como se fosse duas pessoas conversando.
+
+Ao rodarmos a aplicação desta forma, irá dar um 
+erro no android dizendo que o número de métodos 
+referenciados no arquivo .dex não pode ultrapassar 
+64 K, mostrando que a lib que importamos do 
+cloud_firestore acaba exigindo bastante do android 
+de forma que é estourado esse limite, e para corrigí-lo 
+temos que ativar o MULTIDEX. O erro mostrado é:
+The number of method references in a .dex file cannot exceed 64K.
+Para ativar o MULTIDEX teremos que abrir o 
+build.gradle dentro da pasta APP, aí dentro do 
+defaultConfig adicionamos essa linha:
+multiDexEnabled true
+Assim permitimos usar uma quantidade maior de arquivos 
+.dex, e também em dependencies adicionamos a linha:
+implementation 'com.android.support:multidex:1.0.3'
+Só com essas duas alterações, o MULTIDEX passará a 
+estar ativado, e o APP irá rodar normalmente.
