@@ -16,6 +16,13 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
 
     final fbm = FirebaseMessaging();
+    ///O [requestNotificationPermissions] serve
+    ///para pedir permissão para receber 
+    ///[Push Notifications] no device, mas só 
+    ///funciona no iOS, pois no Android não é 
+    ///necessário permissão, então se estivermos
+    ///buildando o APP em um Android ele simplesmente
+    ///retorna null
     fbm.requestNotificationPermissions();
   }
 
