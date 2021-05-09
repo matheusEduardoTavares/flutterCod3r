@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,10 +28,43 @@ class _MyHomePageState extends State<MyHomePage> {
   var _b = 0;
   var _sum = 0;
 
-  void _calcSum() {
-    setState(() {
-      _sum = _a + _b;
-    });
+  Future<void> _calcSum() async {
+
+    ///Importando o package:flutter/services.dart,
+    ///temos acesso ao [MethodChannel], e com 
+    ///ele usamos um método para se comunicar 
+    ///com o nativo. O nome do channel que vamos
+    ///criar tem uma certa padronização, em que 
+    ///geralmente o nome do channel é aquilo que 
+    ///deseja-se estabelecer de comunicação
+    const channel = MethodChannel('cod3r.com.br/nativo');
+
+    try {
+      ///Uma vez pegando o canal para se estabelecer
+      ///a comunicação com o nativo, a partir daquele
+      ///dado canal, podemos chamar um método específico
+      ///daquele channel, pois um mesmo channel pode 
+      ///ter vários métodos. O segundo parâmetro que 
+      ///passamos usando o método [invokeMethod] é 
+      ///caso queiramos passar algum argumento 
+      ///para o método lá no nativo
+      final sum = await channel.invokeMethod(
+        'calcSum',
+        {
+          'a': _a,
+          'b': _b,
+        }
+      );
+
+      setState(() {
+        _sum = sum;
+      });
+    }
+    on PlatformException {
+      setState(() {
+        _sum = 0;
+      });
+    }
   }
 
   @override
