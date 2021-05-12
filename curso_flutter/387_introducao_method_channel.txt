@@ -1,0 +1,6 @@
+Na aula 387 - Introdução ao Módulo (primeira aula da seção 15 - Executando Código Nativo no Android e iOS), teremos uma introdução de como funciona essa ligação do Flutter com as linguagens nativas para comunicação com o android e o iOS. Duas linguagens não se conversam diretamente, sendo assim, precisamos de uma ponte para fazer a comunicação entre elas, que no caso do Flutter é o Method Channel.
+Trabalharemos com a escrita de códigos customizados para plataformas específicas, tanto para iOS quanto para android.
+Os channels são canais de comunicação.
+Conseguimos passar parâmetros a partir do flutter para um método dentro do iOS e dentro do android; e conseguimos receber a resposta do método, e isso é feito a partir dos canais de comunicação.
+Dificilmente precisamos escrever código nativo pois existem muitos pacotes que dão o que precisamos. 
+Mas é importante sabermos como funciona para estabelecer a comunicação; claro que precisamos escrever um código nativo para poder fazer essa comunicação, mas o foco não é na linguagem nativa em si, e sim na parte da comunicação.
