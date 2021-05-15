@@ -1,0 +1,10 @@
+Para a configuração do ID da aplicação e 
+o nome do APP para o iOS, basta abrir o 
+/ios/Runner.xcworkspace dentro do 
+XCode, aí clicar na raíz do projeto, 
+ir em Runner, e na aba General já terá 
+a primeira opção para digitar o nome da 
+aplicação (display name). Logo em baixo 
+tem o campo bundle identifier, que é o 
+ID da aplicação, o identificador dela, 
+que obviamente também deve ser único.
