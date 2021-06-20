@@ -1,0 +1,40 @@
+Primeiramente deve-se gerar o ícone do APP.
+Depois deve-se registrar no APP, e para tal, deve-se
+criar uma keystore cujo comando para criá-la obtemos 
+no seguinte link:
+https://flutter.dev/docs/deployment/android#signing-the-app
+E então ao rodar o comando e preencher os dados, no 
+diretório em que tal foi rodado será gerado o arquivo
+"key.jks". Este arquivo comprova quem é o desenvolvedor
+do APP. Esta chave não deve ser subida para nenhum 
+repositório, e deve ser guardada em privacidade e 
+segurança. O mesmo serve para o key.properties.
+Em seguida, dentro da pasta android criamos o arquivo 
+key.properties com o seguinte conteúdo:
+//CONTEÚDO DO key.properties
+storePassword=<password from previous step>
+keyPassword=<password from previous step>
+keyAlias=key
+storeFile=<location of the key store file, such as /Users/<user name>/upload-keystore.jks>
+//CONTEÚDO DO key.properties
+As senhas que são pedidas são as senhas preenchidas 
+durante a criação da keystore.
+O storeFile é o diretório em que o key.jks está 
+armazenado.
+Para assinar a aplicação é preciso 
+tanto do arquivo físico (key.jks) 
+quanto das duas senhas.
+Também foram feitos algumas mudanças no arquivo 
+/android/app/build.gradle.
+Após fazer as mudanças no gradle é bom rodar o 
+flutter clean
+Em seguida, usamos o comando 
+flutter build appbundle
+Assim ele irá acessar através do key.properties 
+a key.jks e obter os dados necessários. Feito isso,
+será gerado o arquivo
+[project]/build/app/outputs/bundle/release/app.aab
+Basicamente agora deve-se entrar no Google Play Console 
+que é o local em que será cadastrado a aplicação e 
+onde será feito o upload deste arquivo do 
+app.aab.
