@@ -1,0 +1,47 @@
+Agora deve-se entrar no Google Play Console. Aí deve-se entrar na conta de desenvolvedor. 
+Se não tiver uma conta de desenvolvedor, é necessário criá-la, e para criá-la, 
+é preciso pagar uma taxa de 25 dólares apenas uma única vez, e assim 
+torna-se um desenvolvedor credenciado para liberar aplicações.
+Uma vez logado na aplicação, deve-se ir em "All apps" e clicar em "Create app" 
+e aí irá aparecer um formulário para preencher. Ao terminar de preencher o 
+formulário, já irá aparecer a área do aplicativo cadastrado. Dentro dessa área do 
+APP, há várias informações com relação aos passos que precisam ser feitos para 
+liberar a release de forma a ser aceita e assim ser possível de fato gerar o 
+APK na loja. Esses passos basicamente consistem em preencher vários dados dos 
+formulários a respeito da aplicação, como por exemplo a parte de "Ads", 
+a questão do acesso da aplicação, e etc. 
+Com relação ao gerar o APK na loja, temos a opção "Production", onde se tem 
+acesso a um menu chamado "Release dashboard".
+Em "Release dashboard" cria-se a release da aplicação, uma versão que será publicada. 
+Nessa tela tem o botão de "Create new release". Ao clicar nela, aparece uma tela 
+onde existe uma página em que é pedido para fazer o upload do arquivo. 
+Mas é preciso primeiro clicar em continue e aceitar os termos primeiro. 
+Logo após clica-se em upload que é onde será feito o upload daquele arquivo .aab, 
+e então seleciona-se o arquivo app-release.aab para ser feito o upload.
+Após fazer o upload, tem mais informações para preencher 
+como por exemplo o "Release name" em que marca-se a versão do APP que no caso 
+seria 1.0.0 se for a primeira vez a subir o APP. Lembrando que é importante manter
+em sintonia o "version" do pubspec.yaml com relação a essa versão da release. 
+Existe o campo "Release notes" em que pode-se colocar notas específicas para a 
+release, como por exemplo se foi feito uma correção, 
+acrescentado algo e etc. Basicamente é do que se trata a nova versão do 
+aplicativo. 
+Por fim têm a opção de review onde deve-se rever toda a release se está tudo 
+certo, e uma vez tudo certo é só clicar em "Review release". 
+A partir desse momento, tem-se uma release pronta para ser publicada.
+Embora tenha-se uma release pronta para ser publicada, primeiramente é passado 
+por um estágio rápido de testes e são destacados alguns erros ou warnings se 
+forem encontrados. No caso dos erros, aparece uma descrição dos mesmos e geralmente
+são erros de falta de preenchimento de dados do formulário naquela parte inicial 
+onde estava o dashboard, então basta ir para o dashboard e ir preenchendo as 
+informações necessárias. No caso do vídeo em específico, deu erro dizendo que 
+é preciso colocar uma mensagem de descrição do APP completa e 
+também que não foi passado qual era a país ou região em que tal release iria 
+ser rodada. 
+Alguns exemplos de dados que podem ser preenchidos nessa parte do dashboard são:
+- "Target audience": Qual é a audiência da aplicação, que é a definição das faixas 
+etárias do público alvo para uso do APP;
+- "Content rating": Classificação do conteúdo da aplicação. Aqui coloca-se 
+também o email do desenvolvedor, assim se tiver problemas eles podem contatar 
+via email;
+- Etc (há várias opções que são intuitivas de serem preenchidas).
