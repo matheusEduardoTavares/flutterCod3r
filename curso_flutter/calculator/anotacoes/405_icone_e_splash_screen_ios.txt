@@ -1,0 +1,16 @@
+Fazendo o restante da configuração da Splash Screen / Ícone no iOS:
+Abrimos no XCode o projeto. 
+Dentro do projeto, dentro da pasta Runner temos um arquivo chamado 
+"Assets.xcassets". 
+Clicando nele temos um arquivo chamado LaunchImage. 
+Aí pegamos a imagem que queremos colocar como splash para o iOS 
+e arrastamos e colamos nos 3 pontos, pois ao clicar em LaunchImage 
+irá aparecer 3 slots, que é o 1x, o 2x e o 3x. 
+Arrastamos a imagem que queremos colocar para os 3 slots. 
+Dentro da pasta Runner ainda, temos o arquivo "LaunchScreen.storyboard", 
+e ao clicar nele é mostrado um preview de como fica a SplashScreen no 
+device, e com o preview percebemos que o background é branco. 
+Então, nesse mesmo arquivo do "LaunchScreen.storyboard", 
+na direita temos um menu de personalização onde temos a opção 
+Background, e setamos ela para cor que queremos. É só alterar a cor e
+salvar o projeto, e já estará funcionando a SplashScreen no iOS.
