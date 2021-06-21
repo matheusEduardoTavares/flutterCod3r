@@ -1,0 +1,18 @@
+Tem uma parte para adicionar as imagens na aplicação também e que devem 
+ser no tamanho pedido. É necessário subir os prints da aplicação também.
+Em productions tem uma parte específica onde configura-se os países / regiões, 
+e nela é necessário selecionar quantas regiões e quais quisermos.
+No dashboard além da configuração do APP temos outras opções. 
+A última opção é a de publicar na loja o APP. 
+Para ela precisamos selecionar os países e regiões, 
+criar uma nova release e por fim ir na opção "Review and roll out the release". 
+Clica-se na opção, daí clica em "Edit", e basicamente será direcionado 
+para a tela onde foi feito o upload do .aab e naquela ocasião 
+devido a erros dos formulários incompletos não foi possível prosseguir 
+com essa parte, mas é só clicar em "Review release", 
+corrigir todos os erros se ainda houver, e uma vez sem haver mais 
+erros irá aparecer a opção para clicar em "Start rollout to Production", 
+que é iniciar o processo de subir em produção. 
+Depois irá passar por uma revisão dos responsáveis, e se estiver tudo 
+certo o APP irá aparecer na loja, se não, eventuais mudança precisarão 
+ser feitas.
