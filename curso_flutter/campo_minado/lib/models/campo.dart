@@ -14,7 +14,10 @@ class Campo {
   ///Se o campo já foi aberto, ou seja, clicado
   var _aberto = false;
 
-  ///Se o campo está fechado
+  ///Se o campo está marcado. Aqui colocamos uma bandeira vermelha nos 
+  ///campos minados mostrando que eles tem bomba. E para vencer o jogo todos
+  ///os campos minados (que possuem bomba) devem estar marcados, 
+  ///enquanto todos os campos que estão sem bomba devem ser abertos
   var _marcado = false;
 
   ///Se o campo é uma mina
