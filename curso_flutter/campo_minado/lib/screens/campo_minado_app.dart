@@ -14,11 +14,7 @@ class CampoMinadoApp extends StatefulWidget {
 
 class _CampoMinadoAppState extends State<CampoMinadoApp> {
   bool _venceu;
-  final _tabuleiro = Tabuleiro(
-    linhas: 12, 
-    colunas: 12, 
-    qtdeBombas: 3,
-  );
+  Tabuleiro _tabuleiro;
 
   void _reiniciar() {
     setState(() {
@@ -57,6 +53,22 @@ class _CampoMinadoAppState extends State<CampoMinadoApp> {
     });
   }
 
+  Tabuleiro _getBoard(double width, double height) {
+    if (_tabuleiro == null) {
+      final qtyColumns = 15;
+      final sizeField = width / qtyColumns;
+      final qtyRows = (height / sizeField).floor();
+
+      _tabuleiro = Tabuleiro(
+        linhas: qtyRows,
+        colunas: qtyColumns,
+        qtdeBombas: 50,
+      );
+    }
+
+    return _tabuleiro;
+  }
+
   @override
   Widget build(BuildContext context) {
     // final field = Campo(
@@ -90,10 +102,16 @@ class _CampoMinadoAppState extends State<CampoMinadoApp> {
           onReiniciar: _reiniciar,
         ),
         body: Container(
-          child: BoardWidget(
-            board: _tabuleiro,
-            onOpen: _open,
-            onChangeMarcation: _changeMarcation,
+          color: Colors.grey,
+          child: LayoutBuilder(
+            builder: (_, constraints) => BoardWidget(
+              board: _getBoard(
+                constraints.maxWidth, 
+                constraints.maxHeight,
+              ), 
+              onChangeMarcation: _changeMarcation, 
+              onOpen: _open,
+            ),
           ),
         ),
       ),
