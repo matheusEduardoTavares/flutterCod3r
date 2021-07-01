@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-///Para podermos passar um componente para uma 
-///[AppBar], este componente deve implementar 
-///o [PreferredSizeWidget]
 class ResultadoWidget extends StatelessWidget implements PreferredSizeWidget {
   const ResultadoWidget({ 
     @required this.venceu,
@@ -43,9 +40,6 @@ class ResultadoWidget extends StatelessWidget implements PreferredSizeWidget {
           child: CircleAvatar(
             backgroundColor: _getColor(),
             child: IconButton(
-              ///Este padding se não passado o 
-              ///[EdgeInsets.zero] acaba deixando o 
-              ///ícone em si sem estar centralizado
               padding: EdgeInsets.zero,
               icon: Icon(
                 _getIcon(),

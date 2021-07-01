@@ -71,30 +71,6 @@ class _CampoMinadoAppState extends State<CampoMinadoApp> {
 
   @override
   Widget build(BuildContext context) {
-    // final field = Campo(
-    //   linha: 0,
-    //   coluna: 0,
-    // );
-
-    // final otherField1 = Campo(
-    //   linha: 1,
-    //   coluna: 0,
-    // );
-    // final otherField2 = Campo(
-    //   linha: 1,
-    //   coluna: 1,
-    // );
-    // otherField1.minar();
-    // otherField2.minar();
-    // field.adicionarVizinho(otherField1);
-    // field.adicionarVizinho(otherField2);
-
-    // try {
-    //   // field.minar();
-    //   // field.abrir();
-    //   field.alternarMarcacao();
-    // } on ExplosaoException {}
-
     return MaterialApp(
       home: Scaffold(
         appBar: ResultadoWidget(

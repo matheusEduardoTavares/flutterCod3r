@@ -12,15 +12,8 @@ class FieldWidget extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  ///Campo em si que será renderizado. É só um dos
-  ///campos do tabuleiro
   final Campo field;
-
-  ///Este método será chamado ao clicar no campo
   final OpenHook onOpen;
-
-  ///Este método será chamado ao segurar o clique
-  ///no campo (onLongPress)
   final ChangeMarcationHook onChangeMarcation;
 
   Widget _getImage() {

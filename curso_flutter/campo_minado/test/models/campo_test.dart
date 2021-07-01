@@ -11,11 +11,7 @@ void main() {
         );
 
         c1.minar();
-        ///Há vários `Matchers` que representam 
-        ///constantes que podemos testar nos 
-        ///testes
         expect(c1.abrir, throwsException);
-        // expect(() => c1.abrir, throwsException);
       });
 
       test('Abrir campo SEM explosão', () {
@@ -43,8 +39,6 @@ void main() {
           c2,
         );
 
-        ///Tanto faz testar direto com true ou
-        ///usar o Matcher do `isTrue`
         expect(c1.vizinhos.isEmpty, true);
       });
 
@@ -73,9 +67,6 @@ void main() {
         c1.adicionarVizinho(c3);
         c1.adicionarVizinho(c4);
 
-        ///Tanto faz testar direto com true ou
-        ///usar o Matcher do `isTrue`
-        // expect(c1.vizinhos.length == 3, true);
         expect(c1.vizinhos.length, 3);
       });
 
@@ -106,9 +97,6 @@ void main() {
         c1.adicionarVizinho(c3);
         c1.adicionarVizinho(c4);
 
-        ///Tanto faz testar direto com true ou
-        ///usar o Matcher do `isTrue`
-        // expect(c1.vizinhos.length == 3, true);
         expect(c1.qtdeMinasNaVizinhanca, 2);
       });
     }

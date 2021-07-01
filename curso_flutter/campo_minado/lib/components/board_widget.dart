@@ -18,8 +18,6 @@ class BoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: GridView.count(
-        ///Quantidade de colunas que teremos 
-        ///dentro da grid
         crossAxisCount: board.colunas,
         children: board.campos.map(
           (field) => FieldWidget(
