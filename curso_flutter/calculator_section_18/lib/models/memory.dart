@@ -1,32 +1,14 @@
-///Classe que implementa a lógica da calculadora, em
-///que terá funcionalidades para interpretar o 
-///botão clicado, as operações matemáticas e etc.
-///Será responsável por mostrar os dados no 
-///display.
 class Memory {
   static const operations = const [
     '%', '/', 'x', '-', '+', '='
   ];
 
-  ///Dois números que deverão ser operados
   final _buffer = [0.0, 0.0];
-  ///Qual dos 2 valores estão sendo digitados (
-  ///as operações na calculadora são tratados 
-  ///2 a 2 elementos)
   var _bufferIndex = 0;
   var _value = '0';
   String _operation;
-  ///Sempre que o usuário teclar em uma operação 
-  ///nova, deve-se zerar o [_value]
   var _wipeValue = false;
-
-  ///Sem esse tratamento feito por esta variável,
-  ///ao digitar 10 por exemplo e clicar em mais,
-  ///e logo em seguida em menos, ou seja, trocar 
-  ///a operação, o valor que aparece no display 
-  ///da tela acabará sendo zerado.
   String _lastCommand;
-
   String get value => _value;
 
 
@@ -75,14 +57,6 @@ class Memory {
       _bufferIndex = isEqualSign ? 0 : 1;
     }
 
-    ///Após realizar um cálculo, o resultado pode
-    ///ser usado caso a linha abaixo seja descomentada
-    ///removendo também o _wipeValue = true;
-    ///Então se a conta deu 8, por exemplo, se deixar
-    ///apenas o true e digitar outro número por cima,
-    ///irá sumir o 8 e aparecer o número. Já com o 
-    ///true, se for digitado 7, ficará 87.
-    // _wipeValue = !isEqualSign;
     _wipeValue = true;
   }
 
@@ -90,7 +64,6 @@ class Memory {
     final isDot = digit == '.';
     final wipeValue = (_value == '0' && !isDot) || _wipeValue;
 
-    ///Evitar digitar duas vezes . num mesmo número
     if (isDot && _value.contains('.') && !wipeValue) {
       return;
     }
@@ -98,19 +71,14 @@ class Memory {
     final emptyValue = isDot ? '0' : '';
     final currentValue = wipeValue ? emptyValue : _value;
 
-    ///O . também será um digito para casa decimais
-    ///do número
     _value = currentValue + digit;
     _wipeValue = false;
 
     _buffer[_bufferIndex] = double.tryParse(_value) ?? 0;
-    // print(_buffer);
   }
 
   void _allClear() {
     _value = '0';
-    ///A partir do índice 0, setar os valores colocados
-    ///da lista no segundo parâmetro na ordem
     _buffer.setAll(0, [0.0, 0.0]);
     _operation = null;
     _bufferIndex = 0;

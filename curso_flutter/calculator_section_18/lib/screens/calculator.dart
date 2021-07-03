@@ -24,8 +24,6 @@ class _CalculatorState extends State<Calculator> {
 
   @override
   Widget build(BuildContext context) {
-    ///Setando para manter a aplicação sempre em 
-    ///modo retrato para cima
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
