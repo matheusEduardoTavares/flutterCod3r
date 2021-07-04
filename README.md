@@ -22,7 +22,7 @@
 
 Este projeto contém todos os projetos e códigos fontes que foram realizados durante as aulas do curso "Aprenda Flutter e Desenvolva Apps Para Android e IOS 2021", na Udemy, ministrado pela Cod3r.<br/>
 No decorrer do desenvolvimento, foram realizados algumas mudanças nos projetos e também adicionados vários comentários explicando os conceitos que ainda não conhecia.<br/>
-Como é possível perceber, cada pasta corresponde a um dos projetos feitos.<br/>
+Como é possível perceber, cada pasta dentro da pasta `curso_flutter` corresponde a um dos projetos feitos. As demais pastas são apenas alguns conceitos básicos que foram passados sobre `Dart`<br/>
 O curso tem duração de aproximadamente 55 horas (tempo juntando todos os vídeos), e foi finalizado no dia 03/07/2021.<br/>
 A partir do capítulo 4 do curso, comecei a implementar o uso do git de forma melhor, criando uma branch para cada capítulo. Ao término do capítulo, era aberto um P.R para mergear o conteúdo do novo capítulo na branch "Master", de forma a manter o código do capítulo na "Master" sem comentários; e não deletar a branch específica da capítulo, pois a mesma contém os comentários colocados no decorrer das aulas.<br/>
 Foi um curso muito bom e que me trouxe muito aprendizado.<br/>
